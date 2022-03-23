@@ -1,0 +1,84 @@
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Gradle.gitlab-ci.yml
+
+# This is the Gradle build system for JVM applications
+# https://gradle.org/
+# https://github.com/gradle/gradle
+
+image: gradle:7.3.3-jdk11-alpine
+
+# Disable the Gradle daemon for Continuous Integration servers as correctness
+# is usually a priority over speed in CI environments. Using a fresh
+# runtime for each build is more reliable since the runtime is completely
+# isolated from any previous builds.
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-XX:MaxMetaspaceSize=512M"
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  DEPENDENCY_DATA_DIR: "${CI_PROJECT_DIR}/.dependency-check-data"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - build
+  - test
+  - qacheck
+  - deploy
+
+sonarcloud-check:
+  stage: qacheck
+  script: gradle sonarqube
+  cache:
+    - key: "$CI_JOB_NAME"
+      paths:
+        - .sonar/cache
+        - .dependency-check-data
+    - key: "$CI_COMMIT_REF_NAME"
+      policy: pull
+      paths:
+        - build
+        - build-cache
+        - .gradle
+  only:
+    - merge_requests
+    - main
+    - develop
+
+build:
+  stage: build
+  script: gradle assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - build-cache
+      - .gradle
+
+test:
+  stage: test
+  script: gradle check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - build-cache
+      - .gradle
+
+deploy:
+  stage: deploy
+  script: gradle publish
+  only:
+    - main
+    - develop
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - build-cache
+      - .gradle
