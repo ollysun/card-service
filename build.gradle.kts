@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val javaVersion: String by project
 val logbackEncoder: String by project
 val springMockkVersion: String by project
+val springCloudVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -9,10 +10,17 @@ plugins {
     kotlin("plugin.spring")
     id("org.sonarqube")
     id("org.owasp.dependencycheck")
+    id("io.spring.dependency-management")
     jacoco
 }
 
 apply(plugin = "io.spring.dependency-management")
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+    }
+}
 
 dependencyCheck {
     analyzers.assemblyEnabled = false
@@ -75,6 +83,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.rsocket:rsocket-micrometer")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
