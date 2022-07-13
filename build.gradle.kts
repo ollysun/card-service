@@ -24,11 +24,13 @@ dependencyManagement {
 
 dependencyCheck {
     analyzers.assemblyEnabled = false
+    analyzers.ossIndexEnabled = false
     failBuildOnCVSS = 1f
     val dataDir = System.getenv("DEPENDENCY_DATA_DIR")
     if (dataDir != null) {
         data.directory = dataDir
     }
+    suppressionFile = File(rootDir, "suppressions.xml").absolutePath
 }
 
 sonarqube {
@@ -80,6 +82,10 @@ repositories {
             create<HttpHeaderAuthentication>("header")
         }
     }
+}
+
+configurations.all {
+    exclude("org.apache.logging.log4j")
 }
 
 dependencies {
