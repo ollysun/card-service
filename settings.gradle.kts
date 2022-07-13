@@ -5,6 +5,7 @@ with(rootProject) {
         val springBootVersion: String by settings
         val sonarQubePluginVersion: String by settings
         val dependencyCheckVersion: String by settings
+        val dependencyManagementVersion: String by settings
         plugins {
             kotlin("jvm") version kotlinVersion
             kotlin("plugin.serialization") version kotlinVersion
@@ -12,6 +13,7 @@ with(rootProject) {
             id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
             id("org.sonarqube") version sonarQubePluginVersion
             id("org.owasp.dependencycheck") version dependencyCheckVersion
+            id("io.spring.dependency-management") version dependencyManagementVersion
         }
     }
 }
