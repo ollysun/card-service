@@ -53,4 +53,9 @@
 
 .Mobile-code {
   border: 1px solid #ced4da;
+  width: 4rem;
+}
+
+.container {
+  min-height: 100%;
 }
