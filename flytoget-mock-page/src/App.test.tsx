@@ -4,6 +4,7 @@ import App from './App';
 
 test('has a card registration iframe title', () => {
   render(<App />);
-  const linkElement = screen.getByTitle("card registration iframe")
+  const iFrameTitle = process.env.REACT_APP_IFRAME_TITLE || "card registration iframe"
+  const linkElement = screen.getByTitle(iFrameTitle)
   expect(linkElement).toBeInTheDocument();
 });
