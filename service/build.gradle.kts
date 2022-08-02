@@ -23,6 +23,7 @@ tasks.bootJar {
 
 dependencies {
 	implementation(project(":card-identification-service-common"))
+	implementation(project(":card-identification-service-client"))
 
 //    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"))
 //    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
