@@ -16,6 +16,8 @@ tasks.jar {enabled = true}
 
 
 dependencies {
+	api(project(":card-identification-service-common"))
+
 	implementation("org.springframework.boot:spring-boot-starter-rsocket")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
