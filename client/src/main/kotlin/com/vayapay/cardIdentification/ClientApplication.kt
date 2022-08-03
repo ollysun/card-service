@@ -1,4 +1,4 @@
-package com.vayapay.cardIdentify
+package com.vayapay.cardIdentification
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
