@@ -1,10 +1,16 @@
 import Container from "react-bootstrap/Container";
+import {FC} from "react";
 
-function Iframe() {
+interface IframeProps {
+    title: string,
+    src: string
+}
+
+const Iframe: FC<IframeProps> = (props) : JSX.Element => {
     return (
         <Container className="px-3">
-            <iframe className="App-iframe" title={process.env.REACT_APP_IFRAME_TITLE}
-                    src={process.env.REACT_APP_IFRAME_URL}/>
+            <iframe className="App-iframe" title={props.title}
+                    src={props.src}/>
         </Container>
     );
 }
