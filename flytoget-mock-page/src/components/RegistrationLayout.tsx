@@ -11,7 +11,7 @@ function RegistrationLayout() {
     <Row className="mx-0">
             <Col><LoginDetails /></Col>
             <Col><Personalia /></Col>
-            <Col><Iframe title={title}  src={src}/></Col>
+            <Col><Iframe title={title}  src="https://jsonplaceholder.cypress.io/"/></Col>
         </Row>
     );
 }
