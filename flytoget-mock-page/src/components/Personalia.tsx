@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import FirstName from "./FirstName";
 import LastName from "./LastName";
 import DateOfBirth from "./DateOfBirth";
-import TicketTypeField from "./TicketTypeField";
+import TicketType from "./TicketType";
 
 function Personalia() {
     return (
@@ -11,7 +11,7 @@ function Personalia() {
            <FirstName />
             <LastName />
             <DateOfBirth />
-            <TicketTypeField />
+            <TicketType />
         </Container>
     );
 }
