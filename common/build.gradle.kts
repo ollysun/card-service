@@ -32,8 +32,9 @@ publishing {
 
 dependencies {
 	implementation("com.vayapay.common:common-utils:$commonUtilsVersion")
-
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
-
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.7.0")
+	implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")
 	testImplementation("org.apache.commons:commons-lang3:3.12.0")
+
 }

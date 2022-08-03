@@ -25,6 +25,9 @@ dependencies {
 	implementation(project(":card-identification-service-common"))
 	implementation(project(":card-identification-service-client"))
 
+	implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.7.0")
+
 //    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"))
 //    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -33,6 +36,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.core:jackson-databind:[2.13.2.1,3)") {
 		because("CVE-2020-36518")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
 	}
 
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")

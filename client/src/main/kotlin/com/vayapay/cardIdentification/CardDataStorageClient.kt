@@ -1,4 +1,4 @@
-package com.vayapay.cardIdentify
+package com.vayapay.cardIdentification
 
 import com.vayapay.cardidentification.model.CardData
 import com.vayapay.cardidentification.model.CardIdResponse

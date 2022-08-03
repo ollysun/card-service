@@ -1,12 +1,12 @@
-package com.vayapay.cardIdentify.rsocket
+package com.vayapay.cardIdentification.rsocket
 
-import com.vayapay.cardIdentify.CardDataStorageClient
+import com.vayapay.cardIdentification.CardDataStorageClient
 import com.vayapay.cardidentification.messages.Response
 import com.vayapay.cardidentification.messages.STORE_CARD_DATA
 import com.vayapay.cardidentification.messages.StoreCardDataResponse
 import com.vayapay.cardidentification.model.CardData
 import com.vayapay.cardidentification.model.CardIdResponse
-import com.vayapay.cardidentification.model.CardRequest
+import com.vayapay.cardidentification.model.StoreCardDataRequest
 import io.rsocket.transport.netty.client.TcpClientTransport
 import kotlinx.coroutines.reactive.awaitFirst
 import mu.KotlinLogging
@@ -107,8 +107,8 @@ class RSocketCardDataClient(
             requester
                 .route(STORE_CARD_DATA)
                 .data(
-                    CardRequest(
-                        id = ptoId,
+                    StoreCardDataRequest(
+                        ptoId = ptoId,
                         cardData = cardData
                     )
                 )
