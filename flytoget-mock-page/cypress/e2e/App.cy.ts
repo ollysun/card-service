@@ -20,7 +20,6 @@ describe('register profile', () => {
     })
 
     it('iframe should contain content', function () {
-        console.log(getIframeContentBody())
         getIframeContentBody()
     });
 
