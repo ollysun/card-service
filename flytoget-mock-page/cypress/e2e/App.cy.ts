@@ -1,3 +1,7 @@
+const cardNumber = '65423456789767892';
+const expiryMonth = '02';
+const expiryYear = '24';
+
 const getIframeContentBody = () => {
     return cy.get('iframe[data-cy="card-iframe"]')
         .its('0.contentDocument.body').should('not.be.empty')
@@ -37,5 +41,11 @@ describe('register profile', () => {
     it('account number field should be disabled by default', function () {
         getIframeContentBody().find('#accountNumberContainer').should('have.css', 'display', "none")
     });
+
+    it('populate the fields', () => {
+        getIframeContentBody().find('#cardNumber').type(cardNumber).should('have.text', cardNumber)
+        getIframeContentBody().find('#expiryMonth').type(expiryMonth).should('have.text', expiryMonth)
+        getIframeContentBody().find('#expiryYear').type(expiryYear).should('have.text', expiryYear)
+    })
 
 })
