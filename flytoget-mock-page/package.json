@@ -23,12 +23,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress:open": "../../node_modules/.bin/cypress open",
-    "cypress:run": "../../node_modules/.bin/cypress run",
-    "skip:test:ci:firefox": "../../node_modules/.bin/cypress run --browser firefox",
-    "test:ci": "../../node_modules/.bin/cypress run",
-    "test:ci:chrome": "../../node_modules/.bin/cypress run --browser chrome",
-    "test:ci:record": "../../node_modules/.bin/cypress run --record"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "skip:test:ci:firefox": "cypress run --browser firefox",
+    "test:ci": "cypress run",
+    "test:ci:chrome": "cypress run --browser chrome",
+    "test:ci:record": "cypress run --record"
 
   },
   "eslintConfig": {
