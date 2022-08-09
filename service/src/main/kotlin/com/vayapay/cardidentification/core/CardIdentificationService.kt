@@ -2,12 +2,8 @@ package com.vayapay.cardidentification.core
 
 import com.vayapay.cardIdentification.CardDataStorageClient
 import com.vayapay.cardidentification.exception.CardIdentificationException
-import com.vayapay.cardidentification.model.CardIdResponse
 import com.vayapay.cardidentification.model.CardRequestDto
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
-import reactor.util.retry.Retry
 
 @Service
 class CardIdentificationService  {
@@ -21,7 +17,7 @@ class CardIdentificationService  {
             if(!isDigitNumber(pan) || !luhmCheck(pan)){
                 throw CardIdentificationException("wrong pan number")
             }
-            val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
+            //val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
     }
 
     fun luhmCheck(number: String): Boolean {
