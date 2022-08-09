@@ -23,25 +23,25 @@ describe('register profile', () => {
         getIframeContentBody()
     });
 
-    it('iframe should contain some labels', function () {
+    it.skip('iframe should contain some labels', function () {
         getIframeContentBody().contains('h6', 'Add Card')
         getIframeContentBody().contains('label', 'Card Number')
         getIframeContentBody().contains('label', 'Expiry Date')
     });
 
-    it('iframe should contain save card button', function () {
+    it.skip('iframe should contain save card button', function () {
         getIframeContentBody().contains('button', 'Save Card')
     });
 
-    it('iframe should load a save card button', function () {
+    it.skip('iframe should load a save card button', function () {
         getIframeContentBody().find('#saveCard').should('have.text', 'Save Card')
     });
 
-    it('account number field should be disabled by default', function () {
+    it.skip('account number field should be disabled by default', function () {
         getIframeContentBody().find('#accountNumberContainer').should('have.css', 'display', "none")
     });
 
-    it('populate the fields', () => {
+    it.skip('populate the fields', () => {
         getIframeContentBody().find('#cardNumber').type(cardNumber).should('have.text', cardNumber)
         getIframeContentBody().find('#expiryMonth').type(expiryMonth).should('have.text', expiryMonth)
         getIframeContentBody().find('#expiryYear').type(expiryYear).should('have.text', expiryYear)

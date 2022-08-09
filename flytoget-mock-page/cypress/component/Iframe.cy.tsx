@@ -15,7 +15,7 @@ describe('Iframe.cy.ts', () => {
             .its('0.contentDocument.body').should('not.be.empty')
     })
 
-    it("should contains Add card test", () => {
+    it.skip("should contains Add card test", () => {
         cy.mount(<Iframe title={title} src={src} />)
         cy.get('iframe[data-cy="card-iframe"]')
             .its('0.contentDocument.body').contains("Add Card")
