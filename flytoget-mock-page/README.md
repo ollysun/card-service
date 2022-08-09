@@ -1,10 +1,11 @@
-# Getting Started with Create React App
+# Flytoget mock 
+This is a [React](https://reactjs.org/) project module that simulate flytoget customer and card registration pages. It has an embedded iframe which
+loads the card registration interface.
+This module is meant to mock how the card registration interface behaves within a React Iframe based on Flytoget use case.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Running the project
 
-## Available Scripts
-
-In the project directory, you can run:
+In the project directory, you can run the following npm command:
 
 ### `npm start`
 
@@ -16,8 +17,10 @@ You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
+
+For more info, check out [running npm tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
 
 ### `npm run build`
 
@@ -27,20 +30,29 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+For more information about production deployment, check out [React production deployment](https://facebook.github.io/create-react-app/docs/deployment).
 
-### `npm run eject`
+## Cypress
+Cypress is the testing framework used within the project.\
+It is a next generation front end testing tool built for the modern web. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### How to run tests
+Navigate to the project module.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Run `npm cypress:open` for Cypress UI Test Runner.\
+Or you can run `npm cypress:run` to run in CLI.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Alternatively you can run tests using npx.
 
-## Learn More
+Run `npx cypress open` for Cypress UI Test Runner.\
+Or you can run `npx cypress run` to run in CLI.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+For more information, check out [running cypress tests](https://docs.cypress.io/guides/guides/command-line)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Create new test
+
+Create a `.tsx` or `.ts` in cypress/e2e folder for writing end-to-end tests.\
+For component test create a `.tsx` or `.ts` in cypress/component folder instead.
+
+For more information about how to write cypress tests, check out [writing new tests](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests)
