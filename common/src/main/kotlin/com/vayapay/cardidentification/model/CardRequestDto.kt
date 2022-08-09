@@ -6,7 +6,7 @@ import javax.validation.constraints.Size
 
 @Serializable
 data class CardRequestDto(
-                          @field: NotBlank(message ="account number is mandatory")
+                          @field: NotBlank(message ="id is mandatory")
                           val id: String,
                           val cardData : CardData,
                           @field: NotBlank(message ="account number is mandatory")
