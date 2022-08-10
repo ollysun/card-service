@@ -9,7 +9,7 @@ describe('Iframe.cy.ts', () => {
     cy.mount(<Iframe title={title} src={src} />);
   });
 
-    it("should load card registration content", () => {
+    it.skip("should load card registration content", () => {
         cy.mount(<Iframe title={title} src={src} />)
         cy.get('iframe[data-cy="card-iframe"]')
             .its('0.contentDocument.body').should('not.be.empty')
