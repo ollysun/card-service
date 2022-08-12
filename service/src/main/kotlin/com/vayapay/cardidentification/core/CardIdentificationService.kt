@@ -1,6 +1,5 @@
 package com.vayapay.cardidentification.core
 
-import com.vayapay.cardIdentification.CardDataStorageClient
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.CardRequestDto
 import org.springframework.stereotype.Service
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class CardIdentificationService  {
 
-    lateinit var cardStorageClient: CardDataStorageClient
+    //lateinit var cardStorageClient: CardDataStorageClient
 
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto) {
 
