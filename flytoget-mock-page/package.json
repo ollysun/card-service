@@ -27,8 +27,7 @@
     "cy:run": "cypress run",
     "skip:test:ci:firefox": "cypress run --browser firefox",
     "test:ci": "cypress run",
-    "test:ci:chrome": "cypress run --browser chrome",
-    "test:ci:record": "cypress run --record"
+    "test:ci:chrome": "cypress run --browser chrome"
 
   },
   "eslintConfig": {
