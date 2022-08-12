@@ -23,7 +23,6 @@ tasks.bootJar {
 
 dependencies {
 	implementation(project(":card-identification-service-common"))
-	implementation(project(":card-identification-service-client"))
 
 	implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")
 	implementation("org.springframework.boot:spring-boot-starter-validation:2.7.0")

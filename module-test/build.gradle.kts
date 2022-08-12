@@ -48,7 +48,6 @@ dependencyManagement {
 
 dependencies {
 
-	testImplementation(project(":card-identification-service-client"))
 	testImplementation(project(":service"))
 
 	testImplementation("org.springframework.boot:spring-boot-starter-rsocket")
