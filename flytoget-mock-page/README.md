@@ -40,8 +40,8 @@ It is a next generation front end testing tool built for the modern web.
 ### How to run tests
 Navigate to the project module.
 
-Run `npm cypress:open` for Cypress UI Test Runner.\
-Or you can run `npm cypress:run` to run in CLI.
+Run `npm cy:open` for Cypress UI Test Runner.\
+Or you can run `npm cy:run` to run in CLI.
 
 Alternatively you can run tests using npx.
 
