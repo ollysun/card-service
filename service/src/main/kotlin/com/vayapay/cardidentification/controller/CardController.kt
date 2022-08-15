@@ -1,5 +1,6 @@
 package com.vayapay.cardidentification.controller
 
+import com.vayapay.cardidentification.utils.SelectOptions
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,6 +13,7 @@ class CardController {
 
     @GetMapping("")
     fun addCard(model: Model): String {
+        model.addAttribute("options", SelectOptions)
         return "add-card"
     }
 }
