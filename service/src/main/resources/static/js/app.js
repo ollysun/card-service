@@ -9,10 +9,13 @@ let state = {
     cardScheme: DEFAULT_CARD_SCHEME,
     accountNumber: '',
     isNorwegianCard : false,
-    cardSubType: ''
+    cardSubType: '',
+    formError : true
 }
 
 //accessor function
+
+let hasError = (error) => state.formError === error
 
 //DOM element references
 
@@ -38,6 +41,7 @@ const expiryDateFeedback = document.getElementById("expiryDateFeedback")
 
 // Account number
 const accountNumberFieldContainer = document.getElementById("accountNumberFieldContainer")
+const accountNumberField = document.getElementById("accountNumberField")
 const accountNumberFeedback = document.getElementById("accountNumberFeedback")
 
 // Save Button
@@ -71,11 +75,13 @@ const removeCardBannerElements = (cardNumber, cardScheme, isNorwegianCard) => {
 const removeFeedbackField = (feedbackField) => {
     feedbackField.textContent = ""
     feedbackField.style.display = "none"
+    hasError(false)
 };
 
-const updateFeedbackField = (feedbackField) => {
-    feedbackField.textContent = "Card number is invalid"
+const updateFeedbackField = (feedbackField, message) => {
+    feedbackField.textContent = message
     feedbackField.style.display = "block"
+    hasError(true)
 };
 
 
@@ -197,11 +203,42 @@ const cardSchemeLengthOk = (cardNumber, cardScheme) => {
     return checkCardSchemeLength
 }
 
+export const mod11AlgoCheck = ((weights) => {
+    return (value) => {
+        if (!value) {
+            return false
+        }
+
+        let i = value.length - 1
+        let sum = 0
+        let val
+
+        const checkNumber = Number.parseInt(value.charAt(10), 10)
+        const accountNumberWithoutCheckNumber = value.substring(0, 10)
+
+        while (i) {
+            val = parseInt(accountNumberWithoutCheckNumber.charAt(--i), 10)
+            sum += val * weights[i]
+        }
+
+        const remainder = sum % 11
+        const mode11CheckNumber = remainder === 0 ? 0 : 11 - remainder
+        return mode11CheckNumber === checkNumber
+    }
+})([5, 4, 3, 2, 7, 6, 5, 4, 3, 2])
+
 const isValidCardNumber =(cardNumber, cardScheme) => {
     if (!cardNumber) {
         return false
     }
     return luhnsAlgoCheck(cardNumber) && firstDigitCheck(cardNumber) && cardSchemeLengthOk(cardNumber, cardScheme)
+}
+
+const isValidAccountNumber =(accountNumber) => {
+    if (!accountNumber) {
+        return false
+    }
+    return mod11AlgoCheck(accountNumber)
 }
 
 const getCreditCardMaxLength = (cardNumber, cardScheme) => {
@@ -227,6 +264,16 @@ const getCreditCardMaxLength = (cardNumber, cardScheme) => {
     return 19
 }
 
+const toggleSaveButton = () => {
+   if (!state.formError){
+       saveButton.disabled = false
+       saveButton.classList.add("saveButton")
+   }else {
+       saveButton.disabled = true
+       saveButton.classList.remove("saveButton")
+   }
+}
+
 const validateCardNumber = (e) => {
     const cardNumber = removeNonNumbers(e)
     const cardScheme = getCreditCardScheme(cardNumber)
@@ -239,10 +286,40 @@ const validateCardNumber = (e) => {
         removeFeedbackField(cardNumberFeedback, "", cardScheme, state.isNorwegianCard);
     }else {
         state.cardScheme = DEFAULT_CARD_SCHEME
-        updateFeedbackField(cardNumberFeedback);
+        updateFeedbackField(cardNumberFeedback, "Card number is invalid");
         removeCardBannerElements("", cardScheme, state.isNorwegianCard)
     }
 }
+
+const validateAccountNumber = (e) => {
+    const accountNumber = removeNonNumbers(e)
+    state.accountNumber = accountNumber
+
+    if (isValidAccountNumber(accountNumber)){
+       removeFeedbackField(accountNumberFeedback)
+    }else {
+        updateFeedbackField(accountNumberFeedback, "Account number is invalid");
+    }
+}
+
+
+const validateExpiryMonth = (e) => {
+   if (!e.target.value){
+       updateFeedbackField(expiryDateFeedback, "Please select your expiry month.")
+   }else {
+       removeFeedbackField(expiryDateFeedback)
+   }
+}
+
+
+const validateExpiryYear = (e) => {
+    if (!e.target.value){
+        updateFeedbackField(expiryDateFeedback, "Please select your expiry year.")
+    }else {
+        removeFeedbackField(expiryDateFeedback)
+    }
+}
+
 
 const showLastFourDigit = value => {
     const result = value.replace(/.(?=.{4})/g, '*')
@@ -306,6 +383,9 @@ const displayDigits = (cardNumber, cardScheme) => {
 
 //Event handler bindings
 cardNumberField.onblur = e => validateCardNumber(e)
+accountNumberField.onblur = e => validateAccountNumber(e)
+expiryMonthField.onblur = e => validateExpiryMonth(e)
+expiryYearField.onblur = e => validateExpiryYear(e)
 
 
 
