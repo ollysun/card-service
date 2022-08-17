@@ -149,12 +149,8 @@
     background-image: linear-gradient(to bottom right,#8a8b8c,#929ea2,#d3e6ed,#838485);
 }
 
-.unknown {
-
-}
-
-.unselected {
-
+.hidden {
+    display: none;
 }
 
 @media (min-width:992px) and (max-width:1400px) {
