@@ -194,6 +194,11 @@
     }
 }
 
+.saveButton {
+    background: var(--clr-orange);
+    color: white;
+}
+
 /* No less than 400px, no greater than 900px */
 @media (min-width:992px) and (max-width:1200px) {
     .ba-border {
