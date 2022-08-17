@@ -6,7 +6,7 @@ val springCloudVersion: String by project
 
 plugins {
     kotlin("jvm")
-    id("org.springframework.boot")
+//    id("org.springframework.boot")
     kotlin("plugin.spring")
     id("org.sonarqube")
     id("org.owasp.dependencycheck")
