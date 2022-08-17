@@ -19,6 +19,11 @@
     --drop-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
+.hidden {
+    display: none;
+    opacity: 0;
+}
+
 .container {
     margin-bottom: 2.3rem;
     max-width: 340px;
@@ -147,10 +152,6 @@
 .bankcard.diners {
     background-color: #838485;
     background-image: linear-gradient(to bottom right,#8a8b8c,#929ea2,#d3e6ed,#838485);
-}
-
-.hidden {
-    display: none;
 }
 
 @media (min-width:992px) and (max-width:1400px) {
