@@ -88,12 +88,3 @@ configurations.all {
     exclude("org.apache.logging.log4j")
 }
 
-dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("io.rsocket:rsocket-micrometer")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-    runtimeOnly("net.logstash.logback:logstash-logback-encoder:$logbackEncoder")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-}
