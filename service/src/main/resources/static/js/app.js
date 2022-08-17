@@ -203,7 +203,7 @@ const cardSchemeLengthOk = (cardNumber, cardScheme) => {
     return checkCardSchemeLength
 }
 
-export const mod11AlgoCheck = ((weights) => {
+const mod11AlgoCheck = ((weights) => {
     return (value) => {
         if (!value) {
             return false
@@ -387,11 +387,10 @@ const displayDigits = (cardNumber, cardScheme) => {
 
 
 //Event handler bindings
-cardNumberField.onblur = e => validateCardNumber(e)
-accountNumberField.onblur = e => validateAccountNumber(e)
-expiryMonthField.onblur = e => validateExpiryMonth(e)
-expiryYearField.onblur = e => validateExpiryYear(e)
-
+cardNumberField.onchange = e => validateCardNumber(e)
+accountNumberField.onchange = e => validateAccountNumber(e)
+expiryMonthField.onchange = e => validateExpiryMonth(e)
+expiryYearField.onchange = e => validateExpiryYear(e)
 
 
 //initial setup
