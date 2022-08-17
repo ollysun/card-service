@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service
 @Service
 class CardIdentificationService  {
 
-    //lateinit var cardStorageClient: CardDataStorageClient
 
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto) {
 

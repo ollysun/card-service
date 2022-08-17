@@ -9,6 +9,4 @@ data class CardRequestDto(
                           @field: NotBlank(message ="id is mandatory")
                           val id: String,
                           val cardData : CardData,
-                          @field: NotBlank(message ="account number is mandatory")
-                          @field: Size(max=11, message = "please enter eleven digit")
-                          val bankAccountNumber: String)
+                          val bankAccountNumber: String?)

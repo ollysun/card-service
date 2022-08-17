@@ -40,7 +40,6 @@ dependencies {
 	}
 
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
@@ -52,12 +51,9 @@ dependencies {
 		exclude(group = "io.netty.incubator", module = "netty-incubator-codec-native-quic")
 	}
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
-	implementation("com.payneteasy:ber-tlv:$berTlvVersion")
 	implementation("com.vayapay.common:common-utils:$commonUtilsVersion")
 	implementation("com.vayapay.hsmproxy:hsm-proxy-client:$hsmProxyVersion")
 	implementation("com.vayapay.hsmproxy:hsm-proxy-common:$hsmProxyVersion")
-	implementation("net.javacrumbs.shedlock:shedlock-spring:$shedLockVersion")
-	implementation("net.javacrumbs.shedlock:shedlock-provider-r2dbc:$shedLockVersion")
 
 	runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 	runtimeOnly("org.flywaydb:flyway-core")
@@ -73,6 +69,5 @@ dependencies {
 	testImplementation("io.r2dbc:r2dbc-h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-	//testImplementation(project(":card-data-service-client"))
 
 }
