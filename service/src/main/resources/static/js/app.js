@@ -289,6 +289,8 @@ const validateCardNumber = (e) => {
         updateFeedbackField(cardNumberFeedback, "Card number is invalid");
         removeCardBannerElements("", cardScheme, state.isNorwegianCard)
     }
+
+    toggleSaveButton()
 }
 
 const validateAccountNumber = (e) => {
@@ -300,6 +302,7 @@ const validateAccountNumber = (e) => {
     }else {
         updateFeedbackField(accountNumberFeedback, "Account number is invalid");
     }
+    toggleSaveButton()
 }
 
 
@@ -309,6 +312,7 @@ const validateExpiryMonth = (e) => {
    }else {
        removeFeedbackField(expiryDateFeedback)
    }
+    toggleSaveButton()
 }
 
 
@@ -318,6 +322,7 @@ const validateExpiryYear = (e) => {
     }else {
         removeFeedbackField(expiryDateFeedback)
     }
+    toggleSaveButton()
 }
 
 
