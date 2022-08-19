@@ -5,7 +5,7 @@ import com.vayapay.cardidentification.model.CardRequestDto
 import org.springframework.stereotype.Service
 
 @Service
-class CardIdentificationService  {
+class CardIdentificationService constructor()  {
 
 
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto) {

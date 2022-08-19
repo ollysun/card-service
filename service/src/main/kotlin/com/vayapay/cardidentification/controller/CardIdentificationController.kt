@@ -14,8 +14,8 @@ import javax.validation.Valid
 class CardIdentificationController(
         val cardService: CardIdentificationService) {
 
-    @PostMapping
-    fun cardRegistration(@RequestBody @Valid cardRegistration: CardRequestDto): String? {
-        return null;
-    }
+//    @PostMapping
+//    fun cardRegistration(@RequestBody @Valid cardRegistration: CardRequestDto): String? {
+//        return null;
+//    }
 }

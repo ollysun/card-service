@@ -54,6 +54,7 @@ dependencies {
 	implementation("com.vayapay.common:common-utils:$commonUtilsVersion")
 	implementation("com.vayapay.hsmproxy:hsm-proxy-client:$hsmProxyVersion")
 	implementation("com.vayapay.hsmproxy:hsm-proxy-common:$hsmProxyVersion")
+	testImplementation("junit:junit:4.13.2")
 
 	runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 	runtimeOnly("org.flywaydb:flyway-core")

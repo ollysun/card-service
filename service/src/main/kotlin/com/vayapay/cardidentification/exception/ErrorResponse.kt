@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity
 import java.time.LocalDateTime
 
 data class ErrorResponse(
-    val errorDescription: String,
-    val errorDate: LocalDateTime
+    val errorDescription: String? = null,
+    val errorCode: Int
 )
 
 fun createErrorResponse(
