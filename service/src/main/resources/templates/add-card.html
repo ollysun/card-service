@@ -7,8 +7,7 @@
 
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100&family=Poppins:wght@300&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 
     <link
             crossorigin="anonymous"
@@ -80,7 +79,7 @@
                        required th:aria-label="#{cardNumber.label}" th:name="#{cardNumber.name}"
                        th:placeholder="#{cardNumber.placeholder}" type="text">
                 <span class="card-container"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
-                <div class="invalid-feedback" id="cardNumberFeedback" th:text="#{cardNumber.error.required}"></div>
+                <div class="invalid-feedback" id="cardNumberFeedback"></div>
             </div>
         </div>
 
