@@ -7,7 +7,7 @@
 
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
 
     <link
             crossorigin="anonymous"
@@ -31,7 +31,7 @@
     <div class="ratio mb-20">
         <div class="bankcard" id="bankCard">
             <div class="bankcard-content">
-                <div class="d-flex flex-row align-items-center justify-content-between mb-20">
+                <div class="d-flex flex-row align-items-center justify-content-between mb-2">
                     <div class="d-flex flex-column">
                         <span class="p number hidden" id="cardAccountNoLabel"
                               th:text="#{cardBanner.text.accountNumber}"></span>
@@ -42,7 +42,7 @@
 
                 <!-- End create a js method that checks norwegianCard before displaying this div-->
 
-                <div class="`d-flex flex-column mb-20">
+                <div class="`d-flex flex-column mb-2">
                     <span class="p number" th:text="#{cardBanner.text.cardNumber}"></span>
                     <span class="h card-number" id="maskedCardNumberField"
                           th:text="#{cardBanner.text.cardNumber.initValue}"></span>
@@ -71,25 +71,26 @@
 
     <!--        Beginning of Card Form input -->
     <form class="needs-validation" method="post" novalidate>
-        <div class="mb-20">
+        <div class="mb-2">
             <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control" id="cardNumberField" inputmode="numeric" pattern="[0-9]"
+                <input autocomplete="off" class="form-control " id="cardNumberField" inputmode="numeric"
+                       pattern="[0-9]"
                        required th:aria-label="#{cardNumber.label}" th:name="#{cardNumber.name}"
                        th:placeholder="#{cardNumber.placeholder}" type="text">
-                <span class="card-container"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
+                <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
                 <div class="invalid-feedback" id="cardNumberFeedback"></div>
             </div>
         </div>
 
         <!--        Card Expiry date -->
-        <div class="mb-20">
+        <div class="mb-2">
             <label class="form-label" for="expiryMonthField" th:utext="#{expiry.date.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="row">
                 <div class="col">
-                    <select class="form-select" id="expiryMonthField"
+                    <select class="form-select " id="expiryMonthField"
                             required="required" th:name="#{expiry.month.name}">
                         <option disabled="disabled" selected="selected" th:text="#{expiry.month.placeholder}"></option>
                         <option th:each="month : ${options.MONTHS}" th:text="${month}" th:value="${month}"></option>
@@ -99,38 +100,38 @@
                     <span class="slash">/</span>
                 </div>
                 <div class="col">
-                    <select class="form-select" id="expiryYearField"
+                    <select class="form-select " id="expiryYearField"
                             required="required" th:name="#{expiry.year.name}">
                         <option disabled="disabled" selected="selected" th:text="#{expiry.year.placeholder}"></option>
                         <option th:each="year : ${options.YEARS}" th:text="${year}" th:value="${year}"></option>
                     </select>
                 </div>
             </div>
-            <div class="invalid-feedback" id="expiryDateFeedback" th:text="#{expiry.month.error.required}"></div>
+            <div class="invalid-feedback" id="expiryDateFeedback"></div>
         </div>
 
         <!--Account number-->
-        <div class="mb-20 hidden" id="accountNumberFieldContainer">
+        <div class="mb-2 hidden" id="accountNumberFieldContainer">
             <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control" id="accountNumberField" inputmode="numeric"
+                <input autocomplete="off" class="form-control " id="accountNumberField" inputmode="numeric"
                        maxlength="11"
                        pattern="[0-9]" required
                        th:aria-label="#{accountNumber.label}"
                        th:name="#{accountNumber.name}"
                        th:placeholder="#{accountNumber.placeholder}"
                        type="text">
-                <span class="card-container"><i class="credit-card bank-axept"></i></span>
-                <div class="invalid-feedback" id="accountNumberFeedback"
-                     th:text="#{accountNumber.error.required}"></div>
+                <span class="card-icon"><i class="credit-card bank-axept"></i></span>
+                <div class="invalid-feedback" id="accountNumberFeedback"></div>
             </div>
         </div>
 
-        <p><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
+        <p class=""><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
 
         <div class="align-items-center justify-content-between">
-            <button class="btn btn-secondary gray-400 text-white" disabled id="saveButton" th:text="#{saveButton.label}"
+            <button class="btn btn-secondary gray-400 text-white " disabled id="saveButton"
+                    th:text="#{saveButton.label}"
                     type="submit"></button>
         </div>
     </form>
