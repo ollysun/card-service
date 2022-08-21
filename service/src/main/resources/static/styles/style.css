@@ -27,13 +27,13 @@
 .container {
     margin-bottom: 2.3rem;
     max-width: 340px;
-    box-sizing: content-box;
 }
 
 .ratio {
     padding-top: calc(100% / (16 / 11)); /* 16/11 aspect ratio. */
     position: relative;
 }
+
 .bankcard {
     flex-direction: row;
     align-items: flex-end;
@@ -69,7 +69,7 @@
 
 .bankcard .bankcard-content .h {
     padding: 0;
-    font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: myriad-pro, "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #fff;
     font-weight: 400;
     display: block;
@@ -89,7 +89,7 @@
     padding: 0;
     font-size: 9px;
     display: inline-block;
-    font-family: 'Arial','Helvetica',sans-serif;
+    font-family: 'Arial', 'Helvetica', sans-serif;
     color: #f2f2f2;
 }
 
@@ -110,8 +110,12 @@
     letter-spacing: 2px;
 }
 
-.mb-30 {
-    margin-bottom: 30px;
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
 }
 
 .ml-30 {
@@ -134,6 +138,10 @@
     background-image: url(../Images/credit-card/credit-diners-noback.svg);
 }
 
+.credit-card-logo.unknown, .credit-card-logo.unselected {
+    background-image: none;
+}
+
 .bankcard.visa {
     background-color: #1b5ba8;
     background-image: linear-gradient(114.82deg, #1B5BA8 2.76%, #3D88E1 48.79%, #1B5BA8 98.13%);
@@ -146,15 +154,20 @@
 
 .bankcard.amex {
     background-color: #057bab;
-    background-image: linear-gradient(to bottom right,#0f94c2,#0bafe8,#126e8e,#057bab);
+    background-image: linear-gradient(to bottom right, #0f94c2, #0bafe8, #126e8e, #057bab);
 }
 
 .bankcard.diners {
     background-color: #838485;
-    background-image: linear-gradient(to bottom right,#8a8b8c,#929ea2,#d3e6ed,#838485);
+    background-image: linear-gradient(to bottom right, #8a8b8c, #929ea2, #d3e6ed, #838485);
 }
 
-@media (min-width:992px) and (max-width:1400px) {
+.bankcard.unknown, .bankcard.unselected {
+    background-color: var(--clr-light-blue);
+    background-image: none
+}
+
+@media (min-width: 992px) and (max-width: 1400px) {
     .bankcard-content {
         padding-bottom: 5px;
     }
@@ -189,18 +202,28 @@
     .active-cards {
         margin-bottom: 2.25rem;
     }
+
     .cards {
         margin-bottom: 2.25rem;
     }
 }
 
 .saveButton {
-    background: var(--clr-orange);
+    background: var(--clr-orange) !important;
     color: white;
 }
 
+.buttonDisabled {
+    background: #506477;
+    color: white;
+}
+
+.text-secondary {
+    color: var(--clr-orange) !important;
+}
+
 /* No less than 400px, no greater than 900px */
-@media (min-width:992px) and (max-width:1200px) {
+@media (min-width: 992px) and (max-width: 1200px) {
     .ba-border {
         margin-top: 0;
     }
@@ -237,7 +260,11 @@
     background-image: url(../Images/BankAxept_Logo_Black.svg);
 }
 
-.card-container {
+.credit-card.unknown, .credit-card.unselected {
+    background-image: url(../Images/credit-card/credit-unselected-tiny.svg);
+}
+
+.card-icon {
     position: absolute;
     right: 10px;
     height: 40px;
@@ -253,4 +280,8 @@
     width: 10px !important;
     padding: 0 !important;
     text-align: center;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
 }
