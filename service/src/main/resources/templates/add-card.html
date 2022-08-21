@@ -23,12 +23,12 @@
 </head>
 <body>
 <div class="container">
-    <div class="mb-6">
+    <div>
         <p th:text="#{cardBanner.text.heading}"></p>
     </div>
 
     <!--        Beginning of cardBanner-->
-    <div class="ratio mb-20">
+    <div class="ratio mb-4">
         <div class="bankcard" id="bankCard">
             <div class="bankcard-content">
                 <div class="d-flex flex-row align-items-center justify-content-between mb-2">
@@ -130,7 +130,7 @@
         <p class=""><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
 
         <div class="align-items-center justify-content-between">
-            <button class="btn btn-secondary gray-400 text-white " disabled id="saveButton"
+            <button class="btn btn-gray-400 text-white " disabled id="saveButton"
                     th:text="#{saveButton.label}"
                     type="submit"></button>
         </div>
