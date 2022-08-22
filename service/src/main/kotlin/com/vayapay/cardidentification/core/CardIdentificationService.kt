@@ -1,18 +1,19 @@
 package com.vayapay.cardidentification.core
 
-import com.vayapay.cardidentification.client.RSocketCardDataClient
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.messages.StoreCardDataResponse
 import com.vayapay.cardidentification.model.CardData
 import com.vayapay.cardidentification.model.CardRequestDto
 import com.vayapay.cardidentification.model.StoreCardDataRequest
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
 class CardIdentificationService constructor( val cardDataClient: RSocketCardDataClient)  {
 
-
+    @Value("\${cardidentication.ptoid}")
+    lateinit var ptoid : String;
     fun saveCardStorage(cardDataRequest: CardRequestDto): Mono<StoreCardDataResponse> {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
@@ -22,9 +23,8 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
         }
 
         val cardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val storeCardDataRequest = StoreCardDataRequest(cardData);
+        val storeCardDataRequest = StoreCardDataRequest(ptoid, cardData);
 
-        // what will l place on ptoID
         return cardDataClient.storeCardData(storeCardDataRequest)
     }
 
