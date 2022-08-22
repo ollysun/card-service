@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono
 @Service
 class CardIdentificationService constructor( val cardDataClient: RSocketCardDataClient)  {
 
-    @Value("\${cardidentication.ptoid}")
+    @Value("\${card-storage.ptoId}")
     lateinit var ptoid : String;
     fun saveCardStorage(cardDataRequest: CardRequestDto): Mono<StoreCardDataResponse> {
 
