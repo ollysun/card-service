@@ -1,21 +1,31 @@
 package com.vayapay.cardidentification.core
 
 import com.vayapay.cardidentification.exception.CardIdentificationException
+import com.vayapay.cardidentification.messages.StoreCardDataResponse
+import com.vayapay.cardidentification.model.CardData
 import com.vayapay.cardidentification.model.CardRequestDto
+import com.vayapay.cardidentification.model.StoreCardDataRequest
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
-class CardIdentificationService constructor()  {
+class CardIdentificationService constructor( val cardDataClient: RSocketCardDataClient)  {
 
 
-    suspend fun saveCardStorage(cardDataRequest: CardRequestDto) {
+    fun saveCardStorage(cardDataRequest: CardRequestDto): Mono<StoreCardDataResponse> {
 
-            val pan:String = cardDataRequest.cardData.pan.trim()
+        val pan: String = cardDataRequest.cardData.pan.trim()
 
-            if(!isDigitNumber(pan) || !luhmCheck(pan)){
-                throw CardIdentificationException("wrong pan number")
-            }
-            //val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
+        if (!isDigitNumber(pan) || !luhmCheck(pan)) {
+            throw CardIdentificationException("wrong pan number")
+        }
+
+        //todo ptoid what is the right value
+        val cardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
+        val storeCardDataRequest = StoreCardDataRequest("1", cardData);
+
+        // what will l place on ptoID
+        return cardDataClient.storeCardData(storeCardDataRequest)
     }
 
     fun luhmCheck(number: String): Boolean {
