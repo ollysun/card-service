@@ -1,5 +1,6 @@
 package com.vayapay.cardidentification.core
 
+import com.vayapay.cardidentification.client.RSocketCardDataClient
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.messages.StoreCardDataResponse
 import com.vayapay.cardidentification.model.CardData
@@ -20,9 +21,8 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
             throw CardIdentificationException("wrong pan number")
         }
 
-        //todo ptoid what is the right value
         val cardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val storeCardDataRequest = StoreCardDataRequest("1", cardData);
+        val storeCardDataRequest = StoreCardDataRequest(cardData);
 
         // what will l place on ptoID
         return cardDataClient.storeCardData(storeCardDataRequest)

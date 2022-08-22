@@ -76,11 +76,9 @@ class RSocketCardDataClient(
                 .route(STORE_CARD_DATA)
                 .data(
                     StoreCardDataRequest(
-                        ptoId = storeCardDataRequest.ptoId,
                         cardData = storeCardDataRequest.cardData
                     )
                 ).retrieveMono(StoreCardDataResponse::class.java)
-
 
     }
 

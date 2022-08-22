@@ -4,6 +4,5 @@ import kotlinx.serialization.Serializable
 // ToDo To remove this class
 @Serializable
 data class StoreCardDataRequest(
-    val ptoId : String,
     val cardData: CardData
 )
