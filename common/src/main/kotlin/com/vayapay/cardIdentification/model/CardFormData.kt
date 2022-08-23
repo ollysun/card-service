@@ -17,4 +17,6 @@ data class CardFormData(
     val expiryYear: String = "",
     @field: NotBlank(message = "Account number is mandatory")
     val accountNumber: String? = null
-)
+) {
+    constructor() : this("", "", "", null)
+}

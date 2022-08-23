@@ -8,9 +8,8 @@ import com.vayapay.cardIdentification.util.SelectOptions
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import javax.validation.Valid
 
 
@@ -18,19 +17,17 @@ import javax.validation.Valid
 @RequestMapping("/card")
 class CardController(val cardService: CardIdentificationService) {
 
-    @GetMapping("")
-    suspend fun addCard(
-        @ModelAttribute cardFormData: CardFormData,
-        bindingResult: BindingResult,
-        model: Model
-    ): String {
+    @RequestMapping("", method = [RequestMethod.GET])
+    suspend fun addCard(model: Model): String {
         model.addAttribute("options", SelectOptions)
+        val cardFormData = CardFormData()
+        model.addAttribute("cardFormData", cardFormData)
         return "add-card"
     }
 
-    @RequestMapping("")
+    @RequestMapping("", method = [RequestMethod.POST])
     suspend fun createCard(
-        @Valid @ModelAttribute cardFormData: CardFormData,
+        @Valid cardFormData: CardFormData,
         errors: BindingResult,
         model: Model
     ): String {

@@ -23,7 +23,7 @@ class CardIdentificationService {
         //val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
 
         val cardIdResponse = CardIdResponse("visa", UUID.randomUUID(), null)
-        return StoreCardResponse(cardIdResponse, "", "eh")
+        return StoreCardResponse(cardIdResponse, "", "")
     }
 
     fun luhmCheck(number: String): Boolean {
