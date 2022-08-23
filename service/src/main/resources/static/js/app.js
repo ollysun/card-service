@@ -105,6 +105,7 @@ const accountNumberField = document.getElementById("accountNumberField")
 const accountNumberFeedback = document.getElementById("accountNumberFeedback")
 
 const saveButton = document.getElementById("saveButton")
+const responseMessage = document.getElementById("response")
 
 //helper functions
 const maskAccountNumber = (accountNumber) => {
@@ -506,6 +507,13 @@ const accountNumberOnChangeHandler = (e) => {
     updateSaveButton()
 }
 
+const postMessageToParent = (response) => {
+    window.parent.postMessage(
+        response
+        , "http://localhost:3000"
+    )
+}
+
 
 //Event handler bindings
 cardNumberField.onblur = e => cardNumberOnChangeHandler(e)
@@ -518,6 +526,16 @@ accountNumberField.onblur = e => accountNumberOnChangeHandler(e)
 
 //initial setup
 cardNumberField.setAttribute("maxLength", cardNumberMaxLengthByScheme(State.cardNumber, State.cardScheme).toString())
+const response = responseMessage.textContent
+if (response != null) {
+    const parsedJson = JSON.parse(response)
+    let jsonResponse = {
+        event_id: "flytoget_id",
+    };
+    jsonResponse.data = parsedJson
+    postMessageToParent(jsonResponse)
+    console.log(jsonResponse)
+}
 
 // const BinRangeForNorwegianDebitCard = {
 //     Id: number,
