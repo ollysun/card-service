@@ -22,7 +22,7 @@ class CardIdentificationService {
         }
         //val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
 
-        val cardIdResponse = CardIdResponse("visa", UUID.randomUUID(), null)
+        val cardIdResponse = CardIdResponse("visa", UUID.randomUUID(), UUID.randomUUID())
         return StoreCardResponse(cardIdResponse, "", "")
     }
 
