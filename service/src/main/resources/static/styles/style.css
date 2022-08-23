@@ -213,11 +213,6 @@
     color: white;
 }
 
-.buttonDisabled {
-    background: #506477;
-    color: white;
-}
-
 .text-secondary {
     color: var(--clr-orange) !important;
 }
