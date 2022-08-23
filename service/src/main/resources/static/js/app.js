@@ -52,7 +52,7 @@ let State = {
 //accessor function
 let setCardNumberError = (isError) => State.cardNumberHasError = isError
 let setMonthExpiryError = (isError) => State.expiryMonthHasError = isError
-let setYearExpiryError = (isError) => State.expiryYearHasError = isError
+let setExpiryYearError = (isError) => State.expiryYearHasError = isError
 let setAccountNumberError = (isError) => State.expiryYearHasError = isError
 let setIsNorwegianCard = (isNorwegian) => {
     if (isNorwegian) {
@@ -245,8 +245,30 @@ const mod11AlgoCheck = ((weights) => {
 
 const cardNumberCheck = () => {
     const cardNumber = State.cardNumber
-    let isValid = luhnsAlgoCheck(cardNumber) && firstDigitCheck(cardNumber) && cardSchemeLengthOk(cardNumber, State.cardScheme)
+    const isValid = luhnsAlgoCheck(cardNumber) && firstDigitCheck(cardNumber) && cardSchemeLengthOk(cardNumber, State.cardScheme)
     setCardNumberError(!isValid)
+}
+const isExpiryDateValid = () => {
+    const expiryYear = parseInt(State.expiryYear, 10)
+    const expiryMonth = parseInt(State.expiryMonth, 10)
+    const cardExpiryDate = new Date(expiryYear + 2000, expiryMonth - 1)
+    const today = new Date()
+
+    if (cardExpiryDate.getFullYear() < today.getFullYear()) {
+        return true
+    }
+
+    if (cardExpiryDate.getFullYear() === today.getFullYear()) {
+        if (cardExpiryDate.getMonth() < today.getMonth()) {
+            return true
+        }
+    }
+
+    return false
+}
+const expiryCardCheck = () => {
+    const isValid = isExpiryDateValid()
+    setExpiryYearError(!isValid)
 }
 
 const accountNumberCheck = () => {
@@ -448,12 +470,13 @@ const expiryYearOnChangeHandler = (e) => {
     const value = e.target.value;
     if (!value || isNaN(value)) {
         updateFeedbackField(expiryDateFeedback, EXPIRY_YEAR_REQUIRED)
-        setYearExpiryError(true)
+        setExpiryYearError(true)
     } else {
         State.expiryYear = value
         updateCardBannerComponents()
-        setYearExpiryError(false)
+        setExpiryYearError(false)
     }
+    expiryCardCheck()
     updateSaveButton()
 }
 
