@@ -1,4 +1,4 @@
-package com.vayapay.cardidentification.exception
+package com.vayapay.cardIdentification.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -11,8 +11,9 @@ data class ErrorResponse(
 )
 
 fun createErrorResponse(
-    httpStatus : HttpStatus,
-    errorResponse: ErrorResponse) = ResponseEntity
+    httpStatus: HttpStatus,
+    errorResponse: ErrorResponse
+) = ResponseEntity
     .status(httpStatus)
     .contentType(MediaType.APPLICATION_PROBLEM_JSON)
     .body(errorResponse)

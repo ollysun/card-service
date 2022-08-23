@@ -1,4 +1,4 @@
-package com.vayapay.cardidentification.utils
+package com.vayapay.cardIdentification.util
 
 import java.time.LocalDate
 

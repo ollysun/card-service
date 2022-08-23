@@ -63,7 +63,7 @@
 .credit-card-logo.bax {
     height: 40px;
     width: 60px;
-    background-image: url(../Images/BankAxept_Logo_Negative.svg);
+    background-image: url(../img/BankAxept_Logo_Negative.svg);
     margin-right: 8px;
 }
 
@@ -123,19 +123,19 @@
 }
 
 .credit-card-logo.visa {
-    background-image: url(../Images/credit-card/credit-visa-noback.svg);
+    background-image: url(../img/credit-card/credit-visa-noback.svg);
 }
 
 .credit-card-logo.master {
-    background-image: url(../Images/credit-card/credit-master-noback.svg);
+    background-image: url(../img/credit-card/credit-master-noback.svg);
 }
 
 .credit-card-logo.amex {
-    background-image: url(../Images/credit-card/credit-amex-noback.svg);
+    background-image: url(../img/credit-card/credit-amex-noback.svg);
 }
 
 .credit-card-logo.diners {
-    background-image: url(../Images/credit-card/credit-diners-noback.svg);
+    background-image: url(../img/credit-card/credit-diners-noback.svg);
 }
 
 .credit-card-logo.unknown, .credit-card-logo.unselected {
@@ -232,31 +232,31 @@
     width: 100%;
     background-size: 35px;
     cursor: default;
-    background-image: url(../Images/credit-card/credit-unselected-tiny.svg);
+    background-image: url(../img/credit-card/credit-unselected-tiny.svg);
 }
 
 .credit-card.visa {
-    background-image: url(../Images/credit-card/credit-visa-tiny.svg);
+    background-image: url(../img/credit-card/credit-visa-tiny.svg);
 }
 
 .credit-card.master {
-    background-image: url(../Images/credit-card/credit-master-tiny-new.svg);
+    background-image: url(../img/credit-card/credit-master-tiny-new.svg);
 }
 
 .credit-card.amex {
-    background-image: url(../Images/credit-card/credit-amex-tiny.svg);
+    background-image: url(../img/credit-card/credit-amex-tiny.svg);
 }
 
 .credit-card.diners {
-    background-image: url(../Images/credit-card/credit-diners-tiny.svg);
+    background-image: url(../img/credit-card/credit-diners-tiny.svg);
 }
 
 .credit-card.bank-axept {
-    background-image: url(../Images/BankAxept_Logo_Black.svg);
+    background-image: url(../img/BankAxept_Logo_Black.svg);
 }
 
 .credit-card.unknown, .credit-card.unselected {
-    background-image: url(../Images/credit-card/credit-unselected-tiny.svg);
+    background-image: url(../img/credit-card/credit-unselected-tiny.svg);
 }
 
 .card-icon {

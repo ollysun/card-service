@@ -1,7 +1,7 @@
 package com.vayapay.cardIdentification
 
-import com.vayapay.cardidentification.model.CardData
-import com.vayapay.cardidentification.model.CardIdResponse
+import com.vayapay.cardIdentification.model.CardData
+import com.vayapay.cardIdentification.model.CardIdResponse
 
 
 interface CardDataStorageClient {

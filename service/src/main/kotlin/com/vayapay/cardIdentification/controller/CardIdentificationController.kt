@@ -1,7 +1,7 @@
-package com.vayapay.cardidentification.controller
+package com.vayapay.cardIdentification.controller
 
-import com.vayapay.cardidentification.core.CardIdentificationService
-import com.vayapay.cardidentification.model.CardRequestDto
+import com.vayapay.cardIdentification.core.CardIdentificationService
+import com.vayapay.cardIdentification.model.CardRequestDto
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,7 +12,8 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/card-registration")
 class CardIdentificationController(
-        val cardService: CardIdentificationService) {
+    val cardService: CardIdentificationService
+) {
 
     @PostMapping
     fun cardRegistration(@RequestBody @Valid cardRegistration: CardRequestDto): String? {
