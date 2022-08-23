@@ -1,5 +1,6 @@
 package com.vayapay.cardIdentification.controller
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vayapay.cardIdentification.core.CardIdentificationService
 import com.vayapay.cardIdentification.model.CardData
 import com.vayapay.cardIdentification.model.CardFormData
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller
 @RequestMapping("/card")
 class CardController(val cardService: CardIdentificationService) {
-
     @RequestMapping("", method = [RequestMethod.GET])
     suspend fun addCard(model: Model): String {
         model.addAttribute("options", SelectOptions)
@@ -39,7 +39,7 @@ class CardController(val cardService: CardIdentificationService) {
         if (storeCardResponse.errorMessage.isNotEmpty())
             model.addAttribute("saveCardError", storeCardResponse.errorMessage)
         else
-            model.addAttribute("response", storeCardResponse)
+            model.addAttribute("response", jacksonObjectMapper().writeValueAsString(storeCardResponse))
 
         return "add-card"
     }
