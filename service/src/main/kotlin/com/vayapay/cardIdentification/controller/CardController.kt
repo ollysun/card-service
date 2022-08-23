@@ -34,7 +34,13 @@ class CardController(val cardService: CardIdentificationService) {
         val cardData = CardData(cardFormData.cardNumber, cardFormData.expiryMonth + "/" + cardFormData.expiryYear)
         val cardRequestDto = CardRequestDto("PTO_1", cardData, cardFormData.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
-        model.addAttribute("response", storeCardResponse)
+        model.addAttribute("options", SelectOptions)
+
+        if (storeCardResponse.errorMessage.isNotEmpty())
+            model.addAttribute("saveCardError", storeCardResponse.errorMessage)
+        else
+            model.addAttribute("response", storeCardResponse)
+
         return "add-card"
     }
 }
