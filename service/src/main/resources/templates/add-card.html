@@ -72,14 +72,15 @@
     <!--        End of cardBanner-->
 
     <!--        Beginning of Card Form input -->
-    <form class="needs-validation" method="post" novalidate th:action="@{/card}">
+    <form class="needs-validation" method="post" novalidate
+          th:action="@{/card}" th:object="${cardDataForm}">
         <div class="mb-2">
             <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
                 <input autocomplete="off" class="form-control " id="cardNumberField"
-                       inputmode="numeric" maxlength="19"
-                       pattern="[0-9]" required th:aria-label="#{cardNumber.label}"
+                       inputmode="numeric" maxlength="19" pattern="[0-9]"
+                       required th:aria-label="#{cardNumber.label}"
                        th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
                 <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
                 <div class="invalid-feedback" id="cardNumberFeedback"></div>
@@ -102,8 +103,7 @@
                     <span class="slash">/</span>
                 </div>
                 <div class="col">
-                    <select class="form-select " id="expiryYearField" required="required"
-                            th:name="#{expiry.year.name}">
+                    <select class="form-select " id="expiryYearField" required="required" th:name="#{expiry.year.name}">
                         <option disabled="disabled" selected="selected" th:text="#{expiry.year.placeholder}"></option>
                         <option th:each="year : ${options.YEARS}" th:text="${year}" th:value="${year}"></option>
                     </select>
@@ -114,12 +114,12 @@
 
         <!--Account number-->
         <div class="mb-2 hidden" id="accountNumberFieldContainer">
-            <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label> <span
-                class="text-secondary">*</span>
+            <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label>
+            <span class="text-secondary">*</span>
             <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control " id="accountNumberField" inputmode="numeric"
-                       maxlength="11" pattern="[0-9]"
-                       th:aria-label="#{accountNumber.label}"
+                <input autocomplete="off" class="form-control"
+                       id="accountNumberField" inputmode="numeric"
+                       maxlength="11" pattern="[0-9]" th:aria-label="#{accountNumber.label}"
                        th:name="#{accountNumber.name}"
                        th:placeholder="#{accountNumber.placeholder}"
                        type="text">
@@ -139,9 +139,9 @@
     <script th:src="@{/js/app.js}" type="text/javascript"></script>
 </div>
 
-<div class="container" th:if="${response} != null">
-    <h1 th:utext="${response.cardId.cardScheme}"></h1>
-</div>
+<!--<div class="container" th:if="${response} != null">-->
+<!--    <h1 th:if="${response} != null" th:utext="${response.cardId.cardScheme}"></h1>-->
+<!--</div>-->
 
 </body>
 </html>
