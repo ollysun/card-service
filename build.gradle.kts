@@ -43,6 +43,7 @@ subprojects {
     }
     dependencies {
         implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+        implementation("com.opencsv:opencsv:5.2")
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutinesVersion") {
             exclude(group = "org.apache.tomcat.embed", module = "tomcat-embed-core")

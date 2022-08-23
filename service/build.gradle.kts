@@ -58,7 +58,6 @@ dependencies {
 	implementation("com.vayapay.hsmproxy:hsm-proxy-common:$hsmProxyVersion")
 	implementation("net.javacrumbs.shedlock:shedlock-spring:$shedLockVersion")
 	implementation("net.javacrumbs.shedlock:shedlock-provider-r2dbc:$shedLockVersion")
-	implementation("com.opencsv:opencsv:5.2")
 
 	runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 	runtimeOnly("org.flywaydb:flyway-core")
