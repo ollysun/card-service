@@ -22,7 +22,9 @@
     <title>Card registration</title>
 </head>
 <body>
-<div class="container">
+
+<!--/*@thymesVar id="cardDataForm" type="com.vayapay.cardIdentification.model.CardFormData"*/-->
+<div class="container" th:if="${response} == null">
     <div>
         <p th:text="#{cardBanner.text.heading}"></p>
     </div>
@@ -70,28 +72,28 @@
     <!--        End of cardBanner-->
 
     <!--        Beginning of Card Form input -->
-    <form class="needs-validation" method="post" novalidate>
+    <form class="needs-validation" method="post" novalidate th:action="@{/card}">
         <div class="mb-2">
             <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control " id="cardNumberField" inputmode="numeric"
-                       pattern="[0-9]"
-                       required th:aria-label="#{cardNumber.label}" th:name="#{cardNumber.name}"
-                       th:placeholder="#{cardNumber.placeholder}" type="text">
+                <input autocomplete="off" class="form-control " id="cardNumberField"
+                       inputmode="numeric" maxlength="19"
+                       pattern="[0-9]" required th:aria-label="#{cardNumber.label}"
+                       th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
                 <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
                 <div class="invalid-feedback" id="cardNumberFeedback"></div>
             </div>
         </div>
 
-        <!--        Card Expiry date -->
+        <!-- Card Expiry date -->
         <div class="mb-2">
             <label class="form-label" for="expiryMonthField" th:utext="#{expiry.date.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="row">
                 <div class="col">
-                    <select class="form-select " id="expiryMonthField"
-                            required="required" th:name="#{expiry.month.name}">
+                    <select class="form-select " id="expiryMonthField" required="required"
+                            th:name="#{expiry.month.name}">
                         <option disabled="disabled" selected="selected" th:text="#{expiry.month.placeholder}"></option>
                         <option th:each="month : ${options.MONTHS}" th:text="${month}" th:value="${month}"></option>
                     </select>
@@ -100,8 +102,8 @@
                     <span class="slash">/</span>
                 </div>
                 <div class="col">
-                    <select class="form-select " id="expiryYearField"
-                            required="required" th:name="#{expiry.year.name}">
+                    <select class="form-select " id="expiryYearField" required="required"
+                            th:name="#{expiry.year.name}">
                         <option disabled="disabled" selected="selected" th:text="#{expiry.year.placeholder}"></option>
                         <option th:each="year : ${options.YEARS}" th:text="${year}" th:value="${year}"></option>
                     </select>
@@ -116,8 +118,7 @@
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
                 <input autocomplete="off" class="form-control " id="accountNumberField" inputmode="numeric"
-                       maxlength="11"
-                       pattern="[0-9]" required
+                       maxlength="11" pattern="[0-9]"
                        th:aria-label="#{accountNumber.label}"
                        th:name="#{accountNumber.name}"
                        th:placeholder="#{accountNumber.placeholder}"
@@ -135,8 +136,12 @@
                     type="submit"></button>
         </div>
     </form>
+    <script th:src="@{/js/app.js}" type="text/javascript"></script>
 </div>
 
-<script th:src="@{/js/app.js}" type="text/javascript"></script>
+<div class="container" th:if="${response} != null">
+    <h1 th:utext="${response.cardId.cardScheme}"></h1>
+</div>
+
 </body>
 </html>

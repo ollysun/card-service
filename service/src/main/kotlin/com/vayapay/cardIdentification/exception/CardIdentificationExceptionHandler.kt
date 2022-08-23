@@ -1,4 +1,4 @@
-package com.vayapay.cardidentification.exception
+package com.vayapay.cardIdentification.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice

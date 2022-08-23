@@ -9,6 +9,7 @@ const MASTER_SCHEME = 'master';
 const DEFAULT_MASKED_CARD_NUMBER = '.... .... .... ....';
 const INVALID_CARD_NUMBER = "Card number is invalid";
 const INVALID_ACCOUNT_NUMBER = "Account number is invalid";
+const INVALID_EXPIRY_DATE = "Invalid expiry date";
 const EXPIRY_MONTH_REQUIRED = "Please select your expiry month.";
 const EXPIRY_YEAR_REQUIRED = "Please select your expiry year.";
 const DEFAULT_CARD_SCHEME = 'unselected';
@@ -50,23 +51,36 @@ let State = {
 }
 
 //accessor function
-let setCardNumberError = (isError) => State.cardNumberHasError = isError
-let setMonthExpiryError = (isError) => State.expiryMonthHasError = isError
-let setExpiryYearError = (isError) => State.expiryYearHasError = isError
-let setAccountNumberError = (isError) => State.expiryYearHasError = isError
+let setCardNumberError = (isError, message) => {
+    State.cardNumberHasError = isError
+    updateFeedbackField(isError, cardNumberFeedback, message)
+}
+let setExpiryMonthError = (isError, message) => {
+    State.expiryMonthHasError = isError
+    updateFeedbackField(isError, expiryDateFeedback, message)
+}
+let setExpiryYearError = (isError, message) => {
+    State.expiryYearHasError = isError
+    updateFeedbackField(isError, expiryDateFeedback, message)
+}
+let setAccountNumberError = (isError, message) => {
+    State.accountNumberHasError = isError
+    updateFeedbackField(isError, accountNumberFeedback, message)
+}
 let setIsNorwegianCard = (isNorwegian) => {
     if (isNorwegian) {
-        setAccountNumberError(true)
+        setAccountNumberError(true, INVALID_ACCOUNT_NUMBER)
+        accountNumberField.required = true
     } else {
-        setAccountNumberError(false)
+        setAccountNumberError(false, INVALID_ACCOUNT_NUMBER)
+        accountNumberField.required = false
     }
     State.isNorwegianCard = isNorwegian
 }
 let bankAxeptCardNumberCheck = () => {
     // todo implement bin range check and update app state
-    State.isNorwegianCard = false
+    setIsNorwegianCard(false)
 }
-
 
 //DOM element references
 const cardBannerAccountNoLabel = document.getElementById("cardAccountNoLabel")
@@ -246,35 +260,36 @@ const mod11AlgoCheck = ((weights) => {
 const cardNumberCheck = () => {
     const cardNumber = State.cardNumber
     const isValid = luhnsAlgoCheck(cardNumber) && firstDigitCheck(cardNumber) && cardSchemeLengthOk(cardNumber, State.cardScheme)
-    setCardNumberError(!isValid)
+    setCardNumberError(!isValid, INVALID_CARD_NUMBER)
 }
-const isExpiryDateValid = () => {
-    const expiryYear = parseInt(State.expiryYear, 10)
-    const expiryMonth = parseInt(State.expiryMonth, 10)
-    const cardExpiryDate = new Date(expiryYear + 2000, expiryMonth - 1)
-    const today = new Date()
 
-    if (cardExpiryDate.getFullYear() < today.getFullYear()) {
-        return true
-    }
+const expiryDateCheck = () => {
+    if (State.expiryYear !== DEFAULT_EXPIRY) {
+        const expiryYear = parseInt(State.expiryYear, 10)
+        const expiryMonth = parseInt(State.expiryMonth, 10)
+        const cardExpiryDate = new Date(expiryYear + 2000, expiryMonth - 1)
+        const today = new Date()
 
-    if (cardExpiryDate.getFullYear() === today.getFullYear()) {
-        if (cardExpiryDate.getMonth() < today.getMonth()) {
-            return true
+        if (cardExpiryDate.getFullYear() < today.getFullYear()) {
+            setExpiryYearError(true, INVALID_EXPIRY_DATE)
+            console.log("Is invalid year ==" + expiryYear)
+        } else if (cardExpiryDate.getFullYear() === today.getFullYear()) {
+            if (cardExpiryDate.getMonth() < today.getMonth()) {
+                setExpiryMonthError(true, INVALID_EXPIRY_DATE)
+                console.log("Is invalid month ==" + expiryMonth)
+            }
+        } else {
+            setExpiryYearError(false, INVALID_EXPIRY_DATE)
+            setExpiryMonthError(false, INVALID_EXPIRY_DATE)
+            console.log("Hurray month is valid ==" + expiryMonth + " / " + expiryYear)
         }
     }
-
-    return false
-}
-const expiryCardCheck = () => {
-    const isValid = isExpiryDateValid()
-    setExpiryYearError(!isValid)
 }
 
 const accountNumberCheck = () => {
     const accountNumber = State.accountNumber
     const isValid = mod11AlgoCheck(accountNumber)
-    setAccountNumberError(!isValid)
+    setAccountNumberError(!isValid, INVALID_ACCOUNT_NUMBER)
 }
 
 const cardNumberMaxLengthByScheme = () => {
@@ -373,8 +388,8 @@ const updateMaskedCardNumberFieldLength = () => {
     maskedCardNumberField.textContent = maskCardNumberByScheme(State.cardNumber, State.cardScheme)
 }
 
-const updateFeedbackField = (feedbackField, message) => {
-    if (State.cardNumberHasError) {
+const updateFeedbackField = (isError, feedbackField, message) => {
+    if (isError) {
         feedbackField.textContent = message
     } else {
         feedbackField.textContent = ""
@@ -397,8 +412,7 @@ const removeNonNumbersFromCardNumberField = (e) => {
     e.target.value = e.target.value.replace(/\D/g, '')
     if (e.target.value !== State.cardNumber) {
         State.cardNumber = e.target.value
-        setCardNumberError(false)
-        updateFeedbackField(cardNumberFeedback, INVALID_CARD_NUMBER)
+        setCardNumberError(false, INVALID_CARD_NUMBER)
     }
 }
 
@@ -406,8 +420,7 @@ const removeNonNumbersFromAccountNoField = (e) => {
     e.target.value = e.target.value.replace(/\D/g, '')
     if (e.target.value !== State.accountNumber) {
         State.accountNumber = e.target.value
-        setAccountNumberError(false)
-        updateFeedbackField(accountNumberFeedback, INVALID_ACCOUNT_NUMBER)
+        setAccountNumberError(false, INVALID_ACCOUNT_NUMBER)
     }
 }
 
@@ -426,42 +439,38 @@ const updateSaveButton = () => {
 const processCardNumberField = (e) => {
     removeNonNumbersFromCardNumberField(e)
     schemeFromCardNumber()
+    updateCardNumberMaxLength()
 }
 
 const cardNumberOnChangeHandler = (e) => {
     processCardNumberField(e);
     cardNumberCheck();
-    updateFeedbackField(cardNumberFeedback, INVALID_CARD_NUMBER);
     updateSaveButton()
-    updateCardNumberMaxLength()
     updateCardBannerComponents()
     bankAxeptCardNumberCheck()
 }
 
 const cardNumberOnKeyupHandler = (e) => {
     processCardNumberField(e);
-    updateCardNumberMaxLength()
     updateCardBannerComponents()
     if (e.target.value.length === State.cardNumberMaxLength) {
         cardNumberCheck()
         updateCardBannerComponents()
-        updateFeedbackField(cardNumberFeedback, INVALID_CARD_NUMBER);
         bankAxeptCardNumberCheck()
         updateSaveButton()
     }
 }
 
 const expiryMonthOnChangeHandler = (e) => {
-    State.printState()
     const value = e.target.value;
     if (!value || isNaN(value)) {
-        updateFeedbackField(expiryDateFeedback, EXPIRY_MONTH_REQUIRED)
-        setMonthExpiryError(true)
+        setExpiryMonthError(true, EXPIRY_MONTH_REQUIRED)
     } else {
         State.expiryMonth = value
         updateCardBannerComponents()
-        setMonthExpiryError(false)
+        setExpiryMonthError(false, EXPIRY_MONTH_REQUIRED)
     }
+    expiryDateCheck()
     updateSaveButton()
     State.printState()
 }
@@ -469,15 +478,15 @@ const expiryMonthOnChangeHandler = (e) => {
 const expiryYearOnChangeHandler = (e) => {
     const value = e.target.value;
     if (!value || isNaN(value)) {
-        updateFeedbackField(expiryDateFeedback, EXPIRY_YEAR_REQUIRED)
-        setExpiryYearError(true)
+        setExpiryYearError(true, EXPIRY_YEAR_REQUIRED)
     } else {
         State.expiryYear = value
         updateCardBannerComponents()
-        setExpiryYearError(false)
+        setExpiryYearError(false, EXPIRY_YEAR_REQUIRED)
     }
-    expiryCardCheck()
+    expiryDateCheck()
     updateSaveButton()
+    State.printState()
 }
 
 const accountNumberOnKeyupHandler = (e) => {
@@ -485,7 +494,6 @@ const accountNumberOnKeyupHandler = (e) => {
     updateCardBannerComponents()
     if (e.target.value.length === 11) {
         accountNumberCheck()
-        updateFeedbackField(accountNumberFeedback, INVALID_CARD_NUMBER);
         updateSaveButton()
     }
 }

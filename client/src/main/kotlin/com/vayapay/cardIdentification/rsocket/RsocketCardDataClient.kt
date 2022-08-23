@@ -1,12 +1,12 @@
 package com.vayapay.cardIdentification.rsocket
 
 import com.vayapay.cardIdentification.CardDataStorageClient
-import com.vayapay.cardidentification.messages.Response
-import com.vayapay.cardidentification.messages.STORE_CARD_DATA
-import com.vayapay.cardidentification.messages.StoreCardDataResponse
-import com.vayapay.cardidentification.model.CardData
-import com.vayapay.cardidentification.model.CardIdResponse
-import com.vayapay.cardidentification.model.StoreCardDataRequest
+import com.vayapay.cardIdentification.messages.Response
+import com.vayapay.cardIdentification.messages.STORE_CARD_DATA
+import com.vayapay.cardIdentification.messages.StoreCardDataResponse
+import com.vayapay.cardIdentification.model.CardData
+import com.vayapay.cardIdentification.model.CardIdResponse
+import com.vayapay.cardIdentification.model.StoreCardDataRequest
 import io.rsocket.transport.netty.client.TcpClientTransport
 import kotlinx.coroutines.reactive.awaitFirst
 import mu.KotlinLogging
@@ -41,7 +41,7 @@ class CardDataStorageRSocketConfiguration {
     }
 
     @Bean("cardDataStorageRSocketRetryConfig")
-    @ConditionalOnMissingBean(name=["cardDataStorageRSocketRetryConfig"])
+    @ConditionalOnMissingBean(name = ["cardDataStorageRSocketRetryConfig"])
     fun cardDataStorageRSocketRetryConfig(): Retry = Retry.backoff(Long.MAX_VALUE, Duration.ofMillis(800))
 }
 

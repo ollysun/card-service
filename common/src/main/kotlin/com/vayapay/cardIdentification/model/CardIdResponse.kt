@@ -1,4 +1,4 @@
-package com.vayapay.cardidentification.model
+package com.vayapay.cardIdentification.model
 
 import com.vayapay.message.serialization.UUIDSerializer
 import kotlinx.serialization.Serializable
