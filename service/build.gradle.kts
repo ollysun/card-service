@@ -16,7 +16,6 @@ dependencies {
     implementation(project(":card-identification-service-common"))
     implementation(project(":card-identification-service-client"))
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-rsocket")
@@ -31,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-devtools")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
@@ -38,6 +38,8 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-    //testImplementation(project(":card-data-service-client"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
+
 
 }
