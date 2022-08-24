@@ -458,7 +458,6 @@ const expiryMonthOnChangeHandler = (e) => {
     }
     expiryDateCheck()
     updateSaveButton()
-    State.printState()
 }
 
 const expiryYearOnChangeHandler = (e) => {
@@ -472,7 +471,6 @@ const expiryYearOnChangeHandler = (e) => {
     }
     expiryDateCheck()
     updateSaveButton()
-    State.printState()
 }
 
 const accountNumberOnKeyupHandler = (e) => {
