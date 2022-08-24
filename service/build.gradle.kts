@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":card-identification-service-common"))
     implementation(project(":card-identification-service-client"))
 
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-rsocket")

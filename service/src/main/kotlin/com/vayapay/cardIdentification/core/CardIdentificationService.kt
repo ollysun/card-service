@@ -1,6 +1,5 @@
 package com.vayapay.cardIdentification.core
 
-import com.vayapay.cardIdentification.CardDataStorageClient
 import com.vayapay.cardIdentification.exception.CardIdentificationException
 import com.vayapay.cardIdentification.model.CardIdResponse
 import com.vayapay.cardIdentification.model.CardRequestDto
@@ -10,8 +9,6 @@ import java.util.*
 
 @Service
 class CardIdentificationService {
-
-    lateinit var cardStorageClient: CardDataStorageClient
 
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreCardResponse {
 

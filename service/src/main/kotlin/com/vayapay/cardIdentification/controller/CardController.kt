@@ -8,7 +8,9 @@ import com.vayapay.cardIdentification.model.CardRequestDto
 import com.vayapay.cardIdentification.util.SelectOptions
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -17,11 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller
 @RequestMapping("/card")
 class CardController(val cardService: CardIdentificationService) {
-    @RequestMapping("", method = [RequestMethod.GET])
-    suspend fun addCard(model: Model): String {
-        model.addAttribute("options", SelectOptions)
-        val cardFormData = CardFormData()
-        model.addAttribute("cardFormData", cardFormData)
+    @GetMapping("")
+    suspend fun cardForm(model: Model): String {
+        model["options"] = SelectOptions
+        model["cardFormData"] = CardFormData()
         return "add-card"
     }
 
@@ -34,12 +35,12 @@ class CardController(val cardService: CardIdentificationService) {
         val cardData = CardData(cardFormData.cardNumber, cardFormData.expiryMonth + "/" + cardFormData.expiryYear)
         val cardRequestDto = CardRequestDto("PTO_1", cardData, cardFormData.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
-        model.addAttribute("options", SelectOptions)
+        model["options"] = SelectOptions
 
         if (storeCardResponse.errorMessage.isNotEmpty())
-            model.addAttribute("saveCardError", storeCardResponse.errorMessage)
+            model["saveCardError"] = storeCardResponse.errorMessage
         else
-            model.addAttribute("response", jacksonObjectMapper().writeValueAsString(storeCardResponse))
+            model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse)
 
         return "add-card"
     }
