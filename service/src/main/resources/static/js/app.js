@@ -66,9 +66,9 @@ let bankAxeptCardNumberCheck = () => {
     setIsNorwegianCard(false)
 }
 
-//DOM element references
+//DOM references
 const cardBannerAccountNoLabel = document.getElementById("cardAccountNoLabel")
-const cardAccountNumber = document.getElementById("cardAccountNumber")
+const maskedAccountNumberField = document.getElementById("maskedAccountNumberField")
 const bankAxeptLogo = document.getElementById("bankAxeptLogo")
 const maskedCardNumberField = document.getElementById("maskedCardNumberField")
 const cardBannerExpiryMonth = document.getElementById("cardBannerExpiryMonth")
@@ -346,13 +346,13 @@ const schemeFromCardNumber = () => {
 }
 
 //DOM update functions
-const updateBannerAccountNumber = () => {
+const updateMaskedAccountNumber = () => {
     if (State.isNorwegianCard) {
         bankAxeptLogo.classList.toggle("hidden", !State.isNorwegianCard)
         cardBannerAccountNoLabel.classList.toggle("hidden", !State.isNorwegianCard)
         accountNumberFieldContainer.classList.toggle("hidden", !State.isNorwegianCard)
-        cardAccountNumber.classList.toggle("hidden", !State.isNorwegianCard)
-        cardAccountNumber.textContent = State.accountNumber
+        maskedAccountNumberField.classList.toggle("hidden", !State.isNorwegianCard)
+        maskedAccountNumberField.textContent = maskAccountNumber(State.accountNumber)
     }
 }
 
@@ -362,15 +362,15 @@ const updateExpiryDate = () => {
 }
 
 const updateCardBannerComponents = () => {
-    updateMaskedCardNumberFieldLength()
+    updateMaskedCardNumberField()
     updateSchemeClassOn(cardBannerSchemeLogo)
     updateSchemeClassOn(bankCard)
     updateSchemeClassOn(cardNumberSchemeLogo)
     updateExpiryDate();
-    updateBannerAccountNumber();
+    updateMaskedAccountNumber();
 }
 
-const updateMaskedCardNumberFieldLength = () => {
+const updateMaskedCardNumberField = () => {
     maskedCardNumberField.textContent = maskCardNumberByScheme(State.cardNumber, State.cardScheme)
 }
 
@@ -507,7 +507,7 @@ accountNumberField.onkeyup = e => accountNumberOnKeyupHandler(e)
 accountNumberField.onblur = e => accountNumberOnBlurHandler(e)
 
 
-//initial setup
+//page setup
 cardNumberField.setAttribute("maxLength", cardNumberMaxLengthByScheme(State.cardNumber, State.cardScheme).toString())
 if (responseMessage != null) {
     const response = responseMessage.textContent
@@ -518,14 +518,4 @@ if (responseMessage != null) {
     };
     jsonResponse.data = parsedJson
     postMessageToParent(jsonResponse)
-
 }
-
-// const BinRangeForNorwegianDebitCard = {
-//     Id: number,
-//     BINRangeFrom: string,
-//     BINRangeTo: string,
-//     Brand: string,
-//     Created: Date,
-//     LastUpdated: Date | null
-// }
