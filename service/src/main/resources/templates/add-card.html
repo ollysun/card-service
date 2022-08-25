@@ -23,9 +23,10 @@
 </head>
 <body>
 
+<!--/*@thymesVar id="cardDataForm" type="com.vayapay.cardIdentification.model.CardFormData"*/-->
 <div class="container">
     <div>
-        <p th:text="#{cardBanner.text.heading}"></p>
+        <p class="fw-bolder" th:text="#{cardBanner.text.heading}"></p>
     </div>
 
     <!--        Beginning of cardBanner-->
@@ -78,7 +79,7 @@
             <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
                 class="text-secondary">*</span>
             <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control " id="cardNumberField"
+                <input autocomplete="off" class="form-control" id="cardNumberField"
                        inputmode="numeric" maxlength="19" pattern="[0-9]"
                        required th:aria-label="#{cardNumber.label}"
                        th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
