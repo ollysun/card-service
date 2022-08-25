@@ -398,7 +398,6 @@ const removeNonNumbersFromCardNumberField = (e) => {
     e.target.value = e.target.value.replace(/\D/g, '')
     if (e.target.value !== State.cardNumber) {
         State.cardNumber = e.target.value
-        setCardNumberError(false, INVALID_CARD_NUMBER)
     }
 }
 
