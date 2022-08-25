@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 object SelectOptions {
 
-    val MONTHS = listOf<String>(
+    val MONTHS = listOf(
         "01",
         "02",
         "03",

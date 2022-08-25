@@ -493,7 +493,7 @@ const accountNumberOnBlurHandler = (e) => {
 const postMessageToParent = (response) => {
     window.parent.postMessage(
         response
-        , "*"
+        , "*" //Todo replace with flytoget domain
     )
 }
 

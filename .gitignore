@@ -2,6 +2,8 @@ target/
 build-cache/
 .gradle/
 temp/
+/service/build
+/common/build
 
 ### STS ###
 .apt_generated
