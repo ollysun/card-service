@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StoreCardDataRequest(
     val ptoId:String,
-    val cardData: CardData
+    val cardData: List<CardData>
 )

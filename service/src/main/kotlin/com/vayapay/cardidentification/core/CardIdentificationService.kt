@@ -22,8 +22,13 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
             throw CardIdentificationException("wrong pan number")
         }
 
-        val cardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val storeCardDataRequest = StoreCardDataRequest(ptoid, cardData);
+        val bankAxemptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
+        val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
+        val bankAxemptCardData = CardData(bankAxemptPan, cardDataRequest.cardData.expirationDate)
+        val cardDataList = ArrayList<CardData>()
+        cardDataList.add(bankAxemptCardData)
+        cardDataList.add(otherCardData)
+        val storeCardDataRequest = StoreCardDataRequest(ptoid, cardDataList);
 
         return cardDataClient.storeCardData(storeCardDataRequest)
     }
