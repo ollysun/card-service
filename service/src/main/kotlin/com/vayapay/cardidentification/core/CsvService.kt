@@ -45,13 +45,13 @@ class CsvService(
             .build()
 
     private suspend fun processAndValidateCSV(csvBean : CsvToBean<BinRangeModel>) : ArrayList<BinRange> {
-        val binRangeModelList : List<BinRangeModel> = csvBean.toList();
+        val binRangeModelList : List<BinRangeModel> = csvBean.toList()
         // filter for only non-prepaid accounting funding source
         val nonPrepaidPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> 'P' != d.accountFundingSource } // filter for only non-prepaid accounting funding source
         // check for countrycode
-        val countryPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578".equals(d.countryCode) }
+        val countryPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578" == d.countryCode }
         // check for currencycode
-        val currencyCodePredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578".equals(d.currencyCode) }
+        val currencyCodePredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578" == d.currencyCode }
         // filter for only non-credit
         val nonCreditPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> 'C'!= d.creditOrDebit }
 
@@ -62,12 +62,12 @@ class CsvService(
         for(bin in filterList){
             val binRange = BinRange(
                 null,
-                bin.acccountRangeLow.toString(),
-                bin.acccountRangeHigh.toString(),
+                mergeExtraDigit(bin.acccountRangeLow.toString()),
+                mergeExtraDigit(bin.acccountRangeHigh.toString()),
                 checkCardScheme(bin.cardScheme.toString()))
             binList.add(binRepository.save(binRange))
         }
-        return binList;
+        return binList
 
     }
 
@@ -93,5 +93,8 @@ class CsvService(
             "VI" to "Visa")
         return schemeMap.getOrDefault(schem, "")
     }
+
+    private fun mergeExtraDigit(text: String) =
+        text.plus(text.takeLast(4))
 
 }
