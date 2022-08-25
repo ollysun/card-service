@@ -2,7 +2,6 @@ package com.vayapay.cardidentification.core
 
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
-import com.vayapay.cardidentification.dto.BinRangeDTO
 import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
