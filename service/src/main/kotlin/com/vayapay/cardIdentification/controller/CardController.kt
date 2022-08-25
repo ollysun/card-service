@@ -12,21 +12,21 @@ import org.springframework.ui.set
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 
 
 @Controller
 @RequestMapping("/card")
 class CardController(val cardService: CardIdentificationService) {
-    @GetMapping("")
+    @GetMapping
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
-        model["cardFormData"] = CardFormData()
+        model["cardFormData"] = CardFormData("", "", "")
         return "add-card"
     }
 
-    @RequestMapping("", method = [RequestMethod.POST])
+    @PostMapping
     suspend fun createCard(
         @ModelAttribute cardFormData: CardFormData,
         errors: BindingResult,

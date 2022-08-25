@@ -17,7 +17,6 @@ class CardIdentificationService {
         if (!isDigitNumber(pan) || !luhmCheck(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
-        //val storeCardResponse : CardIdResponse? = cardStorageClient.storeCardData(cardDataRequest.id,cardDataRequest.cardData)
 
         val cardIdResponse = CardIdResponse("visa", UUID.randomUUID(), UUID.randomUUID())
         return StoreCardResponse(cardIdResponse, "", "")
