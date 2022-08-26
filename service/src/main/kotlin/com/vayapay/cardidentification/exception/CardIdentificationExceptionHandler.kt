@@ -13,7 +13,7 @@ class CardIdentificationExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleGenericException(ex: CardIdentificationException) = createErrorResponse(
         HttpStatus.BAD_REQUEST,
         ErrorResponse(
-            errorDescription = ex.message.toString(),
+            errorDescription = ex.message!!,
             errorDate = LocalDateTime.now()
         )
     )

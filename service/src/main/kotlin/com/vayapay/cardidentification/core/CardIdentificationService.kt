@@ -1,6 +1,5 @@
 package com.vayapay.cardidentification.core
 
-import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.CardRequestDto
 import org.springframework.stereotype.Service
 

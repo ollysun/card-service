@@ -2,7 +2,6 @@ package com.vayapay.cardidentification.core
 
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
-import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.repo.BinRange
@@ -10,7 +9,6 @@ import com.vayapay.cardidentification.repo.BinRangeRepository
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 import java.util.function.Predicate
 import java.util.stream.Collectors
@@ -21,39 +19,35 @@ class CsvService(
 
     suspend fun uploadCsvFile(file: MultipartFile): List<BinRange> {
         if (file.isEmpty)
-            throw BadRequestException("Empty file")
-
-        var fileReader: BufferedReader? = null
+            throw CardIdentificationException("Empty file")
 
         try {
-            fileReader = BufferedReader(InputStreamReader(file.inputStream))
-            val csvToBean = createCSVToBean(fileReader)
-
-            return processAndValidateCSV(csvToBean)
+            BufferedReader(InputStreamReader(file.inputStream)).use {
+                val csvToBean = createCSVToBean(it)
+                return processAndValidateCSV(csvToBean)
+            }
         } catch (ex: Exception) {
             throw CardIdentificationException("Error during csv import")
-        } finally {
-            closeFileReader(fileReader)
         }
     }
 
     private fun createCSVToBean(fileReader: BufferedReader?): CsvToBean<BinRangeModel> =
         CsvToBeanBuilder<BinRangeModel>(fileReader)
             .withType(BinRangeModel::class.java)
-            .withSkipLines(1)
+            .withSkipLines(1) // this is to skip the header
             .withIgnoreLeadingWhiteSpace(true)
             .build()
 
     private suspend fun processAndValidateCSV(csvBean : CsvToBean<BinRangeModel>) : ArrayList<BinRange> {
         val binRangeModelList : List<BinRangeModel> = csvBean.toList()
         // filter for only non-prepaid accounting funding source
-        val nonPrepaidPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> 'P' != d.accountFundingSource } // filter for only non-prepaid accounting funding source
-        // check for countrycode
-        val countryPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578" == d.countryCode }
-        // check for currencycode
-        val currencyCodePredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> "578" == d.currencyCode }
+        val nonPrepaidPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> PREPAID != d.accountFundingSource } // filter for only non-prepaid accounting funding source
+        // check for countryCode
+        val countryPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> COUNTRY_CODE == d.countryCode }
+        // check for currencyCode
+        val currencyCodePredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> CURRENCY_CODE == d.currencyCode }
         // filter for only non-credit
-        val nonCreditPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> 'C'!= d.creditOrDebit }
+        val nonCreditPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> CREDIT != d.creditOrDebit }
 
         val filterList = binRangeModelList.stream()
             .filter(nonCreditPredicate.and(nonPrepaidPredicate).and(countryPredicate).and(currencyCodePredicate))
@@ -62,8 +56,8 @@ class CsvService(
         for(bin in filterList){
             val binRange = BinRange(
                 null,
-                mergeExtraDigit(bin.acccountRangeLow.toString()),
-                mergeExtraDigit(bin.acccountRangeHigh.toString()),
+                mergeExtraDigit(bin.accountRangeLow.toString()),
+                mergeExtraDigit(bin.accountRangeHigh.toString()),
                 checkCardScheme(bin.cardScheme.toString()))
             binList.add(binRepository.save(binRange))
         }
@@ -71,13 +65,6 @@ class CsvService(
 
     }
 
-    private fun closeFileReader(fileReader: BufferedReader?) {
-        try {
-            fileReader!!.close()
-        } catch (ex: IOException) {
-            throw CardIdentificationException("Error during csv import")
-        }
-    }
 
     private  fun checkCardScheme( schem: String) : String{
         val schemeMap = mapOf("4B" to "Banco Santander",

@@ -5,6 +5,8 @@ val springMockkVersion: String by project
 val springCloudVersion: String by project
 val kotlinLoggingVersion: String by project
 val kotlinCoroutinesVersion: String by project
+val openCsvVersion: String by project
+
 plugins {
     kotlin("plugin.serialization") apply false
     kotlin("jvm") apply false
@@ -43,7 +45,7 @@ subprojects {
     }
     dependencies {
         implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
-        implementation("com.opencsv:opencsv:5.2")
+        implementation("com.opencsv:opencsv:$openCsvVersion")
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutinesVersion") {
             exclude(group = "org.apache.tomcat.embed", module = "tomcat-embed-core")

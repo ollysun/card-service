@@ -14,10 +14,6 @@ spring:
     url: r2dbc:postgresql://${STORAGE_DB_HOST:localhost}:5432/cardidentification?sslMode=prefer
     password: ${STORAGE_DB_PASS:user}
     username: ${STORAGE_DB_USER:user}
-  flyway:
-    url: jdbc:postgresql://${STORAGE_DB_HOST:localhost}:5432/cardstorage?sslMode=prefer
-    user: ${STORAGE_DB_USER:postgres}
-    password: ${STORAGE_DB_PASS:postgres}
 
 hsmProxyService:
   host: ${INTERNAL_LB_HOST:localhost}

@@ -5,9 +5,9 @@ import com.opencsv.bean.CsvBindByPosition
 
 data class BinRangeModel(
     @CsvBindByPosition(position = 0)
-    var acccountRangeLow: String?= null,
+    var accountRangeLow: String?= null,
     @CsvBindByPosition(position = 1)
-    var acccountRangeHigh: String?= null,
+    var accountRangeHigh: String?= null,
     @CsvBindByPosition(position = 2)
     var countryCode: String?= null,
     @CsvBindByPosition(position = 3)

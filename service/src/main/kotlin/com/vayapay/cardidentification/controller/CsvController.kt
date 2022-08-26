@@ -16,11 +16,13 @@ import javax.validation.Valid
 
 @Controller
 @RequestMapping("/card-registration")
-class CardIdentificationController(
+class CsvController(
         val csvService: CsvService) {
 
     @PostMapping
-    fun cardRegistration(@RequestBody @Valid cardRegistration: CardRequestDto): String? {
-        return null;
+    suspend fun uploadCsvFile(@RequestParam("file") file: MultipartFile): ResponseEntity<List<BinRange>> {
+        val importedEntries = csvService.uploadCsvFile(file)
+
+        return ResponseEntity.ok(importedEntries)
     }
 }
