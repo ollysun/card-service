@@ -24,13 +24,8 @@ buildCache {
     }
 }
 
-//include("protobuf2rsocket")
 include("common")
 include("service")
-include("client")
-include("module-test")
 
 // Required to prevent overlapping when creating dependencies on client/common of multiple components
 project(":common").name = "card-identification-service-common"
-project(":client").name = "card-identification-service-client"
-project(":module-test").name = "card-identification-service-module-test"

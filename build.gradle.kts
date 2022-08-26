@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val javaVersion: String by project
 val logbackEncoder: String by project
 val springMockkVersion: String by project
@@ -53,9 +54,7 @@ subprojects {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinCoroutinesVersion")
 
 
-//        testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
-//        testImplementation("io.mockk:mockk:$mockkVersion")
     }
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
