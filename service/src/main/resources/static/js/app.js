@@ -430,9 +430,9 @@ const processCardNumberField = (e) => {
 const cardNumberOnBlurHandler = (e) => {
     processCardNumberField(e);
     cardNumberCheck();
-    updateSaveButton()
     updateCardBannerComponents()
     bankAxeptCardNumberCheck()
+    updateSaveButton()
 }
 
 const cardNumberOnKeyupHandler = (e) => {
@@ -442,8 +442,10 @@ const cardNumberOnKeyupHandler = (e) => {
         cardNumberCheck()
         updateCardBannerComponents()
         bankAxeptCardNumberCheck()
-        updateSaveButton()
+    } else {
+        State.cardNumberHasError = true
     }
+    updateSaveButton()
 }
 
 const expiryMonthOnChangeHandler = (e) => {
@@ -477,8 +479,10 @@ const accountNumberOnKeyupHandler = (e) => {
     updateCardBannerComponents()
     if (e.target.value.length === 11) {
         accountNumberCheck()
-        updateSaveButton()
+    } else {
+        State.accountNumberHasError = true
     }
+    updateSaveButton()
 }
 
 const accountNumberOnBlurHandler = (e) => {
@@ -495,7 +499,6 @@ const postMessageToParent = (response) => {
         , "*" //Todo replace with flytoget domain
     )
 }
-
 
 //Event handler bindings
 cardNumberField.onblur = e => cardNumberOnBlurHandler(e)
