@@ -2,6 +2,10 @@ package com.vayapay.cardIdentification.util
 
 import java.time.LocalDate
 
+private const val ADD_YEAR_VALUE = 10
+private const val MINUS_YEAR_VALUE = 13
+private const val CENTURY_VALUE = 2000
+
 object SelectOptions {
 
     val MONTHS = listOf(
@@ -20,13 +24,13 @@ object SelectOptions {
     )
 
     private fun getYears(): List<String> {
-        val maxYear = LocalDate.now().year.plus(10)
-        val minYear = maxYear - 13
+        val maxYear = LocalDate.now().year.plus(ADD_YEAR_VALUE)
+        val minYear = maxYear - MINUS_YEAR_VALUE
 
         val years = mutableListOf<String>()
 
         for (year in minYear..maxYear)
-            years.add((year - 2000).toString())
+            years.add((year - CENTURY_VALUE).toString())
 
         return years
     }
