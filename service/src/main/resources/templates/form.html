@@ -1,0 +1,27 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="card-form">
+    <form class="needs-validation" method="post" novalidate
+          th:action="@{/card}" th:object="${cardDataForm}">
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+        <div th:replace="field :: card-number"></div>
+
+        <div th:replace="field :: expiry-date"></div>
+
+        <div th:replace="field :: account-number"></div>
+
+        <div class="invalid-feedback" th:if="${saveCardError} != null" th:text="${saveCardError}"></div>
+        <p class=""><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
+
+        <div th:replace="field:: save-button"></div>
+    </form>
+
+</div>
+
+</body>
+
+</html>

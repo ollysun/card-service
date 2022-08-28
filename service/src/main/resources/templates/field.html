@@ -1,0 +1,75 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="card-number">
+    <div class="mb-2">
+        <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
+            class="text-secondary">*</span>
+        <div class="input-group has-validation">
+            <input autocomplete="off" class="form-control" id="cardNumberField"
+                   inputmode="numeric" maxlength="19" pattern="[0-9]"
+                   required th:aria-label="#{cardNumber.label}"
+                   th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
+            <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
+            <div class="invalid-feedback" id="cardNumberFeedback"></div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="expiry-date">
+    <div class="mb-2">
+        <label class="form-label" for="expiryMonthField" th:utext="#{expiry.date.label}"></label> <span
+            class="text-secondary">*</span>
+        <div class="row">
+            <div class="col">
+                <select class="form-select " id="expiryMonthField" required="required"
+                        th:name="#{expiry.month.name}">
+                    <option disabled="disabled" selected="selected" th:text="#{expiry.month.placeholder}"></option>
+                    <option th:each="month : ${options.MONTHS}" th:text="${month}" th:value="${month}"></option>
+                </select>
+            </div>
+            <div class="col-1">
+                <span class="slash">/</span>
+            </div>
+            <div class="col">
+                <select class="form-select " id="expiryYearField" required="required" th:name="#{expiry.year.name}">
+                    <option disabled="disabled" selected="selected" th:text="#{expiry.year.placeholder}"></option>
+                    <option th:each="year : ${options.YEARS}" th:text="${year}" th:value="${year}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="invalid-feedback" id="expiryDateFeedback"></div>
+    </div>
+</div>
+
+<div th:fragment="account-number">
+    <div class="mb-2 hidden" id="accountNumberFieldContainer">
+        <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label>
+        <span class="text-secondary">*</span>
+        <div class="input-group has-validation">
+            <input autocomplete="off" class="form-control"
+                   id="accountNumberField" inputmode="numeric"
+                   maxlength="11" pattern="[0-9]" th:aria-label="#{accountNumber.label}"
+                   th:name="#{accountNumber.name}"
+                   th:placeholder="#{accountNumber.placeholder}"
+                   type="text">
+            <span class="card-icon"><i class="credit-card bank-axept"></i></span>
+            <div class="invalid-feedback" id="accountNumberFeedback"></div>
+        </div>
+    </div>
+
+</div>
+
+<div th:fragment="save-button">
+    <div class="align-items-center justify-content-between">
+        <button class="btn btn-gray-400 text-white " disabled id="saveButton"
+                th:text="#{saveButton.label}"
+                type="submit"></button>
+    </div>
+</div>
+
+</body>
+
+</html>
