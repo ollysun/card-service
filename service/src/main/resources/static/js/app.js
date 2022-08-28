@@ -117,27 +117,28 @@ const maskCardNumberByScheme = () => {
     const cardNumber = State.cardNumber
     const cardScheme = State.cardScheme
 
-    if (cardNumber !== undefined && cardScheme === AMEX_SCHEME) {
-        const result = cardNumber.replace(/.(?=.{4})/g, '*')
-        return maskNumber(result, 4, 10, 15)
-    }
-    if (cardNumber !== undefined && cardScheme === DINERS_SCHEME) {
-        if (cardNumber !== '' && cardNumber.length === 16) {
-            return maskLastFourDigit(cardNumber)
+    if (cardNumber !== undefined) {
+        switch (cardScheme) {
+            case AMEX_SCHEME:
+                const result = cardNumber.replace(/.(?=.{4})/g, '*')
+                return maskNumber(result, 4, 10, 15)
+            case DINERS_SCHEME:
+                if (cardNumber && cardNumber.length === 16) {
+                    return maskLastFourDigit(cardNumber)
+                }
+                if (cardNumber && cardNumber.length === 14) {
+                    const result = cardNumber.replace(/.(?=.{4})/g, '*')
+                    return maskNumber(result, 4, 10, 14)
+                }
+                break
+            case VISA_SCHEME:
+                return maskLastFourDigit(cardNumber)
+            case MASTER_SCHEME:
+                return maskLastFourDigit(cardNumber)
         }
-        if (cardNumber !== '' && cardNumber.length === 14) {
-            const result = cardNumber.replace(/.(?=.{4})/g, '*')
-            return maskNumber(result, 4, 10, 14)
-        }
-    }
-    if (cardNumber !== undefined && cardScheme === VISA_SCHEME) {
-        return maskLastFourDigit(cardNumber)
-    }
-    if (cardNumber !== undefined && cardScheme === MASTER_SCHEME) {
-        return maskLastFourDigit(cardNumber)
     }
 
-    if (cardNumber === '' || cardNumber === undefined) {
+    if (cardNumber === '') {
         return DEFAULT_MASKED_CARD_NUMBER
     }
 
