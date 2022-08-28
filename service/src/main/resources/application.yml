@@ -15,6 +15,7 @@ spring:
     password: ${STORAGE_DB_PASS:user}
     username: ${STORAGE_DB_USER:user}
 
+
 hsmProxyService:
   host: ${INTERNAL_LB_HOST:localhost}
   port: ${HSM_PROXY_PORT:7040}
@@ -29,3 +30,22 @@ logging:
   level:
     io.r2dbc.postgresql.QUERY: INFO
     io.r2dbc.postgresql.PARAM: INFO
+
+card:
+  cardScheme:
+    4B: Banco Santander
+    AX: American Express (Amex)
+    DC: Diners Club
+    DI: Discover
+    GC: Gift Card
+    JC: Japan Credit Bureau (JCB)
+    MC: MasterCard
+    SH: Shell
+    UP: Union Pay
+    UD: Union Pay
+    VI: Visa
+  flytoget:
+    PREPAID: 'P'
+    COUNTRY_CODE: "578"
+    CURRENCY_CODE: "578"
+    CREDIT: 'C'

@@ -1,6 +1,8 @@
 package com.vayapay.cardidentification.core
 
-const val PREPAID = 'P'
-const val COUNTRY_CODE = "578"
-const val CURRENCY_CODE = "578"
-const val CREDIT = 'C'
+enum class CLAUSES {
+    PREPAID,
+    COUNTRY_CODE,
+    CURRENCY_CODE,
+    CREDIT
+}

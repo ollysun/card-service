@@ -58,6 +58,7 @@ dependencies {
 	implementation("com.vayapay.hsmproxy:hsm-proxy-common:$hsmProxyVersion")
 	implementation("net.javacrumbs.shedlock:shedlock-spring:$shedLockVersion")
 	implementation("net.javacrumbs.shedlock:shedlock-provider-r2dbc:$shedLockVersion")
+	implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
 
 	runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 	runtimeOnly("org.flywaydb:flyway-core")

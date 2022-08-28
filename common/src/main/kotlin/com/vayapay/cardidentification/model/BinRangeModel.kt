@@ -5,38 +5,38 @@ import com.opencsv.bean.CsvBindByPosition
 
 data class BinRangeModel(
     @CsvBindByPosition(position = 0)
-    var accountRangeLow: String?= null,
+    val accountRangeLow: String?= null,
     @CsvBindByPosition(position = 1)
-    var accountRangeHigh: String?= null,
+    val accountRangeHigh: String?= null,
     @CsvBindByPosition(position = 2)
-    var countryCode: String?= null,
+    val countryCode: String?= null,
     @CsvBindByPosition(position = 3)
-    var currencyCode: String?= null,
+    val currencyCode: String?= null,
     @CsvBindByPosition(position = 4)
-    var issueNumberLength: Char?= null,
+    val issueNumberLength: Char?= null,
     @CsvBindByPosition(position = 5)
-    var cardType: String?= null,
+    val cardType: String?= null,
     @CsvBindByPosition(position = 6)
-    var creditOrDebit: Char?= null,
+    val creditOrDebit: String?= null,
     @CsvBindByPosition(position = 7)
-    var cardScheme: String?= null,
+    val cardScheme: String?= null,
     @CsvBindByPosition(position = 8)
-    var productId: String?= null,
+    val productId: String?= null,
     @CsvBindByPosition(position = 9)
-    var subProductId: String?= null,
+    val subProductId: String?= null,
     @CsvBindByPosition(position = 10)
-    var dccEligibleFlag: Char?= null,
+    val dccEligibleFlag: Char?= null,
     @CsvBindByPosition(position = 11)
-    var comboCardFlag: Char?= null,
+    val comboCardFlag: Char?= null,
     @CsvBindByPosition(position = 12)
-    var accountFundingSource: Char?= null,
+    val accountFundingSource: String?= null,
     @CsvBindByPosition(position = 13)
-    var accountLevelProcessing: String?= null,
+    val accountLevelProcessing: String?= null,
     @CsvBindByPosition(position = 14)
-    var durbinFlag: Char?= null,
+    val durbinFlag: Char?= null,
     @CsvBindByPosition(position = 15)
-    var regulatedOrNonRegulated: String?= null,
+    val regulatedOrNonRegulated: String?= null,
     @CsvBindByPosition(position = 16)
-    var consumerOrCommercial: String?= null,
+    val consumerOrCommercial: String?= null
 
 )
