@@ -15,6 +15,11 @@ const EXPIRY_YEAR_REQUIRED = "Please select your expiry year.";
 const DEFAULT_CARD_SCHEME = 'unselected';
 const MAESTRO_MASTER_CARD = 'maestro';
 const DEFAULT_EXPIRY = '..';
+const VISA_MAX_LENGTH = 16;
+const DEFAULT_MAX_LENGTH = 19;
+const MASTER_MAX_LENGTH = 16;
+const AMEX_MAX_LENGTH = 15;
+const DINERS_MAX_LENGTH = 16;
 
 
 // application State
@@ -22,7 +27,7 @@ let State = {
     cardNumber: DEFAULT_CARD_NUMBER,
     previousCardScheme: DEFAULT_CARD_SCHEME,
     cardScheme: DEFAULT_CARD_SCHEME,
-    cardNumberMaxLength: 19,
+    cardNumberMaxLength: DEFAULT_MAX_LENGTH,
     accountNumber: '',
     expiryMonth: DEFAULT_EXPIRY,
     expiryYear: DEFAULT_EXPIRY,
@@ -266,23 +271,23 @@ const cardNumberMaxLengthByScheme = () => {
     const cardScheme = State.cardScheme
     const cardNumber = State.cardNumber
     if (cardScheme === VISA_SCHEME) {
-        return 16
+        return VISA_MAX_LENGTH
     }
     if (cardScheme === MASTER_SCHEME) {
         const valueStripped = cardNumber.replace(/\D/g, '') // Stripp everything but numbers
         const isMaestroCard = valueStripped.match(/^(?:50[0-9]|5[6-8]|6[0-4]|67[0-9]|69[0-9])\d+$/)
         if (isMaestroCard) {
-            return 19
+            return DEFAULT_MAX_LENGTH
         }
-        return 16
+        return MASTER_MAX_LENGTH
     }
     if (cardScheme === AMEX_SCHEME) {
-        return 15
+        return AMEX_MAX_LENGTH
     }
     if (cardScheme === DINERS_SCHEME) {
-        return 16
+        return DINERS_MAX_LENGTH
     }
-    return 19
+    return DEFAULT_MAX_LENGTH
 }
 
 const schemeFromCardNumber = () => {
@@ -298,22 +303,7 @@ const schemeFromCardNumber = () => {
     if (valueStripped.match(/^4[0-9]+$/)) {
         scheme = VISA_SCHEME
     }
-    if (valueStripped.match(/^5[1-5][0-9]+$/)) {
-        scheme = MASTER_SCHEME
-    }
-    if (valueStripped.match(/^222[1-9][0-9]+$/)) {
-        scheme = MASTER_SCHEME
-    }
-    if (valueStripped.match(/^22[3-9][0-9]+$/)) {
-        scheme = MASTER_SCHEME
-    }
-    if (valueStripped.match(/^2[3-6][0-9]+$/)) {
-        scheme = MASTER_SCHEME
-    }
-    if (valueStripped.match(/^27[01][0-9]+$/)) {
-        scheme = MASTER_SCHEME
-    }
-    if (valueStripped.match(/^2720[0-9]+$/)) {
+    if (valueStripped.match(/^(5[1-5][0-9]+)|(222[1-9][0-9]+)|(22[3-9][0-9]+)|(2[3-6][0-9]+)|(27[01][0-9]+)|(2720[0-9]+)$/)) {
         scheme = MASTER_SCHEME
     }
     if (valueStripped.match(/^(?:50[0-9]|5[6-8]|6[0-4]|67[0-9]|69[0-9])\d+$/)) {
