@@ -94,7 +94,8 @@ const responseMessage = document.getElementById("responseJsonString")
 //helper functions
 const maskAccountNumber = (accountNumber) => {
     if (accountNumber !== '' && accountNumber !== undefined) {
-        return maskDebitCardDigit(accountNumber ?? '')
+        const result = value.replace(/.(?=.{5})/g, '*')
+        return maskNumber(result, 4, 6, 11)
     }
     return DEFAULT_CARD_NUMBER
 }
@@ -105,30 +106,10 @@ const maskLastFourDigit = value => {
     return addSpace?.join(' ')
 }
 
-const maskDinersFourWithFourteenDigit = value => {
-    const result = value.replace(/.(?=.{4})/g, '*')
-
-    const b1 = result.substring(0, 4)
-    const b2 = result.substring(4, 10)
-    const b3 = result.substring(10, 14)
-    return `${b1} ${b2} ${b3}`
-}
-
-const maskAmexFourDigit = value => {
-    const result = value.replace(/.(?=.{4})/g, '*')
-
-    const b1 = result.substring(0, 4)
-    const b2 = result.substring(4, 10)
-    const b3 = result.substring(10, 15)
-    return `${b1} ${b2} ${b3}`
-}
-
-const maskDebitCardDigit = value => {
-    const result = value.replace(/.(?=.{5})/g, '*')
-
-    const b1 = result.substring(0, 4)
-    const b2 = result.substring(4, 6)
-    const b3 = result.substring(6, 11)
+const maskNumber = (result, b1End, b2End, b3End) => {
+    const b1 = result.substring(0, b1End)
+    const b2 = result.substring(b1End, b2End)
+    const b3 = result.substring(b2End, b3End)
     return `${b1} ${b2} ${b3}`
 }
 
@@ -137,14 +118,16 @@ const maskCardNumberByScheme = () => {
     const cardScheme = State.cardScheme
 
     if (cardNumber !== undefined && cardScheme === AMEX_SCHEME) {
-        return maskAmexFourDigit(cardNumber)
+        const result = cardNumber.replace(/.(?=.{4})/g, '*')
+        return maskNumber(result, 4, 10, 15)
     }
     if (cardNumber !== undefined && cardScheme === DINERS_SCHEME) {
         if (cardNumber !== '' && cardNumber.length === 16) {
             return maskLastFourDigit(cardNumber)
         }
         if (cardNumber !== '' && cardNumber.length === 14) {
-            return maskDinersFourWithFourteenDigit(cardNumber)
+            const result = cardNumber.replace(/.(?=.{4})/g, '*')
+            return maskNumber(result, 4, 10, 14)
         }
     }
     if (cardNumber !== undefined && cardScheme === VISA_SCHEME) {
