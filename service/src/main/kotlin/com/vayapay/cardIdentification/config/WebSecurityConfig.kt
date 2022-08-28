@@ -15,11 +15,12 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableWebSecurity
 @Configuration
 class WebSecurityConfig {
+
+    //Todo update web security configuration settings
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeRequests()
             .antMatchers("/**").permitAll()
-
         return http.build()
     }
 
