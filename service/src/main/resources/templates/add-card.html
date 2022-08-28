@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -23,127 +23,17 @@
 </head>
 <body>
 
-<!--/*@thymesVar id="cardDataForm" type="com.vayapay.cardIdentification.model.CardFormData"*/-->
 <div class="container">
-    <div>
-        <p class="fw-bolder" th:text="#{cardBanner.text.heading}"></p>
-    </div>
 
-    <!--        Beginning of cardBanner-->
-    <div class="ratio mb-4">
-        <div class="bankcard" id="bankCard">
-            <div class="bankcard-content">
-                <div class="d-flex flex-row align-items-center justify-content-between mb-2">
-                    <div class="d-flex flex-column">
-                        <span class="p number hidden" id="cardAccountNoLabel"
-                              th:text="#{cardBanner.text.accountNumber}"></span>
-                        <span class="h account-number" id="maskedAccountNumberField"></span>
-                    </div>
-                    <i class="credit-card-logo bax hidden" id="bankAxeptLogo"></i>
-                </div>
+    <div th:replace="header :: form-heading"></div>
 
-                <!-- End create a js method that checks norwegianCard before displaying this div-->
+    <div th:replace="card-banner :: card-banner"></div>
 
-                <div class="`d-flex flex-column mb-2">
-                    <span class="p number" th:text="#{cardBanner.text.cardNumber}"></span>
-                    <span class="h card-number" id="maskedCardNumberField"
-                          th:text="#{cardBanner.text.cardNumber.initValue}"></span>
-                </div>
-
-                <div class=" d-flex flex-row align-items-center justify-content-between">
-                    <div class="d-flex flex-row align-items-end ml-30">
-                        <span class="p valid" th:text="#{cardBanner.text.validThrough}"></span>
-
-                        <!-- todo populate the span method with expiryMonth/expiryYear -->
-                        <span class="h valid">
-                                <span id="cardBannerExpiryMonth"
-                                      th:text="#{cardBanner.text.validThrough.initValue}"></span>
-                                /
-                                <span id="cardBannerExpiryYear"
-                                      th:text="#{cardBanner.text.validThrough.initValue}"></span>
-                            </span>
-                    </div>
-                    <!-- todo resolve card type and set its class in js-->
-                    <i class="credit-card-logo" id="cardBannerSchemeLogo"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--        End of cardBanner-->
-
-    <!--        Beginning of Card Form input -->
-    <form class="needs-validation" method="post" novalidate
-          th:action="@{/card}" th:object="${cardDataForm}">
-        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-        <div class="mb-2">
-            <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
-                class="text-secondary">*</span>
-            <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control" id="cardNumberField"
-                       inputmode="numeric" maxlength="19" pattern="[0-9]"
-                       required th:aria-label="#{cardNumber.label}"
-                       th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
-                <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
-                <div class="invalid-feedback" id="cardNumberFeedback"></div>
-            </div>
-        </div>
-
-        <!-- Card Expiry date -->
-        <div class="mb-2">
-            <label class="form-label" for="expiryMonthField" th:utext="#{expiry.date.label}"></label> <span
-                class="text-secondary">*</span>
-            <div class="row">
-                <div class="col">
-                    <select class="form-select " id="expiryMonthField" required="required"
-                            th:name="#{expiry.month.name}">
-                        <option disabled="disabled" selected="selected" th:text="#{expiry.month.placeholder}"></option>
-                        <option th:each="month : ${options.MONTHS}" th:text="${month}" th:value="${month}"></option>
-                    </select>
-                </div>
-                <div class="col-1">
-                    <span class="slash">/</span>
-                </div>
-                <div class="col">
-                    <select class="form-select " id="expiryYearField" required="required" th:name="#{expiry.year.name}">
-                        <option disabled="disabled" selected="selected" th:text="#{expiry.year.placeholder}"></option>
-                        <option th:each="year : ${options.YEARS}" th:text="${year}" th:value="${year}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="invalid-feedback" id="expiryDateFeedback"></div>
-        </div>
-
-        <!--Account number-->
-        <div class="mb-2 hidden" id="accountNumberFieldContainer">
-            <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label>
-            <span class="text-secondary">*</span>
-            <div class="input-group has-validation">
-                <input autocomplete="off" class="form-control"
-                       id="accountNumberField" inputmode="numeric"
-                       maxlength="11" pattern="[0-9]" th:aria-label="#{accountNumber.label}"
-                       th:name="#{accountNumber.name}"
-                       th:placeholder="#{accountNumber.placeholder}"
-                       type="text">
-                <span class="card-icon"><i class="credit-card bank-axept"></i></span>
-                <div class="invalid-feedback" id="accountNumberFeedback"></div>
-            </div>
-        </div>
-
-        <div class="invalid-feedback" th:if="${saveCardError} != null" th:text="${saveCardError}"></div>
-        <p class=""><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
-
-        <div class="align-items-center justify-content-between">
-            <button class="btn btn-gray-400 text-white " disabled id="saveButton"
-                    th:text="#{saveButton.label}"
-                    type="submit"></button>
-        </div>
-    </form>
+    <div th:replace="form :: card-form"></div>
 
 </div>
 
-<p class="hidden" id="responseJsonString" th:if="${response} != null and ${saveCardError} == null"
-   th:utext="${response}"></p>
-
+<div th:replace="response :: json"></div>
 
 <script th:src="@{/js/app.js}" type="text/javascript"></script>
 </body>
