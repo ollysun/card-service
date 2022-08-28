@@ -15,6 +15,6 @@ class CardFormData(
     @NotEmpty(message = "expiry year is mandatory")
     @Size(min = 2, max = 2, message = "expiry year must be of length 2")
     val expiryYear: String,
-    @Size(min = 11, max = 11, message = "expiry year must be of length 11")
+    @Size(max = 11, message = "Account number must not be more than 11")
     val accountNumber: String? = null
 )
