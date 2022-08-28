@@ -22,7 +22,10 @@ class CardIdentificationService {
         return StoreCardResponse(cardIdResponse, "", "")
     }
 
-    fun luhmCheck(number: String): Boolean {
+    /**
+     * Ensures pan number is valid based luhm's algorithm check
+     */
+    private fun luhmCheck(number: String): Boolean {
         var checksum: Int = 0
 
         for (i in number.length - 1 downTo 0 step 2) {
@@ -36,7 +39,7 @@ class CardIdentificationService {
         return checksum % 10 == 0
     }
 
-    fun isDigitNumber(toCheck: String): Boolean {
+    private fun isDigitNumber(toCheck: String): Boolean {
         return toCheck.all { char -> char.isDigit() }
     }
 }
