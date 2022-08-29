@@ -10,22 +10,7 @@ spring:
       port: ${STORAGE_PORT:4040}
   application:
     name: ${SERVICE_NAME:secure_card_identification}
-  r2dbc:
-    url: r2dbc:postgresql://${STORAGE_DB_HOST:localhost}:5432/cardidentification?sslMode=prefer
-    password: ${STORAGE_DB_PASS:user}
-    username: ${STORAGE_DB_USER:user}
-
-
-hsmProxyService:
-  host: ${INTERNAL_LB_HOST:localhost}
-  port: ${HSM_PROXY_PORT:7040}
 ---
-spring:
-  config:
-    activate:
-      on-profile:
-        - test
-        - dev
 logging:
   level:
     io.r2dbc.postgresql.QUERY: INFO
