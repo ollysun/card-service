@@ -23,7 +23,7 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
     @GetMapping
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
-        model["cardFormData"] = AddCardForm("", "", "")
+        model["addCardForm"] = AddCardForm("", "", "")
         return "add-card"
     }
 
@@ -39,7 +39,7 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
         model["options"] = SelectOptions
 
         if (storeCardResponse.errorMessage.isNotEmpty())
-            model["saveCardError"] = storeCardResponse.errorMessage
+            model["addCardError"] = storeCardResponse.errorMessage
         else
             model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse)
 
