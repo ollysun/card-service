@@ -5,7 +5,7 @@
 <body>
 <div th:fragment="card-number">
     <div class="mb-2">
-        <label class="form-label" for="cardNumberField" th:utext="#{cardNumber.label}"></label> <span
+        <label class="form-label" for="cardNumberField" th:text="#{cardNumber.label}"></label> <span
             class="text-secondary">*</span>
         <div class="input-group has-validation">
             <input autocomplete="off" class="form-control" id="cardNumberField"
@@ -20,7 +20,7 @@
 
 <div th:fragment="expiry-date">
     <div class="mb-2">
-        <label class="form-label" for="expiryMonthField" th:utext="#{expiry.date.label}"></label> <span
+        <label class="form-label" for="expiryMonthField" th:text="#{expiry.date.label}"></label> <span
             class="text-secondary">*</span>
         <div class="row">
             <div class="col">
@@ -46,7 +46,7 @@
 
 <div th:fragment="account-number">
     <div class="mb-2 hidden" id="accountNumberFieldContainer">
-        <label class="form-label" for="accountNumberField" th:utext="#{accountNumber.label}"></label>
+        <label class="form-label" for="accountNumberField" th:text="#{accountNumber.label}"></label>
         <span class="text-secondary">*</span>
         <div class="input-group has-validation">
             <input autocomplete="off" class="form-control"
