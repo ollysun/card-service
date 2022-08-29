@@ -1,5 +1,6 @@
 package com.vayapay.cardidentification.core
 
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
@@ -75,6 +76,8 @@ class BinRangeService(
     private fun processAndReturnJson( binRangeList: List<BinRange>){
         try {
             val mapper = jacksonObjectMapper()
+            mapper.findAndRegisterModules();
+            mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // to serialize date
             val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
             FileOutputStream(path.toString()).use {
                 val strToBytes: ByteArray = mapper.writeValueAsString(binRangeList).toByteArray()
