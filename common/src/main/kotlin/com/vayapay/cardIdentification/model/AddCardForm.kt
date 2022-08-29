@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 @Serializable
-class CardFormData(
+class AddCardForm(
     @NotEmpty(message = "Card number is mandatory")
     @Size(min = 13, max = 19, message = "Card number must be of length between 13 and 19")
     val cardNumber: String,

@@ -3,7 +3,7 @@ package com.vayapay.cardIdentification.controller
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.vayapay.cardIdentification.core.CardIdentificationService
-import com.vayapay.cardIdentification.model.CardFormData
+import com.vayapay.cardIdentification.model.AddCardForm
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration()
-@WebMvcTest(CardController::class)
+@WebMvcTest(CardIdentificationController::class)
 @WithMockUser
 internal class CardControllerTest {
 
@@ -62,9 +62,9 @@ internal class CardControllerTest {
     @Test
     fun `should post cardFormData`() {
         runBlocking {
-            val cardFormData = CardFormData("378282246310005", "09", "24")
+            val addCardForm = AddCardForm("378282246310005", "09", "24")
             mockMvc.post("/card") {
-                content = jacksonObjectMapper().writeValueAsString(cardFormData)
+                content = jacksonObjectMapper().writeValueAsString(addCardForm)
                 with(SecurityMockMvcRequestPostProcessors.csrf())
             }.andExpect {
                 status { isOk() }

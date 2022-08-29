@@ -2,8 +2,8 @@ package com.vayapay.cardIdentification.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vayapay.cardIdentification.core.CardIdentificationService
+import com.vayapay.cardIdentification.model.AddCardForm
 import com.vayapay.cardIdentification.model.CardData
-import com.vayapay.cardIdentification.model.CardFormData
 import com.vayapay.cardIdentification.model.CardRequestDto
 import com.vayapay.cardIdentification.util.SelectOptions
 import org.springframework.stereotype.Controller
@@ -23,18 +23,18 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
     @GetMapping
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
-        model["cardFormData"] = CardFormData("", "", "")
+        model["cardFormData"] = AddCardForm("", "", "")
         return "add-card"
     }
 
     @PostMapping
     suspend fun createCard(
-        @Valid @ModelAttribute cardFormData: CardFormData,
+        @Valid @ModelAttribute addCardForm: AddCardForm,
         errors: BindingResult,
         model: Model
     ): String {
-        val cardData = CardData(cardFormData.cardNumber, cardFormData.expiryMonth + "/" + cardFormData.expiryYear)
-        val cardRequestDto = CardRequestDto("PTO_1", cardData, cardFormData.accountNumber)
+        val cardData = CardData(addCardForm.cardNumber, addCardForm.expiryMonth + "/" + addCardForm.expiryYear)
+        val cardRequestDto = CardRequestDto("PTO_1", cardData, addCardForm.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
         model["options"] = SelectOptions
 
