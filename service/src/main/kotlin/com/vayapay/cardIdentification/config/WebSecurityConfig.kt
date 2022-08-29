@@ -21,7 +21,7 @@ class WebSecurityConfig {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         //TODO secure the /card-registration endpoint with appropriate mechanism
         http.authorizeRequests()
-            .antMatchers("/card-registration").permitAll()
+            .antMatchers("/card-registration", "/js/**", "/styles/**", "/img/**").permitAll()
             .anyRequest().authenticated()
         return http.build()
     }
