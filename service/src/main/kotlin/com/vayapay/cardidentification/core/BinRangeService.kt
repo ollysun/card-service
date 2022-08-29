@@ -1,14 +1,18 @@
 package com.vayapay.cardidentification.core
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
 import com.vayapay.cardidentification.exception.CardIdentificationException
-import com.vayapay.cardidentification.model.BinRangeModel
-import com.vayapay.cardidentification.repo.BinRange
+import com.vayapay.cardidentification.model.BinRange
+import com.vayapay.cardidentification.model.BinRangeUploadModel
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
+import java.io.FileOutputStream
 import java.io.InputStreamReader
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -22,33 +26,33 @@ class BinRangeService(
 
         try {
             BufferedReader(InputStreamReader(file.inputStream)).use {
-                val csvToBean = createCSVToBean(it)
-                return processAndValidateCSV(csvToBean)
+                val csvToBean = createBinRangeToBean(it)
+                return processAndValidateBinRange(csvToBean)
             }
         } catch (ex: Exception) {
             throw CardIdentificationException("Error during csv import")
         }
     }
 
-    private fun createCSVToBean(fileReader: BufferedReader?): CsvToBean<BinRangeModel> =
-        CsvToBeanBuilder<BinRangeModel>(fileReader)
-            .withType(BinRangeModel::class.java)
+    private fun createBinRangeToBean(fileReader: BufferedReader?): CsvToBean<BinRangeUploadModel> =
+        CsvToBeanBuilder<BinRangeUploadModel>(fileReader)
+            .withType(BinRangeUploadModel::class.java)
             .withSkipLines(1) // this is to skip the header
             .withIgnoreLeadingWhiteSpace(true)
             .build()
 
-    private suspend fun processAndValidateCSV(csvBean : CsvToBean<BinRangeModel>) : ArrayList<BinRange> {
-        val binRangeModelList : List<BinRangeModel> = csvBean.toList()
+    private suspend fun processAndValidateBinRange(csvBean : CsvToBean<BinRangeUploadModel>) : ArrayList<BinRange> {
+        val binRangeUploadModelList : List<BinRangeUploadModel> = csvBean.toList()
         // filter for only non-prepaid accounting funding source
-        val nonPrepaidPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.PREPAID) == d.accountFundingSource } // filter for only non-prepaid accounting funding source
+        val nonPrepaidPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.PREPAID) == d.accountFundingSource } // filter for only non-prepaid accounting funding source
         // check for countryCode
-        val countryPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.COUNTRY_CODE) == d.countryCode }
+        val countryPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.COUNTRY_CODE) == d.countryCode }
         // check for currencyCode
-        val currencyCodePredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.CURRENCY_CODE) == d.currencyCode }
+        val currencyCodePredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.CURRENCY_CODE) == d.currencyCode }
         // filter for only non-credit
-        val nonCreditPredicate: Predicate<BinRangeModel> = Predicate<BinRangeModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.CREDIT) != d.creditOrDebit }
+        val nonCreditPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.CREDIT) != d.creditOrDebit }
 
-        val filterList = binRangeModelList.stream()
+        val filterList = binRangeUploadModelList.stream()
             .filter(nonCreditPredicate.and(nonPrepaidPredicate).and(countryPredicate).and(currencyCodePredicate))
             .collect(Collectors.toList())
         val binList =  arrayListOf<BinRange>()
@@ -62,8 +66,23 @@ class BinRangeService(
                 bin.cardScheme?.let { binRangeConfiguration.getCardScheme(it) }!!)
             binList.add(binRange)
         }
+
+        processAndReturnJson(binList)
         return binList
 
+    }
+
+    private fun processAndReturnJson( binRangeList: List<BinRange>){
+        try {
+            val mapper = jacksonObjectMapper()
+            val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
+            FileOutputStream(path.toString()).use {
+                val strToBytes: ByteArray = mapper.writeValueAsString(binRangeList).toByteArray()
+                it.write(strToBytes)
+            }
+        }catch (ex: Exception){
+            throw CardIdentificationException(ex.message!!)
+        }
     }
 
     private fun mergeExtraDigit(text: String) =

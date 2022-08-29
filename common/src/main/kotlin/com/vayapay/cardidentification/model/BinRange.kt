@@ -1,9 +1,9 @@
 package com.vayapay.cardidentification.model
 
 import com.opencsv.bean.CsvBindByPosition
+import java.time.Instant
 
-
-data class BinRangeModel(
+data class BinRangeUploadModel(
     @CsvBindByPosition(position = 0)
     val accountRangeLow: String?= null,
     @CsvBindByPosition(position = 1)
@@ -39,4 +39,13 @@ data class BinRangeModel(
     @CsvBindByPosition(position = 16)
     val consumerOrCommercial: String?= null
 
+)
+
+
+data class BinRange(
+    val id: Int,
+    val binRangeFrom: String,
+    val binRangeTo: String,
+    val brand: String,
+    val createTime: Instant = Instant.now()
 )
