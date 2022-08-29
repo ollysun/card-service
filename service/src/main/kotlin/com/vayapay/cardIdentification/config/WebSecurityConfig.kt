@@ -26,7 +26,6 @@ class WebSecurityConfig {
         return http.build()
     }
 
-
     @Bean
     fun userDetailsService(): UserDetailsService {
         val users: User.UserBuilder = User.builder()
@@ -37,8 +36,7 @@ class WebSecurityConfig {
         )
         return manager
     }
-
-
+    
     @Bean
     fun passwordEncoder(): PasswordEncoder? {
         return BCryptPasswordEncoder()
