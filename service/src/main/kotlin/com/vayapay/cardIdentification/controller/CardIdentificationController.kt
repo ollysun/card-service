@@ -18,8 +18,8 @@ import javax.validation.Valid
 
 
 @Controller
-@RequestMapping("/card")
-class CardController(val cardService: CardIdentificationService) {
+@RequestMapping("/card-registration")
+class CardIdentificationController(val cardService: CardIdentificationService) {
     @GetMapping
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
