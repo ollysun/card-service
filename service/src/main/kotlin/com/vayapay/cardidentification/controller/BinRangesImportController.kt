@@ -1,7 +1,7 @@
 package com.vayapay.cardidentification.controller
 
 import com.vayapay.cardidentification.core.BinRangeService
-import com.vayapay.cardidentification.repo.BinRange
+import com.vayapay.cardidentification.model.BinRange
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
