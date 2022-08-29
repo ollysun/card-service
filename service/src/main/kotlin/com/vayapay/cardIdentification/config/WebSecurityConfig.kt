@@ -19,8 +19,10 @@ class WebSecurityConfig {
     //Todo update web security configuration settings
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        //TODO secure the /card-registration endpoint with appropriate mechanism
         http.authorizeRequests()
-            .antMatchers("/**").permitAll()
+            .antMatchers("/card-registration").permitAll()
+            .anyRequest().authenticated()
         return http.build()
     }
 
