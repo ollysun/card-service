@@ -7,11 +7,6 @@ const DINERS_SCHEME = 'diners';
 const VISA_SCHEME = 'visa';
 const MASTER_SCHEME = 'master';
 const DEFAULT_MASKED_CARD_NUMBER = '.... .... .... ....';
-const INVALID_CARD_NUMBER = "Card number is invalid";
-const INVALID_ACCOUNT_NUMBER = "Account number is invalid";
-const INVALID_EXPIRY_DATE = "Invalid expiry date";
-const EXPIRY_MONTH_REQUIRED = "Please select your expiry month.";
-const EXPIRY_YEAR_REQUIRED = "Please select your expiry year.";
 const DEFAULT_CARD_SCHEME = 'unselected';
 const MAESTRO_MASTER_CARD = 'maestro';
 const DEFAULT_EXPIRY = '..';
@@ -40,28 +35,28 @@ let State = {
 }
 
 //accessor function
-let setCardNumberError = (isError, message) => {
+let setCardNumberError = (isError) => {
     State.cardNumberHasError = isError
-    updateFeedbackField(isError, cardNumberFeedback, message)
+    updateFeedbackField(isError, cardNumberFeedback)
 }
-let setExpiryMonthError = (isError, message) => {
+let setExpiryMonthError = (isError) => {
     State.expiryMonthHasError = isError
-    updateFeedbackField(isError, expiryDateFeedback, message)
+    updateFeedbackField(isError, expiryMonthFeedback)
 }
-let setExpiryYearError = (isError, message) => {
+let setExpiryYearError = (isError) => {
     State.expiryYearHasError = isError
-    updateFeedbackField(isError, expiryDateFeedback, message)
+    updateFeedbackField(isError, expiryYearFeedback)
 }
-let setAccountNumberError = (isError, message) => {
+let setAccountNumberError = (isError) => {
     State.accountNumberHasError = isError
-    updateFeedbackField(isError, accountNumberFeedback, message)
+    updateFeedbackField(isError, accountNumberFeedback)
 }
 let setIsNorwegianCard = (isNorwegian) => {
     if (isNorwegian) {
-        setAccountNumberError(true, INVALID_ACCOUNT_NUMBER)
+        setAccountNumberError(true)
         accountNumberField.required = true
     } else {
-        setAccountNumberError(false, INVALID_ACCOUNT_NUMBER)
+        setAccountNumberError(false)
         accountNumberField.required = false
     }
     State.isNorwegianCard = isNorwegian
@@ -87,7 +82,8 @@ const cardNumberFeedback = document.getElementById("cardNumberFeedback")
 
 const expiryMonthField = document.getElementById("expiryMonthField")
 const expiryYearField = document.getElementById("expiryYearField")
-const expiryDateFeedback = document.getElementById("expiryDateFeedback")
+const expiryMonthFeedback = document.getElementById("expiryMonthFeedback")
+const expiryYearFeedback = document.getElementById("expiryYearFeedback")
 
 const accountNumberFieldContainer = document.getElementById("accountNumberFieldContainer")
 const accountNumberField = document.getElementById("accountNumberField")
@@ -235,7 +231,7 @@ const cardNumberCheck = () => {
     const cardNumber = State.cardNumber
     if (cardNumber) {
         const isValid = luhnsAlgoCheck(cardNumber) && firstDigitCheck(cardNumber) && cardSchemeLengthOk(cardNumber, State.cardScheme)
-        setCardNumberError(!isValid, INVALID_CARD_NUMBER)
+        setCardNumberError(!isValid)
     }
 }
 
@@ -247,14 +243,14 @@ const expiryDateCheck = () => {
         const today = new Date()
 
         if (cardExpiryDate.getFullYear() < today.getFullYear()) {
-            setExpiryYearError(true, INVALID_EXPIRY_DATE)
+            setExpiryYearError(true)
         } else if (cardExpiryDate.getFullYear() === today.getFullYear()) {
             if (cardExpiryDate.getMonth() < today.getMonth()) {
-                setExpiryMonthError(true, INVALID_EXPIRY_DATE)
+                setExpiryMonthError(true)
             }
         } else {
-            setExpiryYearError(false, INVALID_EXPIRY_DATE)
-            setExpiryMonthError(false, INVALID_EXPIRY_DATE)
+            setExpiryYearError(false)
+            setExpiryMonthError(false)
         }
     }
 }
@@ -263,7 +259,7 @@ const accountNumberCheck = () => {
     const accountNumber = State.accountNumber
     if (accountNumber) {
         const isValid = mod11AlgoCheck(accountNumber)
-        setAccountNumberError(!isValid, INVALID_ACCOUNT_NUMBER)
+        setAccountNumberError(!isValid)
     }
 }
 
@@ -348,12 +344,8 @@ const updateMaskedCardNumberField = () => {
     maskedCardNumberField.textContent = maskCardNumberByScheme(State.cardNumber, State.cardScheme)
 }
 
-const updateFeedbackField = (isError, feedbackField, message) => {
-    if (isError) {
-        feedbackField.textContent = message
-    } else {
-        feedbackField.textContent = ""
-    }
+const updateFeedbackField = (isError, feedbackField) => {
+    feedbackField.classList.toggle("hidden", isError)
 
 };
 
@@ -379,7 +371,7 @@ const removeNonNumbersFromAccountNoField = (e) => {
     e.target.value = e.target.value.replace(/\D/g, '')
     if (e.target.value !== State.accountNumber) {
         State.accountNumber = e.target.value
-        setAccountNumberError(false, INVALID_ACCOUNT_NUMBER)
+        setAccountNumberError(false)
     }
 }
 
@@ -425,11 +417,11 @@ const cardNumberOnKeyupHandler = (e) => {
 const expiryMonthOnChangeHandler = (e) => {
     const value = e.target.value;
     if (!value || isNaN(value)) {
-        setExpiryMonthError(true, EXPIRY_MONTH_REQUIRED)
+        setExpiryMonthError(true)
     } else {
         State.expiryMonth = value
         updateCardBannerComponents()
-        setExpiryMonthError(false, EXPIRY_MONTH_REQUIRED)
+        setExpiryMonthError(false)
     }
     expiryDateCheck()
     updateSaveButton()
@@ -438,11 +430,11 @@ const expiryMonthOnChangeHandler = (e) => {
 const expiryYearOnChangeHandler = (e) => {
     const value = e.target.value;
     if (!value || isNaN(value)) {
-        setExpiryYearError(true, EXPIRY_YEAR_REQUIRED)
+        setExpiryYearError(true)
     } else {
         State.expiryYear = value
         updateCardBannerComponents()
-        setExpiryYearError(false, EXPIRY_YEAR_REQUIRED)
+        setExpiryYearError(false)
     }
     expiryDateCheck()
     updateSaveButton()
@@ -463,7 +455,6 @@ const accountNumberOnBlurHandler = (e) => {
     removeNonNumbersFromAccountNoField(e)
     updateCardBannerComponents()
     accountNumberCheck()
-    updateFeedbackField(accountNumberFeedback, INVALID_CARD_NUMBER);
     updateSaveButton()
 }
 
