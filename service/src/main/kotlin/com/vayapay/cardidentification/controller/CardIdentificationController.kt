@@ -12,7 +12,7 @@ import javax.validation.Valid
 
 
 @Controller
-@RequestMapping("/card-registration")
+@RequestMapping("/card")
 class CardIdentificationController(
         val cardService: CardIdentificationService) {
 

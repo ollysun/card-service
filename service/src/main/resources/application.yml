@@ -1,2 +1,38 @@
 card-storage:
           ptoId: flytoget
+logging:
+  level:
+    root: INFO
+    com.vayapay: INFO
+server:
+  shutdown: graceful
+spring:
+  rsocket:
+    server:
+      port: ${STORAGE_PORT:4040}
+  application:
+    name: ${SERVICE_NAME:secure_card_identification}
+---
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: INFO
+    io.r2dbc.postgresql.PARAM: INFO
+
+card:
+  cardScheme:
+    4B: Banco Santander
+    AX: American Express (Amex)
+    DC: Diners Club
+    DI: Discover
+    GC: Gift Card
+    JC: Japan Credit Bureau (JCB)
+    MC: MasterCard
+    SH: Shell
+    UP: Union Pay
+    UD: Union Pay
+    VI: Visa
+  flytoget:
+    PREPAID: 'P'
+    COUNTRY_CODE: "578"
+    CURRENCY_CODE: "578"
+    CREDIT: 'C'
