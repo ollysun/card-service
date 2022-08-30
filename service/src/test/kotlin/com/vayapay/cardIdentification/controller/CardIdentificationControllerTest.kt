@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -22,11 +22,13 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
+private const val ADD_CARD_URL = "/card-registration"
+
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration()
 @WebMvcTest(CardIdentificationController::class)
 @WithMockUser
-internal class CardControllerTest {
+class CardIdentificationControllerTest {
 
     @Autowired
     private lateinit var context: WebApplicationContext
@@ -49,7 +51,7 @@ internal class CardControllerTest {
     @Test
     fun `should render card registration form`() {
         runBlocking {
-            mockMvc.get("/card")
+            mockMvc.get(ADD_CARD_URL)
                 .andExpect {
                     status { isOk() }
                     content {
@@ -60,12 +62,12 @@ internal class CardControllerTest {
     }
 
     @Test
-    fun `should post cardFormData`() {
+    fun `should post addCardForm`() {
         runBlocking {
             val addCardForm = AddCardForm("378282246310005", "09", "24")
-            mockMvc.post("/card") {
+            mockMvc.post(ADD_CARD_URL) {
                 content = jacksonObjectMapper().writeValueAsString(addCardForm)
-                with(SecurityMockMvcRequestPostProcessors.csrf())
+                with(csrf())
             }.andExpect {
                 status { isOk() }
                 content {

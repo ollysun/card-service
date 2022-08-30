@@ -17,7 +17,6 @@ dependencies {
     implementation(project(":card-identification-service-common"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.core:jackson-databind") {
@@ -25,6 +24,7 @@ dependencies {
     }
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
