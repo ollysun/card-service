@@ -284,31 +284,29 @@ const cardNumberMaxLengthByScheme = () => {
 
 const schemeFromCardNumber = () => {
     const cardNumber = State.cardNumber
-    let scheme = State.cardScheme
-    State.previousCardScheme = scheme
+    State.previousCardScheme = State.cardScheme
     if (!cardNumber || cardNumber.length < 2) {
-        scheme = DEFAULT_CARD_SCHEME
+        return State.cardScheme = DEFAULT_CARD_SCHEME
     }
 
     const valueStripped = cardNumber.replace(/\D/g, '') // Stripp everything but numbers  // old code (/[^0-9. ]\s/g, "");
 
     if (valueStripped.match(/^4[0-9]+$/)) {
-        scheme = VISA_SCHEME
+        return State.cardScheme = VISA_SCHEME
     }
     if (valueStripped.match(/^(5[1-5][0-9]+)|(222[1-9][0-9]+)|(22[3-9][0-9]+)|(2[3-6][0-9]+)|(27[01][0-9]+)|(2720[0-9]+)$/)) {
-        scheme = MASTER_SCHEME
+        return State.cardScheme = MASTER_SCHEME
     }
     if (valueStripped.match(/^(?:50[0-9]|5[6-8]|6[0-4]|67[0-9]|69[0-9])\d+$/)) {
         State.cardSubType = MAESTRO_MASTER_CARD
-        scheme = MASTER_SCHEME
+        return State.cardScheme = MASTER_SCHEME
     }
     if (valueStripped.match(/^3[47][0-9]+$/)) {
-        scheme = AMEX_SCHEME
+        return State.cardScheme = AMEX_SCHEME
     }
     if (valueStripped.match(/^3(?:0[0-5]|09|[68][0-9])[0-9]+$/)) {
-        scheme = DINERS_SCHEME
+        return State.cardScheme = DINERS_SCHEME
     }
-    State.cardScheme = scheme
 }
 
 //DOM update functions
