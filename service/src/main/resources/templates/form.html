@@ -18,10 +18,8 @@
 
         <div th:replace="field:: save-button"></div>
 
-        <div>
-            <p class="text-success" th:if="${response} != null and ${addCardError} == null"
-               th:text="#{add.card.success.message}"></p>
-        </div>
+        <div class="p-2 mt-4 bg-success text-white" th:if="${response} != null"
+             th:text="#{add.card.success.message}"></div>
     </form>
 
 </div>

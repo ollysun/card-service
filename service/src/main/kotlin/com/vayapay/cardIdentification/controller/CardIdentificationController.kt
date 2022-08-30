@@ -35,7 +35,6 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
         errors: BindingResult,
         model: Model
     ): String {
-
         if (errors.hasErrors()) {
             return ADD_CARD_TEMPLATE
         }
@@ -47,7 +46,7 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
         if (storeCardResponse.errorMessage.isNotEmpty())
             model["addCardError"] = storeCardResponse.errorMessage
         else
-            model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse)
+            model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse.cardId)
 
         return ADD_CARD_TEMPLATE
     }
