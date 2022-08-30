@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 class WebSecurityConfig {
 
-    //Todo update web security configuration settings
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         //TODO secure the /card-registration endpoint with appropriate mechanism
@@ -29,14 +28,14 @@ class WebSecurityConfig {
     @Bean
     fun userDetailsService(): UserDetailsService {
         val users: User.UserBuilder = User.builder()
-        val manager = InMemoryUserDetailsManager()
+        val manager = InMemoryUserDetailsManager() //Todo update this configuration settings
         manager.createUser(users.username("user").password("password").roles("USER").build())
         manager.createUser(
             users.username("admin").password(passwordEncoder()?.encode("userSecret")).roles("USER", "ADMIN").build()
         )
         return manager
     }
-    
+
     @Bean
     fun passwordEncoder(): PasswordEncoder? {
         return BCryptPasswordEncoder()
