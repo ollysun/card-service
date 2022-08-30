@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
+import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRange
 import com.vayapay.cardidentification.model.BinRangeUploadModel
@@ -23,7 +24,7 @@ class BinRangeService(
 
     suspend fun uploadBinRangesFile(file: MultipartFile): List<BinRange> {
         if (file.isEmpty)
-            throw CardIdentificationException("Empty file")
+            throw BadRequestException("Empty file")
 
         try {
             BufferedReader(InputStreamReader(file.inputStream)).use {

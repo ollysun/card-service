@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class CardIdentificationExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler
-    fun handleGenericException(ex: CardIdentificationException) = createErrorResponse(
+    fun handleGenericException(ex: BadRequestException) = createErrorResponse(
         HttpStatus.BAD_REQUEST,
         ErrorResponse(
             errorDescription = ex.message,
@@ -18,8 +18,8 @@ class CardIdentificationExceptionHandler : ResponseEntityExceptionHandler() {
     )
 
     @ExceptionHandler
-    fun handleExceptionInternal(ex: Exception) = createErrorResponse(
-        HttpStatus.BAD_REQUEST,
+    fun handleExceptionInternal(ex: CardIdentificationException) = createErrorResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR,
         ErrorResponse(
             errorDescription = ex.message,
             errorCode = HttpStatus.BAD_REQUEST.value()

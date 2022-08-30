@@ -7,3 +7,4 @@ import org.springframework.web.bind.annotation.ResponseStatus
 class CardIdentificationException(message: String ) : RuntimeException(message)
 
 
+class BadRequestException(message: String): RuntimeException(message)
