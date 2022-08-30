@@ -37,19 +37,19 @@ let State = {
 //accessor function
 let setCardNumberError = (isError) => {
     State.cardNumberHasError = isError
-    updateFeedbackField(isError, cardNumberFeedback)
+    updateFeedbackDisplay(isError, cardNumberFeedback)
 }
 let setExpiryMonthError = (isError) => {
     State.expiryMonthHasError = isError
-    updateFeedbackField(isError, expiryMonthFeedback)
+    updateFeedbackDisplay(isError, expiryDateFeedback)
 }
 let setExpiryYearError = (isError) => {
     State.expiryYearHasError = isError
-    updateFeedbackField(isError, expiryYearFeedback)
+    updateFeedbackDisplay(isError, expiryDateFeedback)
 }
 let setAccountNumberError = (isError) => {
     State.accountNumberHasError = isError
-    updateFeedbackField(isError, accountNumberFeedback)
+    updateFeedbackDisplay(isError, accountNumberFeedback)
 }
 let setIsNorwegianCard = (isNorwegian) => {
     if (isNorwegian) {
@@ -82,8 +82,7 @@ const cardNumberFeedback = document.getElementById("cardNumberFeedback")
 
 const expiryMonthField = document.getElementById("expiryMonthField")
 const expiryYearField = document.getElementById("expiryYearField")
-const expiryMonthFeedback = document.getElementById("expiryMonthFeedback")
-const expiryYearFeedback = document.getElementById("expiryYearFeedback")
+const expiryDateFeedback = document.getElementById("expiryDateFeedback")
 
 const accountNumberFieldContainer = document.getElementById("accountNumberFieldContainer")
 const accountNumberField = document.getElementById("accountNumberField")
@@ -344,9 +343,8 @@ const updateMaskedCardNumberField = () => {
     maskedCardNumberField.textContent = maskCardNumberByScheme(State.cardNumber, State.cardScheme)
 }
 
-const updateFeedbackField = (isError, feedbackField) => {
-    feedbackField.classList.toggle("hidden", isError)
-
+const updateFeedbackDisplay = (isError, feedbackField) => {
+    feedbackField.classList.toggle("hidden", !isError)
 };
 
 const updateSchemeClassOn = (component) => {
