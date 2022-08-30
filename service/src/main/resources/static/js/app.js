@@ -172,30 +172,24 @@ const firstDigitCheck = (cardNumber) => {
 }
 
 const cardSchemeLengthOk = (cardNumber, cardScheme) => {
-    if (!cardNumber) {
+    if (!cardNumber || cardNumber.length < 12) {
         return false
     }
-
-    if (cardNumber.length < 12) {
-        return false
-    }
-
-    let checkCardSchemeLength = false
 
     switch (cardScheme) {
         case VISA_SCHEME:
-            return checkCardSchemeLength = cardNumber.length === 16;
+            return cardNumber.length === 16;
         case MASTER_SCHEME:
             if (State.cardSubType === MAESTRO_MASTER_CARD) {
-                return checkCardSchemeLength = cardNumber.length >= 12 && cardNumber.length <= 19;
+                return cardNumber.length >= 12 && cardNumber.length <= 19;
             }
-            return checkCardSchemeLength = cardNumber.length === 16;
+            return cardNumber.length === 16;
         case AMEX_SCHEME:
-            return checkCardSchemeLength = cardNumber.length === 15;
+            return cardNumber.length === 15;
         case DINERS_SCHEME:
-            return checkCardSchemeLength = cardNumber.length >= 14 && cardNumber.length <= 16;
+            return cardNumber.length >= 14 && cardNumber.length <= 16;
         default:
-            return checkCardSchemeLength
+            return false
 
     }
 }
