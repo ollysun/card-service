@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import javax.validation.Valid
 
 
+private const val ADD_CARD_TEMPLATE = "add-card"
+
 @Controller
 @RequestMapping("/card-registration")
 class CardIdentificationController(val cardService: CardIdentificationService) {
@@ -24,15 +26,19 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
         model["addCardForm"] = AddCardForm("", "", "")
-        return "add-card"
+        return ADD_CARD_TEMPLATE
     }
 
     @PostMapping
     suspend fun createCard(
-        @Valid @ModelAttribute addCardForm: AddCardForm,
+        @Valid @ModelAttribute("addCardForm") addCardForm: AddCardForm,
         errors: BindingResult,
         model: Model
     ): String {
+
+        if (errors.hasErrors()) {
+            return ADD_CARD_TEMPLATE
+        }
         val cardData = CardData(addCardForm.cardNumber, addCardForm.expiryMonth + "/" + addCardForm.expiryYear)
         val cardRequestDto = CardRequestDto("PTO_1", cardData, addCardForm.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
@@ -43,6 +49,6 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
         else
             model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse)
 
-        return "add-card"
+        return ADD_CARD_TEMPLATE
     }
 }
