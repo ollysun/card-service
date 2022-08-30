@@ -263,24 +263,23 @@ const accountNumberCheck = () => {
 const cardNumberMaxLengthByScheme = () => {
     const cardScheme = State.cardScheme
     const cardNumber = State.cardNumber
-    if (cardScheme === VISA_SCHEME) {
-        return VISA_MAX_LENGTH
-    }
-    if (cardScheme === MASTER_SCHEME) {
-        const valueStripped = cardNumber.replace(/\D/g, '') // Stripp everything but numbers
-        const isMaestroCard = valueStripped.match(/^(?:50[0-9]|5[6-8]|6[0-4]|67[0-9]|69[0-9])\d+$/)
-        if (isMaestroCard) {
+    switch (cardScheme) {
+        case VISA_SCHEME:
+            return VISA_MAX_LENGTH
+        case MASTER_SCHEME:
+            const valueStripped = cardNumber.replace(/\D/g, '') // Stripp everything but numbers
+            const isMaestroCard = valueStripped.match(/^(?:50[0-9]|5[6-8]|6[0-4]|67[0-9]|69[0-9])\d+$/)
+            if (isMaestroCard) {
+                return DEFAULT_MAX_LENGTH
+            }
+            return MASTER_MAX_LENGTH
+        case AMEX_SCHEME:
+            return AMEX_MAX_LENGTH
+        case DINERS_SCHEME:
+            return DINERS_SCHEME
+        default:
             return DEFAULT_MAX_LENGTH
-        }
-        return MASTER_MAX_LENGTH
     }
-    if (cardScheme === AMEX_SCHEME) {
-        return AMEX_MAX_LENGTH
-    }
-    if (cardScheme === DINERS_SCHEME) {
-        return DINERS_MAX_LENGTH
-    }
-    return DEFAULT_MAX_LENGTH
 }
 
 const schemeFromCardNumber = () => {
