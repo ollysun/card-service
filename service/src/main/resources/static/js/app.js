@@ -176,30 +176,28 @@ const cardSchemeLengthOk = (cardNumber, cardScheme) => {
         return false
     }
 
-    let checkCardSchemeLength = false
-
     if (cardNumber.length < 12) {
         return false
     }
 
-    if (cardScheme === VISA_SCHEME) {
-        checkCardSchemeLength = cardNumber.length === 16;
-    }
-    if (cardScheme === MASTER_SCHEME) {
-        checkCardSchemeLength = cardNumber.length === 16;
-        if (State.cardSubType === MAESTRO_MASTER_CARD) {
-            checkCardSchemeLength = cardNumber.length >= 12 && cardNumber.length <= 19;
-        }
-    }
+    let checkCardSchemeLength = false
 
-    if (cardScheme === AMEX_SCHEME) {
-        checkCardSchemeLength = cardNumber.length === 15;
+    switch (cardScheme) {
+        case VISA_SCHEME:
+            return checkCardSchemeLength = cardNumber.length === 16;
+        case MASTER_SCHEME:
+            if (State.cardSubType === MAESTRO_MASTER_CARD) {
+                return checkCardSchemeLength = cardNumber.length >= 12 && cardNumber.length <= 19;
+            }
+            return checkCardSchemeLength = cardNumber.length === 16;
+        case AMEX_SCHEME:
+            return checkCardSchemeLength = cardNumber.length === 15;
+        case DINERS_SCHEME:
+            return checkCardSchemeLength = cardNumber.length >= 14 && cardNumber.length <= 16;
+        default:
+            return checkCardSchemeLength
+
     }
-    if (cardScheme === DINERS_SCHEME) {
-        checkCardSchemeLength = cardNumber.length >= 14 && cardNumber.length <= 16;
-    }
-    State.cardSubType = ''
-    return checkCardSchemeLength
 }
 
 const mod11AlgoCheck = ((weights) => {
