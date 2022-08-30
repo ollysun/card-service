@@ -6,7 +6,6 @@
 <div th:fragment="card-form">
     <form class="needs-validation" method="post" novalidate
           th:action="@{/card-registration}" th:object="${addCardForm}">
-        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
 
         <div th:replace="field :: card-number"></div>
 
