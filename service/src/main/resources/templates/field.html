@@ -13,7 +13,7 @@
                    th:aria-label="#{cardNumber.label}"
                    th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
             <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
-            <div class="invalid-feedback" id="cardNumberFeedback" th:text="#{cardNumber.error.invalid}"></div>
+            <div class="invalid-feedback hidden" id="cardNumberFeedback" th:text="#{cardNumber.error.invalid}"></div>
             <div class="invalid-feedback" th:errors="*{cardNumber}" th:if="${#fields.hasErrors('cardNumber')}"></div>
         </div>
     </div>
@@ -41,15 +41,15 @@
                 </select>
             </div>
         </div>
-        <div class="invalid-feedback" id="expiryMonthFeedback" th:text="#{expiry.month.error.invalid}"></div>
-        <div class="invalid-feedback" id="expiryYearFeedback" th:text="#{expiry.year.error.invalid}"></div>
-        <div class="invalid-feedback" th:errors="*{expiryMonth}" th:if="${#fields.hasErrors('expiryMonth')}"></div>
+        <div class="invalid-feedback hidden" id="expiryDateFeedback"
+             th:text="#{expiry.date.error.invalid}"></div>
+        <div class="invalid-feedback " th:errors="*{expiryMonth}" th:if="${#fields.hasErrors('expiryMonth')}"></div>
         <div class="invalid-feedback" th:errors="*{expiryYear}" th:if="${#fields.hasErrors('expiryYear')}"></div>
     </div>
 </div>
 
 <div th:fragment="account-number">
-    <div class="mb-2 hidden" id="accountNumberFieldContainer">
+    <div class="mb-2 display-hidden" id="accountNumberFieldContainer">
         <label class="form-label" for="accountNumberField" th:text="#{accountNumber.label}"></label>
         <span class="text-secondary">*</span>
         <div class="input-group has-validation">
@@ -60,7 +60,8 @@
                    th:placeholder="#{accountNumber.placeholder}"
                    type="text">
             <span class="card-icon"><i class="credit-card bank-axept"></i></span>
-            <div class="invalid-feedback" id="accountNumberFeedback" th:text="#{accountNumber.error.invalid}"></div>
+            <div class="invalid-feedback hidden" id="accountNumberFeedback"
+                 th:text="#{accountNumber.error.invalid}"></div>
             <div class="invalid-feedback" th:errors="*{accountNumber}"
                  th:if="${#fields.hasErrors('accountNumber')}"></div>
         </div>
