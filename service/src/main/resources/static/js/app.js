@@ -49,7 +49,7 @@ let setExpiryYearError = (isError) => {
 }
 let setAccountNumberError = (isError) => {
     State.accountNumberHasError = isError
-    updateFeedbackDisplay(isError, accountNumberFeedback)
+    updateAccountNumberFeedback(isError, accountNumberFeedback)
 }
 let setIsNorwegianCard = (isNorwegian) => {
     if (isNorwegian) {
@@ -342,6 +342,10 @@ const updateCardBannerComponents = () => {
 const updateMaskedCardNumberField = () => {
     maskedCardNumberField.textContent = maskCardNumberByScheme(State.cardNumber, State.cardScheme)
 }
+
+const updateAccountNumberFeedback = (isError, feedbackField) => {
+    feedbackField.classList.toggle("d-none", !isError)
+};
 
 const updateFeedbackDisplay = (isError, feedbackField) => {
     feedbackField.classList.toggle("hidden", !isError)

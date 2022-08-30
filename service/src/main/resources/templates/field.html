@@ -49,7 +49,7 @@
 </div>
 
 <div th:fragment="account-number">
-    <div class="mb-2 display-hidden" id="accountNumberFieldContainer">
+    <div class="mb-2 d-none" id="accountNumberFieldContainer">
         <label class="form-label" for="accountNumberField" th:text="#{accountNumber.label}"></label>
         <span class="text-secondary">*</span>
         <div class="input-group has-validation">
@@ -70,7 +70,7 @@
 </div>
 
 <div th:fragment="save-button">
-    <div class="align-items-center justify-content-between">
+    <div class="mb-2 align-items-center justify-content-between">
         <button class="btn btn-gray-400 text-white " disabled id="saveButton"
                 th:text="#{saveButton.label}"
                 type="submit"></button>
