@@ -37,13 +37,13 @@ class CardIdentificationController(
         errors: BindingResult,
         model: Model
     ): String {
+        model["options"] = SelectOptions
         if (errors.hasErrors()) {
             return ADD_CARD_TEMPLATE
         }
         val cardData = CardData(addCardForm.cardNumber, addCardForm.expiryMonth + "/" + addCardForm.expiryYear)
         val cardRequestDto = CardRequestDto("PTO_1", cardData, addCardForm.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
-        model["options"] = SelectOptions
 
         if (storeCardResponse.errorMessage.isNotEmpty())
             model["addCardError"] = storeCardResponse.errorMessage

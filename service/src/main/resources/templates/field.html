@@ -13,7 +13,8 @@
                    th:aria-label="#{cardNumber.label}"
                    th:name="#{cardNumber.name}" th:placeholder="#{cardNumber.placeholder}" type="text">
             <span class="card-icon"><i class="credit-card" id="cardNumberSchemeLogo"></i></span>
-            <div class="invalid-feedback hidden" id="cardNumberFeedback" th:text="#{cardNumber.error.invalid}"></div>
+            <div class="invalid-feedback hidden" id="cardNumberFeedback" th:if="${!#fields.hasErrors('cardNumber')}"
+                 th:text="#{cardNumber.error.invalid}"></div>
             <div class="invalid-feedback" th:errors="*{cardNumber}" th:if="${#fields.hasErrors('cardNumber')}"></div>
         </div>
     </div>
@@ -41,7 +42,7 @@
                 </select>
             </div>
         </div>
-        <div class="invalid-feedback hidden" id="expiryDateFeedback"
+        <div class="invalid-feedback hidden" id="expiryDateFeedback" th:if="${!#fields.hasErrors('expiryMonth')}"
              th:text="#{expiry.date.error.invalid}"></div>
         <div class="invalid-feedback " th:errors="*{expiryMonth}" th:if="${#fields.hasErrors('expiryMonth')}"></div>
         <div class="invalid-feedback" th:errors="*{expiryYear}" th:if="${#fields.hasErrors('expiryYear')}"></div>
@@ -61,6 +62,7 @@
                    type="text">
             <span class="card-icon"><i class="credit-card bank-axept"></i></span>
             <div class="invalid-feedback hidden" id="accountNumberFeedback"
+                 th:if="${!#fields.hasErrors('accountNumber')}"
                  th:text="#{accountNumber.error.invalid}"></div>
             <div class="invalid-feedback" th:errors="*{accountNumber}"
                  th:if="${#fields.hasErrors('accountNumber')}"></div>
