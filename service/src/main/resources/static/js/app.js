@@ -90,6 +90,7 @@ const accountNumberFeedback = document.getElementById("accountNumberFeedback")
 
 const saveButton = document.getElementById("saveButton")
 const responseMessage = document.getElementById("responseJsonString")
+const successMessage = document.getElementById("successMessage")
 
 //helper functions
 const maskAccountNumber = (accountNumber) => {
@@ -319,6 +320,10 @@ const updateExpiryDate = () => {
     cardBannerExpiryYear.textContent = State.expiryYear
 }
 
+const removeSuccessMessage = () => {
+    successMessage.classList.add("hidden")
+}
+
 const updateCardBannerComponents = () => {
     updateMaskedCardNumberField()
     updateSchemeClassOn(cardBannerSchemeLogo)
@@ -395,6 +400,7 @@ const cardNumberOnBlurHandler = (e) => {
 const cardNumberOnKeyupHandler = (e) => {
     processCardNumberField(e);
     updateCardBannerComponents()
+    removeSuccessMessage()
     if (e.target.value.length === State.cardNumberMaxLength) {
         cardNumberCheck()
         updateCardBannerComponents()

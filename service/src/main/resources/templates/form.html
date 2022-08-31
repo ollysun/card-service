@@ -18,7 +18,7 @@
 
         <div th:replace="field:: save-button"></div>
 
-        <div class="p-2 mt-4 bg-success text-white" th:if="${response} != null"
+        <div class="p-2 mt-4 bg-success text-white" id="successMessage" th:if="${response} != null"
              th:text="#{add.card.success.message}"></div>
     </form>
 
