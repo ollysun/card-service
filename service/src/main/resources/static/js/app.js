@@ -321,7 +321,9 @@ const updateExpiryDate = () => {
 }
 
 const removeSuccessMessage = () => {
-    successMessage.classList.add("hidden")
+    if (successMessage != null) {
+        successMessage.classList.add("hidden")
+    }
 }
 
 const updateCardBannerComponents = () => {
