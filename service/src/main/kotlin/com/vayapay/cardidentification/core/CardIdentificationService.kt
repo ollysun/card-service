@@ -71,7 +71,7 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
             val users: List<BinRangeJsonModel> = mapper.readValue(inputStream, typeReference) as List<BinRangeJsonModel>
             val panSixDigit = pan.take(6);
             users.forEach{
-                   if(panSixDigit != it.binRangeFrom && panSixDigit != it.binRangeTo) {
+                   if(panSixDigit != it.binRangeFrom.take(6) && panSixDigit != it.binRangeTo.take(6)) {
                        return false
                    }
             }

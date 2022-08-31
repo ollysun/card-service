@@ -12,6 +12,10 @@ spring:
       port: ${STORAGE_PORT:4040}
   application:
     name: ${SERVICE_NAME:secure_card_identification}
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 ---
 logging:
   level:
@@ -32,7 +36,7 @@ card:
     UD: Union Pay
     VI: Visa
   flytoget:
-    PREPAID: 'P'
-    COUNTRY_CODE: "578"
-    CURRENCY_CODE: "578"
-    CREDIT: 'C'
+    PREPAID: P
+    COUNTRY_CODE: 578
+    CURRENCY_CODE: 578
+    CREDIT: C

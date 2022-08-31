@@ -17,9 +17,9 @@ data class BinRangeUploadModel(
     @CsvBindByPosition(position = 5)
     val cardType: String?= null,
     @CsvBindByPosition(position = 6)
-    val creditOrDebit: String?= null,
-    @CsvBindByPosition(position = 7)
     val cardScheme: String?= null,
+    @CsvBindByPosition(position = 7)
+    val creditOrDebit: String?= null,
     @CsvBindByPosition(position = 8)
     val productId: String?= null,
     @CsvBindByPosition(position = 9)

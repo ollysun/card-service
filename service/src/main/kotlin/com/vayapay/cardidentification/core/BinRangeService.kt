@@ -8,6 +8,7 @@ import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.model.BinRangeUploadModel
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
@@ -22,6 +23,8 @@ import java.util.stream.Collectors
 class BinRangeService(
     val binRangeConfiguration:  BinRangeConfiguration) {
 
+    private val logger = KotlinLogging.logger {}
+
     fun uploadBinRangesFile(file: MultipartFile) :  String{
         if (file.isEmpty)
             throw BadRequestException("Empty file")
@@ -32,7 +35,8 @@ class BinRangeService(
                  return processAndValidateBinRange(csvToBean)
             }
         } catch (ex: Exception) {
-            throw CardIdentificationException("Error during csv import")
+            logger.error { ex.localizedMessage }
+            throw CardIdentificationException(ex.stackTraceToString())
         }
     }
 
@@ -46,7 +50,7 @@ class BinRangeService(
      fun processAndValidateBinRange(csvBean : CsvToBean<BinRangeUploadModel>) : String {
         val binRangeUploadModelList : List<BinRangeUploadModel> = csvBean.toList()
         // filter for only non-prepaid accounting funding source
-        val nonPrepaidPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.PREPAID) == d.accountFundingSource } // filter for only non-prepaid accounting funding source
+        val nonPrepaidPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.PREPAID) != d.accountFundingSource } // filter for only non-prepaid accounting funding source
         // check for countryCode
         val countryPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.COUNTRY_CODE) == d.countryCode }
         // check for currencyCode
@@ -59,13 +63,15 @@ class BinRangeService(
             .collect(Collectors.toList())
         val binList =  arrayListOf<BinRangeModel>()
         var count = 0
-        for(bin in filterList){
+         logger.info { filterList[1] }
+         for(bin in filterList){
             ++count
             val binRangeModel = BinRangeModel(
                 count,
                 mergeExtraDigit(bin.accountRangeLow!!),
                 mergeExtraDigit(bin.accountRangeHigh!!),
-                bin.cardScheme?.let { binRangeConfiguration.getCardScheme(it) }!!)
+                binRangeConfiguration.getCardScheme(bin.cardScheme!!)!!
+            )
             binList.add(binRangeModel)
         }
 
@@ -79,6 +85,7 @@ class BinRangeService(
             mapper.findAndRegisterModules();
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // to serialize date
             val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
+            logger.info { path.toAbsolutePath() }
             FileOutputStream(path.toString()).use {
                 val strToBytes: ByteArray = mapper.writeValueAsString(binRangeModelList).toByteArray()
                 it.write(strToBytes)
