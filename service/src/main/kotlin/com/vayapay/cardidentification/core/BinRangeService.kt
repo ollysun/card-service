@@ -63,7 +63,6 @@ class BinRangeService(
             .collect(Collectors.toList())
         val binList =  arrayListOf<BinRangeModel>()
         var count = 0
-         logger.info { filterList[1] }
          for(bin in filterList){
             ++count
             val binRangeModel = BinRangeModel(
@@ -85,9 +84,8 @@ class BinRangeService(
             mapper.findAndRegisterModules();
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // to serialize date
             val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
-            logger.info { path.toAbsolutePath() }
             FileOutputStream(path.toString()).use {
-                val strToBytes: ByteArray = mapper.writeValueAsString(binRangeModelList).toByteArray()
+                val strToBytes: ByteArray = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
                 it.write(strToBytes)
             }
             return "json created"
