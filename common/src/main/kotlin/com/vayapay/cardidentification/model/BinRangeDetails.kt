@@ -5,9 +5,9 @@ import java.time.Instant
 
 data class BinRangeUploadModel(
     @CsvBindByPosition(position = 0)
-    val accountRangeLow: String?= null,
+    val accountRangeLow: String?= null, //column A
     @CsvBindByPosition(position = 1)
-    val accountRangeHigh: String?= null,
+    val accountRangeHigh: String?= null, // column B
     @CsvBindByPosition(position = 2)
     val countryCode: String?= null,
     @CsvBindByPosition(position = 3)
@@ -42,10 +42,18 @@ data class BinRangeUploadModel(
 )
 
 
-data class BinRange(
+data class BinRangeModel(
     val id: Int,
     val binRangeFrom: String,
     val binRangeTo: String,
     val brand: String,
     val createTime: Instant = Instant.now()
+)
+
+data class BinRangeJsonModel(
+    val id: Int,
+    val binRangeFrom: String,
+    val binRangeTo: String,
+    val brand: String,
+    val createTime: Instant
 )

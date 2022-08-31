@@ -12,11 +12,11 @@ import javax.validation.Valid
 
 
 @Controller
-@RequestMapping("/card")
+@RequestMapping("/card-identification")
 class CardIdentificationController(
         val cardService: CardIdentificationService) {
 
-    @PostMapping
+    @PostMapping("/cards")
     fun cardRegistration(@RequestBody @Valid cardRequestDto: CardRequestDto): Mono<StoreCardDataResponse> {
         return cardService.saveCardStorage(cardRequestDto);
     }

@@ -52,8 +52,6 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-rsocket")
 
-	testRuntimeOnly("com.h2database:h2")
-	testImplementation("io.r2dbc:r2dbc-h2")
 	testImplementation("com.vayapay.common:common-rsocketMock:$commonUtilsVersion")
 
 	// Dependencies for cucumber tests

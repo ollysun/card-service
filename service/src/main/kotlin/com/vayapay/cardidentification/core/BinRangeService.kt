@@ -6,7 +6,7 @@ import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
 import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
-import com.vayapay.cardidentification.model.BinRange
+import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.model.BinRangeUploadModel
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -22,14 +22,14 @@ import java.util.stream.Collectors
 class BinRangeService(
     val binRangeConfiguration:  BinRangeConfiguration) {
 
-    suspend fun uploadBinRangesFile(file: MultipartFile): List<BinRange> {
+    fun uploadBinRangesFile(file: MultipartFile) :  String{
         if (file.isEmpty)
             throw BadRequestException("Empty file")
 
         try {
             BufferedReader(InputStreamReader(file.inputStream)).use {
                 val csvToBean = createBinRangeToBean(it)
-                return processAndValidateBinRange(csvToBean)
+                 return processAndValidateBinRange(csvToBean)
             }
         } catch (ex: Exception) {
             throw CardIdentificationException("Error during csv import")
@@ -43,7 +43,7 @@ class BinRangeService(
             .withIgnoreLeadingWhiteSpace(true)
             .build()
 
-    private suspend fun processAndValidateBinRange(csvBean : CsvToBean<BinRangeUploadModel>) : ArrayList<BinRange> {
+     fun processAndValidateBinRange(csvBean : CsvToBean<BinRangeUploadModel>) : String {
         val binRangeUploadModelList : List<BinRangeUploadModel> = csvBean.toList()
         // filter for only non-prepaid accounting funding source
         val nonPrepaidPredicate: Predicate<BinRangeUploadModel> = Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(CLAUSES.PREPAID) == d.accountFundingSource } // filter for only non-prepaid accounting funding source
@@ -57,33 +57,33 @@ class BinRangeService(
         val filterList = binRangeUploadModelList.stream()
             .filter(nonCreditPredicate.and(nonPrepaidPredicate).and(countryPredicate).and(currencyCodePredicate))
             .collect(Collectors.toList())
-        val binList =  arrayListOf<BinRange>()
+        val binList =  arrayListOf<BinRangeModel>()
         var count = 0
         for(bin in filterList){
             ++count
-            val binRange = BinRange(
+            val binRangeModel = BinRangeModel(
                 count,
                 mergeExtraDigit(bin.accountRangeLow!!),
                 mergeExtraDigit(bin.accountRangeHigh!!),
                 bin.cardScheme?.let { binRangeConfiguration.getCardScheme(it) }!!)
-            binList.add(binRange)
+            binList.add(binRangeModel)
         }
 
-        processAndReturnJson(binList)
-        return binList
+        return processAndReturnJson(binList)
 
     }
 
-    private fun processAndReturnJson( binRangeList: List<BinRange>){
+    fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) : String{
         try {
             val mapper = jacksonObjectMapper()
             mapper.findAndRegisterModules();
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // to serialize date
             val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
             FileOutputStream(path.toString()).use {
-                val strToBytes: ByteArray = mapper.writeValueAsString(binRangeList).toByteArray()
+                val strToBytes: ByteArray = mapper.writeValueAsString(binRangeModelList).toByteArray()
                 it.write(strToBytes)
             }
+            return "json created"
         }catch (ex: Exception){
             throw CardIdentificationException(ex.message!!)
         }

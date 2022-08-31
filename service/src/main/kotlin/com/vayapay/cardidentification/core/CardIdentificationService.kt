@@ -1,16 +1,27 @@
 package com.vayapay.cardidentification.core
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.messages.StoreCardDataResponse
-import com.vayapay.cardidentification.model.CardData
-import com.vayapay.cardidentification.model.CardRequestDto
-import com.vayapay.cardidentification.model.StoreCardDataRequest
+import com.vayapay.cardidentification.model.*
+import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
+import java.io.IOException
+
+import java.io.InputStream
+
+
+
 
 @Service
 class CardIdentificationService constructor( val cardDataClient: RSocketCardDataClient)  {
+
+    private val logger = KotlinLogging.logger {}
+
 
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid : String;
@@ -18,7 +29,8 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
 
         val pan: String = cardDataRequest.cardData.pan.trim()
 
-        if (!isDigitNumber(pan) || !luhmCheck(pan)) {
+        // validate digitnumber, luhn algorithm check and binranges
+        if (!isDigitNumber(pan) || !luhmCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
 
@@ -49,5 +61,24 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
 
     fun isDigitNumber(toCheck: String): Boolean {
         return toCheck.all { char -> char.isDigit() }
+    }
+
+    fun validationPanBinRange(pan : String) : Boolean{
+        val mapper = ObjectMapper()
+        val typeReference: TypeReference<List<BinRangeJsonModel>> = object : TypeReference<List<BinRangeJsonModel>>() {}
+        val inputStream: InputStream = TypeReference::class.java.getResourceAsStream("/data/BinRange.json") as InputStream
+        try {
+            val users: List<BinRangeJsonModel> = mapper.readValue(inputStream, typeReference) as List<BinRangeJsonModel>
+            val panSixDigit = pan.take(6);
+            users.forEach{
+                   if(panSixDigit != it.binRangeFrom && panSixDigit != it.binRangeTo) {
+                       return false
+                   }
+            }
+        } catch (e: IOException) {
+            logger("Unable to save users: " + e.message)
+        }
+
+        return true
     }
 }
