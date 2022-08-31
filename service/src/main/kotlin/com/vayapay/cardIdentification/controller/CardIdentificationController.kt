@@ -1,6 +1,6 @@
 package com.vayapay.cardIdentification.controller
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.vayapay.cardIdentification.core.CardIdentificationService
 import com.vayapay.cardIdentification.model.AddCardForm
 import com.vayapay.cardIdentification.model.CardData
@@ -21,7 +21,9 @@ private const val ADD_CARD_TEMPLATE = "add-card"
 
 @Controller
 @RequestMapping("/card-registration")
-class CardIdentificationController(val cardService: CardIdentificationService) {
+class CardIdentificationController(
+    val cardService: CardIdentificationService, val objectMapper: ObjectMapper
+) {
     @GetMapping
     suspend fun cardForm(model: Model): String {
         model["options"] = SelectOptions
@@ -46,7 +48,7 @@ class CardIdentificationController(val cardService: CardIdentificationService) {
         if (storeCardResponse.errorMessage.isNotEmpty())
             model["addCardError"] = storeCardResponse.errorMessage
         else
-            model["response"] = jacksonObjectMapper().writeValueAsString(storeCardResponse.cardId)
+            model["response"] = objectMapper.writeValueAsString(storeCardResponse.cardId)
 
         return ADD_CARD_TEMPLATE
     }
