@@ -7,7 +7,7 @@
     <div class="ratio mb-4">
         <div class="bankcard" id="bankCard">
             <div class="bankcard-content">
-                <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                <div class="d-flex flex-row align-items-center justify-content-between mb-4">
                     <div class="d-flex flex-column">
                         <span class="p number hidden" id="cardAccountNoLabel"
                               th:text="#{cardBanner.text.accountNumber}"></span>
@@ -18,7 +18,7 @@
 
                 <!-- End create a js method that checks norwegianCard before displaying this div-->
 
-                <div class="d-flex flex-column mb-2">
+                <div class="d-flex flex-column mb-4">
                     <span class="p number" th:text="#{cardBanner.text.cardNumber}"></span>
                     <span class="h card-number" id="maskedCardNumberField"
                           th:text="#{cardBanner.text.cardNumber.initValue}"></span>
