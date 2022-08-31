@@ -402,15 +402,15 @@ const cardNumberOnBlurHandler = (e) => {
 const cardNumberOnKeyupHandler = (e) => {
     processCardNumberField(e);
     updateCardBannerComponents()
-    removeSuccessMessage()
     if (e.target.value.length === State.cardNumberMaxLength) {
         cardNumberCheck()
         updateCardBannerComponents()
         bankAxeptCardNumberCheck()
     } else {
-        State.cardNumberHasError = true
+        updateFeedbackDisplay(false, cardNumberFeedback)
     }
     updateSaveButton()
+    removeSuccessMessage()
 }
 
 const expiryMonthOnChangeHandler = (e) => {
