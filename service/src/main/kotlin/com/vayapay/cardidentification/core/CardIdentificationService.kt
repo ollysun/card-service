@@ -37,17 +37,6 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
         if (!isDigitNumber(pan) || !luhmCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
-//        if (!isDigitNumber(pan)){
-//            throw CardIdentificationException("we need numeric number")
-//        }
-//        if (!luhmCheck(pan)){
-//            throw CardIdentificationException("luhm check algorithm not pass")
-//        }
-//
-//        if(!validationPanBinRange(pan)){
-//            throw CardIdentificationException("wrong pan for bin ranges")
-//        }
-
 
         val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
         val cardDataList = ArrayList<CardData>()
