@@ -41,7 +41,7 @@ class CardIdentificationController(
         if (errors.hasErrors()) {
             return ADD_CARD_TEMPLATE
         }
-        val cardData = CardData(addCardForm.cardNumber, addCardForm.expiryMonth + "/" + addCardForm.expiryYear)
+        val cardData = CardData(addCardForm.cardNumber, addCardForm.expiryMonth + addCardForm.expiryYear)
         val cardRequestDto = CardRequestDto("PTO_1", cardData, addCardForm.accountNumber)
         val storeCardResponse = cardService.saveCardStorage(cardRequestDto)
 
