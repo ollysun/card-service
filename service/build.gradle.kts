@@ -8,6 +8,8 @@ val kotlinVersion: String by project
 val shedLockVersion: String by project
 val loggingUtilsVersion: String by project
 val awSpringVersion: String by project
+val cardDataVersion: String by project
+val jacksonDataType: String by project
 plugins {
 	id("org.springframework.boot")
 	kotlin("plugin.spring")
@@ -54,6 +56,9 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.rsocket:rsocket-micrometer")
+	implementation("com.vayapay.carddata:card-data-service-client:$cardDataVersion")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDataType")
+
 	// Dependencies for formatting logs in Kibana friendly format
 	runtimeOnly("net.logstash.logback:logstash-logback-encoder:$logbackEncoder")
 	runtimeOnly("org.codehaus.janino:janino")

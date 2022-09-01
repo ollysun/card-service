@@ -6,10 +6,11 @@ logging:
     com.vayapay: INFO
 server:
   shutdown: graceful
+  port: 8181
 spring:
   rsocket:
     server:
-      port: ${STORAGE_PORT:4040}
+      port: ${STORAGE_PORT:4141}
   application:
     name: ${SERVICE_NAME:secure_card_identification}
   servlet:
