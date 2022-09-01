@@ -271,7 +271,7 @@ const cardNumberMaxLengthByScheme = () => {
         case AMEX_SCHEME:
             return AMEX_MAX_LENGTH
         case DINERS_SCHEME:
-            return DINERS_SCHEME
+            return DINERS_MAX_LENGTH
         default:
             return DEFAULT_MAX_LENGTH
     }
