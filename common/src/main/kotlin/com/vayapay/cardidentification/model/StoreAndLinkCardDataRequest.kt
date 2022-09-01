@@ -1,9 +1,8 @@
 package com.vayapay.cardidentification.model
 
 import kotlinx.serialization.Serializable
-// ToDo To remove this class
 @Serializable
-data class StoreCardDataRequest(
+data class StoreAndLinkCardDataRequest(
     val ptoId:String,
     val cardData: List<CardData>
 )

@@ -1,11 +1,11 @@
 package com.vayapay.cardidentification.messages
 
-import com.vayapay.cardidentification.model.CardIdResponse
+import com.vayapay.cardidentification.model.CardId
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StoreCardDataResponse(
-    val cardId : CardIdResponse?,
+    val cardId : CardId?,
     override val errorCode: String = "",
     override val errorMessage:String?=null) : Response() {
 

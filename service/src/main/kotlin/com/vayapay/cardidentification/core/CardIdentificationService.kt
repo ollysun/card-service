@@ -25,7 +25,7 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
 
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid : String;
-    fun saveCardStorage(cardDataRequest: CardRequestDto): Mono<StoreCardDataResponse> {
+    fun saveCardStorage(cardDataRequest: CardRequestDto): Mono<StoreAndLinkCardDataResponse> {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
 
@@ -34,15 +34,17 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
             throw CardIdentificationException("wrong pan number")
         }
 
-        val bankAxemptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
-        val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val bankAxemptCardData = CardData(bankAxemptPan, cardDataRequest.cardData.expirationDate)
-        val cardDataList = ArrayList<CardData>()
-        cardDataList.add(bankAxemptCardData)
-        cardDataList.add(otherCardData)
-        val storeCardDataRequest = StoreCardDataRequest(ptoid, cardDataList);
+       // todo
+        val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
 
-        return cardDataClient.storeCardData(storeCardDataRequest)
+        val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
+        val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
+        val cardDataList = ArrayList<CardData>()
+        cardDataList.add(bankAxeptCardData)
+        cardDataList.add(otherCardData)
+        val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList);
+
+        return cardDataClient.storeCardData(storeAndLinkCardDataRequest)
     }
 
     fun luhmCheck(number: String): Boolean {

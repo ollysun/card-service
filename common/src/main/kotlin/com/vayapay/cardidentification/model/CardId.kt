@@ -4,9 +4,8 @@ import com.vayapay.message.serialization.UUIDSerializer
 import kotlinx.serialization.Serializable
 import java.util.*
 
-//TODO to remove when the endpoint is ready on card store storage
 @Serializable
-data class CardIdResponse(
+data class CardId(
     val cardScheme: String,
     @Serializable(with = UUIDSerializer::class)
     val paymentCardReference: UUID,

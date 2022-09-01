@@ -1,7 +1,8 @@
 package com.vayapay.cardidentification.core
 
 import com.vayapay.cardidentification.messages.StoreCardDataResponse
-import com.vayapay.cardidentification.model.StoreCardDataRequest
+import com.vayapay.cardidentification.model.StoreAndLinkCardDataRequest
+import com.vayapay.cardidentification.model.StoreAndLinkCardDataResponse
 import io.rsocket.transport.netty.client.TcpClientTransport
 import mu.KotlinLogging
 import org.springframework.beans.factory.ObjectProvider
@@ -23,7 +24,8 @@ import reactor.netty.tcp.TcpClient
 import reactor.util.retry.Retry
 import java.time.Duration
 
-const val STORE_CARD_DATA = "cardStorage/storeCardData"
+const val STORE_AND_LINK_CARD_DATA = "cardStorage/storeAndLinkCardData"
+
 
 
 @Configuration
@@ -71,15 +73,15 @@ class RSocketCardDataClient(
 
 
 
-     fun storeCardData(storeCardDataRequest: StoreCardDataRequest): Mono<StoreCardDataResponse> {
+     fun storeCardData(storeAndLinkCardDataRequest: StoreAndLinkCardDataRequest): Mono<StoreAndLinkCardDataResponse> {
         return requester
-                .route(STORE_CARD_DATA)
+                .route(STORE_AND_LINK_CARD_DATA)
                 .data(
-                    StoreCardDataRequest(
-                        ptoId = storeCardDataRequest.ptoId,
-                        cardData = storeCardDataRequest.cardData
+                    StoreAndLinkCardDataRequest(
+                        ptoId = storeAndLinkCardDataRequest.ptoId,
+                        cardData = storeAndLinkCardDataRequest.cardData
                     )
-                ).retrieveMono(StoreCardDataResponse::class.java)
+                ).retrieveMono(StoreAndLinkCardDataResponse::class.java)
 
     }
 
