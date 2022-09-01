@@ -36,12 +36,4 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-
-    testImplementation("net.sourceforge.htmlunit:htmlunit:2.64.0")
-
-}
-
-configurations.implementation {
-    exclude(group = "xalan", module = "xalan")
-    exclude(group = "org.eclipse.jetty", module = "jetty-client")
 }
