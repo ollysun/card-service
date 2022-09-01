@@ -33,15 +33,15 @@ class CardIdentificationService constructor( val cardDataClient: RSocketCardData
         if (!isDigitNumber(pan) || !luhmCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
-
-       // todo
-        val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
-
         val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
         val cardDataList = ArrayList<CardData>()
-        cardDataList.add(bankAxeptCardData)
         cardDataList.add(otherCardData)
+        if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()){
+            val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
+            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
+            cardDataList.add(bankAxeptCardData)
+        }
+
         val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList);
 
         return cardDataClient.storeCardData(storeAndLinkCardDataRequest)
