@@ -1,14 +1,11 @@
 package com.vayapay.cardIdentification.controller
 
-import com.gargoylesoftware.htmlunit.WebClient
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.ninjasquad.springmockk.MockkBean
 import com.vayapay.cardIdentification.config.WebSecurityConfig
 import com.vayapay.cardIdentification.core.CardIdentificationService
-import com.vayapay.cardIdentification.model.CardData
-import com.vayapay.cardIdentification.model.CardIdResponse
-import com.vayapay.cardIdentification.model.CardRequestDto
-import com.vayapay.cardIdentification.model.StoreCardResponse
+import com.vayapay.cardIdentification.model.*
 import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,11 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.context.WebApplicationContext
@@ -61,9 +59,13 @@ class CardIdentificationControllerTest {
 
     private lateinit var mockMvc: MockMvc
 
-    private lateinit var webClient: WebClient
+    private lateinit var addCardForm: AddCardForm
 
-    private val cardIdentificationService = mockk<CardIdentificationService>()
+    @MockkBean
+    private lateinit var objectMapper: ObjectMapper
+
+    @MockkBean
+    private lateinit var cardIdentificationService: CardIdentificationService
 
     private var validTestCard = LinkedMultiValueMap<String, String>()
 
@@ -74,10 +76,7 @@ class CardIdentificationControllerTest {
         runBlocking {
             mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .build()
-
-            webClient = MockMvcWebClientBuilder
-                .mockMvcSetup(mockMvc)
+                .apply<DefaultMockMvcBuilder>(SecurityMockMvcConfigurers.springSecurity())
                 .build()
 
             validTestCard = createTestCard(VALID_CARD_NUMBER, VALID_EXPIRY_MONTH, VALID_EXPIRY_YEAR)
@@ -98,14 +97,16 @@ class CardIdentificationControllerTest {
 
     @Test
     fun `should fail to add card without csrf with Forbidden error`() {
-        mockMvc.post(ADD_CARD_URL) {
-            params = validTestCard
-        }.andExpect {
-            status {
-                is4xxClientError()
-                isForbidden()
+        runBlocking {
+            mockMvc.post(ADD_CARD_URL) {
+                params = validTestCard
+            }.andExpect {
+                status {
+                    is4xxClientError()
+                    isForbidden()
+                }
+                view { ADD_CARD_URL }
             }
-            view { ADD_CARD_URL }
         }
     }
 
@@ -122,26 +123,6 @@ class CardIdentificationControllerTest {
                 view { ADD_CARD_URL }
             }
         }
-    }
-
-    @Test
-    fun `should fail to add card data`() {
-        coEvery { cardIdentificationService.saveCardStorage(buildCardRequestDto()) } returns buildInvalidSaveCardResponse()
-        mockMvc.post(ADD_CARD_URL) {
-            params = invalidTestCard
-            with(csrf())
-        }.andExpect {
-            status {
-                isOk()
-            }
-            view { ADD_CARD_URL }
-        }
-    }
-
-    @Test
-    fun `s`() {
-
-
     }
 
     private fun createTestCard(
