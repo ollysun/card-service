@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 @Serializable
-class AddCardForm(
+data class AddCardForm(
     @field:CreditCardNumber
     @field:NotEmpty(message = "Card number is mandatory")
     @field:Size(min = 13, max = 19, message = "Card number must be between 13 and 19 digits")
