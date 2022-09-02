@@ -1,6 +1,7 @@
 target/
 build-cache/
 .gradle/
+**/build
 
 ### STS ###
 .apt_generated
@@ -34,3 +35,4 @@ build/
 ../*.log
 
 .DS_Store
+**/docs/features.html

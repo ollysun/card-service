@@ -23,3 +23,9 @@ buildCache {
         removeUnusedEntriesAfterDays = 30
     }
 }
+
+include("common")
+include("service")
+
+// Required to prevent overlapping when creating dependencies on client/common of multiple components
+project(":common").name = "card-identification-service-common"
