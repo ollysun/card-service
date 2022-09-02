@@ -22,6 +22,7 @@ class WebSecurityConfig {
         http.authorizeRequests()
             .antMatchers("/card-registration", "/js/**", "/styles/**", "/img/**").permitAll()
             .anyRequest().authenticated()
+            .and().headers().frameOptions().disable()
         return http.build()
     }
 
