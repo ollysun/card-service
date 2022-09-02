@@ -34,7 +34,7 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
         val pan: String = cardDataRequest.cardData.pan.trim()
 
         // validate digitnumber, luhn algorithm check and binranges
-        if (!isDigitNumber(pan) || !luhmCheck(pan) || !validationPanBinRange(pan)) {
+        if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
 
@@ -51,7 +51,7 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
         return cardDataStorage.storeCardData(storeAndLinkCardDataRequest)
     }
 
-    fun luhmCheck(number: String): Boolean {
+    fun luhnCheck(number: String): Boolean {
         var checksum: Int = 0
 
         for (i in number.length - 1 downTo 0 step 2) {

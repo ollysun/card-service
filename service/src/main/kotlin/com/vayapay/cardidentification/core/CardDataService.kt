@@ -13,7 +13,7 @@ class CardDataService constructor(val cardDataClient: CardDataClient){
     private val logger = KotlinLogging.logger {}
 
     suspend fun storeCardData(storeAndLinkCardDataRequest: StoreAndLinkCardDataRequest): StoreAndLinkCardDataResponse {
-        val cardIdData = cardDataClient.storeAndLinkCardData(storeAndLinkCardDataRequest.ptoId,
+        val cardIdData  = cardDataClient.storeAndLinkCardData(storeAndLinkCardDataRequest.ptoId,
         storeAndLinkCardDataRequest.cardData)
         logger.info { "Card data retrieved from Card Data Storage service:  $cardIdData" }
 
