@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 val javaVersion: String by project
 val logbackEncoder: String by project
 val springMockkVersion: String by project
