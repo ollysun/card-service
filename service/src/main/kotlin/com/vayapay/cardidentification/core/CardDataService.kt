@@ -12,13 +12,15 @@ class CardDataService constructor(val cardDataClient: CardDataClient){
 
     private val logger = KotlinLogging.logger {}
 
-    suspend fun storeCardData(storeAndLinkCardDataRequest: StoreAndLinkCardDataRequest): StoreAndLinkCardDataResponse? {
+    suspend fun storeCardData(storeAndLinkCardDataRequest: StoreAndLinkCardDataRequest): StoreAndLinkCardDataResponse {
         val cardIdData = cardDataClient.storeAndLinkCardData(storeAndLinkCardDataRequest.ptoId,
         storeAndLinkCardDataRequest.cardData)
-        logger.debug { "Card data retrieved from Card Data Storage service: $cardIdData" }
-        return if (cardIdData.isEmpty()) {
+        logger.info { "Card data retrieved from Card Data Storage service:  $cardIdData" }
+
+        if (cardIdData.isEmpty()) {
             logger.error { "card data cannot be saved to card storage" }
             throw CardIdentificationException("card data cannot be saved to card storage")
-        } else StoreAndLinkCardDataResponse(cardIdData)
+        }
+        return StoreAndLinkCardDataResponse(cardIdData)
     }
 }

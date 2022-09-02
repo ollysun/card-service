@@ -29,7 +29,7 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
 
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid : String;
-    suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse? {
+    suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
 
@@ -46,8 +46,7 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
             val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
-
-        val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList);
+        val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList)
 
         return cardDataStorage.storeCardData(storeAndLinkCardDataRequest)
     }
