@@ -9,8 +9,8 @@ class CardIdentificationServiceTest(private val cardIdentificationService: CardI
 
     @Test
     fun luhmCheck() {
-        assertTrue(cardIdentificationService.luhmCheck("4957030420210488"))
-        assertFalse(cardIdentificationService.luhmCheck("4242424242424244"))
+        assertTrue(cardIdentificationService.luhnCheck("4957030420210488"))
+        assertFalse(cardIdentificationService.luhnCheck("4242424242424244"))
     }
 
     @Test
