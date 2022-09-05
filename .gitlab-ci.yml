@@ -26,7 +26,7 @@ stages:
   - build
   - test
   - qacheck
-  - deploy
+  - publish
 
 sonarcloud-check:
   stage: qacheck
@@ -69,8 +69,8 @@ test:
       - build-cache
       - .gradle
 
-deploy:
-  stage: deploy
+publish:
+  stage: publish
   script: gradle publish
   only:
     - main
