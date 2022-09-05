@@ -27,7 +27,7 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
     lateinit var ptoid : String;
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
-        val pan: String = cardDataRequest.cardDataDto.pan.trim()
+        val pan: String = cardDataRequest.cardData.pan.trim()
 
         logger.info { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
@@ -37,12 +37,12 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
 
 
 
-        val otherCardData = CardData(cardDataRequest.cardDataDto.pan, cardDataRequest.cardDataDto.expirationDate)
+        val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
         val cardDataList = ArrayList<CardData>()
             cardDataList.add(otherCardData)
         if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()){
-            val bankAxeptPan = cardDataRequest.cardDataDto.pan.take(6).plus(cardDataRequest.bankAccountNumber)
-            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardDataDto.expirationDate)
+            val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
+            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
         val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList)
