@@ -1,7 +1,6 @@
 package com.vayapay.cardidentification.core
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vayapay.carddata.domain.CardData
 import com.vayapay.carddata.messages.StoreAndLinkCardDataRequest
@@ -10,15 +9,13 @@ import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeJsonModel
 import com.vayapay.cardidentification.model.CardRequestDto
 import mu.KotlinLogging
-import mu.KotlinLogging.logger
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
-import java.io.FileInputStream
-import java.io.IOException
-
+import org.springframework.util.FileCopyUtils
+import java.io.BufferedReader
 import java.io.InputStream
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.io.InputStreamReader
 
 
 @Service
@@ -26,24 +23,26 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
 
     private val logger = KotlinLogging.logger {}
 
-
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid : String;
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
-        val pan: String = cardDataRequest.cardData.pan.trim()
+        val pan: String = cardDataRequest.cardDataDto.pan.trim()
 
+        logger.info { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
         if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
 
-        val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
+
+
+        val otherCardData = CardData(cardDataRequest.cardDataDto.pan, cardDataRequest.cardDataDto.expirationDate)
         val cardDataList = ArrayList<CardData>()
             cardDataList.add(otherCardData)
         if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()){
-            val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
-            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
+            val bankAxeptPan = cardDataRequest.cardDataDto.pan.take(6).plus(cardDataRequest.bankAccountNumber)
+            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardDataDto.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
         val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList)
@@ -73,21 +72,16 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
         val mapper = jacksonObjectMapper()
         mapper.findAndRegisterModules();
         val typeReference: TypeReference<List<BinRangeJsonModel>> = object : TypeReference<List<BinRangeJsonModel>>() {}
-        val path: Path = Paths.get( "data/BinRange.json").toAbsolutePath()
-        val inputStream: InputStream = FileInputStream(path.toFile())
-        var result = false
-        try {
-            val binRanges: List<BinRangeJsonModel> = mapper.readValue(inputStream, typeReference) as List<BinRangeJsonModel>
-            val panSixDigit = pan.take(6);
-            binRanges.asSequence().forEach {
-                if (panSixDigit == it.binRangeFrom.take(6) && panSixDigit == it.binRangeTo.take(6)) {
-                    result = true
-                }
-            }
-        } catch (e: IOException) {
-            logger("Unable to assess the binranges file: " + e.message)
-        }
+        val cpr = ClassPathResource("BinRange.json")
+        val inputStream: InputStream = cpr.inputStream
+        val reader = BufferedReader(InputStreamReader(inputStream))
 
-        return result
+        val binRanges: List<BinRangeJsonModel> = mapper.readValue(FileCopyUtils.copyToString( reader ), typeReference) as List<BinRangeJsonModel>
+        val panSixDigit = pan.take(6);
+
+        return binRanges.asSequence().filter {
+               panSixDigit == it.binRangeFrom.take(6) && panSixDigit == it.binRangeTo.take(6) }
+               .any()
+
     }
 }
