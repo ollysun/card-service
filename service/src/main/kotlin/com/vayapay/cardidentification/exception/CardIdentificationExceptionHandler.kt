@@ -11,18 +11,12 @@ class CardIdentificationExceptionHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler
     fun handleBadRequestException(ex: BadRequestException) = createErrorResponse(
         HttpStatus.BAD_REQUEST,
-        ErrorResponse(
-            errorDescription = ex.message,
-            errorCode = HttpStatus.BAD_REQUEST.value()
-        )
+        ex.message!!
     )
 
     @ExceptionHandler
     fun handleExceptionInternal(ex: CardIdentificationException) = createErrorResponse(
         HttpStatus.INTERNAL_SERVER_ERROR,
-        ErrorResponse(
-            errorDescription = ex.message,
-            errorCode = HttpStatus.BAD_REQUEST.value()
-        )
+        ex.message!!
     )
 }

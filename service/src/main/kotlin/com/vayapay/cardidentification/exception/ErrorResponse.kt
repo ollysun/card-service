@@ -3,16 +3,11 @@ package com.vayapay.cardidentification.exception
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import java.time.LocalDateTime
 
-data class ErrorResponse(
-    val errorDescription: String? = null,
-    val errorCode: Int
-)
 
 fun createErrorResponse(
     httpStatus : HttpStatus,
-    errorResponse: ErrorResponse) = ResponseEntity
+    msg: String) = ResponseEntity
     .status(httpStatus)
     .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-    .body(errorResponse)
+    .body(msg)

@@ -8,6 +8,7 @@ import com.vayapay.carddata.domain.CardScheme
 import com.vayapay.carddata.messages.StoreAndLinkCardDataRequest
 import com.vayapay.carddata.messages.StoreAndLinkCardDataResponse
 import com.vayapay.cardidentification.model.CardDataDto
+import com.vayapay.cardidentification.model.CardRequestDto
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -23,6 +24,7 @@ class CardIdentificationServiceTest{
     private val cardDataService = CardDataService(mockCardDataClient)
     lateinit var cardIdentificationService: CardIdentificationService
     private val cardDataDto = CardDataDto("4079710420210488", "1225")
+    private val cardRequestDto = CardRequestDto(cardDataDto, "23456789")
 
     @BeforeEach
     fun init() {
@@ -49,10 +51,10 @@ class CardIdentificationServiceTest{
         val cardData = listOf(
             CardData(pan = cardDataDto.pan, expirationDate = cardDataDto.expirationDate, cardSequence = 1, iccData = ByteArray(1))
         )
-        val cardid = listOf(CardId(CardScheme.VISA, UUID.randomUUID(), UUID.randomUUID()))
-        val storeAndLinkCardDataResponse = StoreAndLinkCardDataResponse(cardid)
+        val cardId = listOf(CardId(CardScheme.VISA, UUID.randomUUID(), UUID.randomUUID()))
+        val storeAndLinkCardDataResponse = StoreAndLinkCardDataResponse(cardId)
         runBlocking {
-            every { runBlocking { mockCardDataClient.storeAndLinkCardData(any(), any()) } } returns cardid
+            every { runBlocking { mockCardDataClient.storeAndLinkCardData(any(), any()) } } returns cardId
             val result = cardDataService.storeCardData(StoreAndLinkCardDataRequest(ptoId, cardData))
             assertEquals(storeAndLinkCardDataResponse, result)
         }
