@@ -54,11 +54,7 @@ subprojects {
         }
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinCoroutinesVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinCoroutinesVersion")
-
-
-//        testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
-//        testImplementation("io.mockk:mockk:$mockkVersion")
     }
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {

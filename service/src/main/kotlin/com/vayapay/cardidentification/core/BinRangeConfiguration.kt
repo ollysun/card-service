@@ -8,13 +8,13 @@ import org.springframework.boot.context.properties.ConstructorBinding
 data class BinRangeConfiguration(
     val cardScheme: Map<String, String>,
     val flytoget: Map<String, String>
-){
+) {
 
     fun getCardScheme(clauses: String): String? {
         return cardScheme[clauses];
     }
 
-    fun getBinValidation(binValidation : CLAUSES) : String? {
+    fun getBinValidation(binValidation: Clauses): String? {
         return flytoget[binValidation.name]
     }
 

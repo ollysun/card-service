@@ -9,6 +9,7 @@ import com.vayapay.carddata.messages.StoreAndLinkCardDataRequest
 import com.vayapay.carddata.messages.StoreAndLinkCardDataResponse
 import com.vayapay.cardidentification.model.CardDataDto
 import com.vayapay.cardidentification.model.CardRequestDto
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -22,14 +23,9 @@ import java.util.*
 class CardIdentificationServiceTest{
     private val mockCardDataClient = mockk<CardDataClient>()
     private val cardDataService = CardDataService(mockCardDataClient)
-    lateinit var cardIdentificationService: CardIdentificationService
+    private var cardIdentificationService =  CardIdentificationService(cardDataService)
     private val cardDataDto = CardDataDto("4079710420210488", "1225")
-    private val cardRequestDto = CardRequestDto(cardDataDto, "23456789")
 
-    @BeforeEach
-    fun init() {
-        cardIdentificationService = CardIdentificationService(cardDataService)
-    }
 
     @Test
     fun luhmCheck() {
@@ -53,8 +49,10 @@ class CardIdentificationServiceTest{
         )
         val cardId = listOf(CardId(CardScheme.VISA, UUID.randomUUID(), UUID.randomUUID()))
         val storeAndLinkCardDataResponse = StoreAndLinkCardDataResponse(cardId)
+
+        coEvery { mockCardDataClient.storeAndLinkCardData(any(), any()) } returns cardId
+
         runBlocking {
-            every { runBlocking { mockCardDataClient.storeAndLinkCardData(any(), any()) } } returns cardId
             val result = cardDataService.storeCardData(StoreAndLinkCardDataRequest(ptoId, cardData))
             assertEquals(storeAndLinkCardDataResponse, result)
         }
@@ -63,5 +61,6 @@ class CardIdentificationServiceTest{
     @Test
     fun checkValidationPanBinRange() {
         assertTrue(cardIdentificationService.validationPanBinRange("4079710420210488"))
+        assertFalse(cardIdentificationService.validationPanBinRange("4079870420210488"))
     }
 }
