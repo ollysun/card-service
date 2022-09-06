@@ -33,7 +33,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("com.github.ben-manes.caffeine:caffeine")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
     implementation("com.vayapay.common:common-utils:$commonUtilsVersion")
     testImplementation("junit:junit:4.13.2")
