@@ -19,12 +19,12 @@ import java.io.InputStreamReader
 
 
 @Service
-class CardIdentificationService constructor( val cardDataStorage: CardDataService)  {
+class CardIdentificationService constructor(val cardDataStorage: CardDataService) {
 
     private val logger = KotlinLogging.logger {}
 
     @Value("\${card-storage.ptoId}")
-    lateinit var ptoid : String;
+    lateinit var ptoid: String;
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
@@ -37,15 +37,15 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
 
         val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
         val cardDataList = ArrayList<CardData>()
-            cardDataList.add(otherCardData)
-        if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()){
+        cardDataList.add(otherCardData)
+        if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()) {
             val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
             val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
         val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList)
 
-        return cardDataStorage.storeCardData(storeAndLinkCardDataRequest)
+        return cardDataStorage.storeCardData(storeAndLinkCardDataRequest)!!
     }
 
     fun luhnCheck(number: String): Boolean {
@@ -59,14 +59,14 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
             checksum += if (n > 9) n - 9 else n
         }
 
-        return checksum%10 == 0
+        return checksum % 10 == 0
     }
 
     fun isDigitNumber(toCheck: String): Boolean {
         return toCheck.all { char -> char.isDigit() }
     }
 
-    fun validationPanBinRange(pan : String) : Boolean{
+    fun validationPanBinRange(pan: String): Boolean {
         val mapper = jacksonObjectMapper()
         mapper.findAndRegisterModules();
         val typeReference: TypeReference<List<BinRangeJsonModel>> = object : TypeReference<List<BinRangeJsonModel>>() {}
@@ -74,12 +74,14 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
         val inputStream: InputStream = cpr.inputStream
         val reader = BufferedReader(InputStreamReader(inputStream))
 
-        val binRanges: List<BinRangeJsonModel> = mapper.readValue(FileCopyUtils.copyToString( reader ), typeReference) as List<BinRangeJsonModel>
+        val binRanges: List<BinRangeJsonModel> =
+            mapper.readValue(FileCopyUtils.copyToString(reader), typeReference) as List<BinRangeJsonModel>
         val panSixDigit = pan.take(6);
 
         return binRanges.asSequence().filter {
-               panSixDigit == it.binRangeFrom.take(6) && panSixDigit == it.binRangeTo.take(6) }
-               .any()
+            panSixDigit == it.binRangeFrom.take(6) && panSixDigit == it.binRangeTo.take(6)
+        }
+            .any()
 
     }
 }

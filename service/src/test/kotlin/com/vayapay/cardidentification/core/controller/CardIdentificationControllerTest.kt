@@ -15,14 +15,12 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CardIdentificationControllerTest
-    (@Autowired val mockMvc: MockMvc) {
+class CardIdentificationControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Autowired
     lateinit var mapper: ObjectMapper
     private val cardDataDto = CardDataDto("4079710420210488", "1225")
     private val cardRequestDto = CardRequestDto(cardDataDto, "123456")
-
 
     @Test
     fun saveCardRegistrationWithStatus200() {
