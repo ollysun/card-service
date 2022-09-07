@@ -10,7 +10,6 @@ import com.vayapay.carddata.messages.StoreAndLinkCardDataResponse
 import com.vayapay.cardidentification.model.CardDataDto
 import com.vayapay.cardidentification.model.CardRequestDto
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
@@ -25,7 +24,12 @@ class CardIdentificationServiceTest{
     private val cardDataService = CardDataService(mockCardDataClient)
     private var cardIdentificationService =  CardIdentificationService(cardDataService)
     private val cardDataDto = CardDataDto("4079710420210488", "1225")
+    private val cardRequestDto = CardRequestDto(cardDataDto, "23456789")
 
+    @BeforeEach
+    fun init() {
+        cardIdentificationService = CardIdentificationService(cardDataService)
+    }
 
     @Test
     fun luhmCheck() {

@@ -2,14 +2,14 @@ package com.vayapay.cardidentification.core
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
+import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 
-@ConstructorBinding
+@Component
 @ConfigurationProperties(prefix = "card")
-data class BinRangeConfiguration(
-    val cardScheme: Map<String, String>,
-    val flytoget: Map<String, String>
-) {
-
+class BinRangeConfiguration {
+    val cardScheme = HashMap<String, String>()
+    val flytoget = HashMap<String, String>()
     fun getCardScheme(clauses: String): String? {
         return cardScheme[clauses];
     }

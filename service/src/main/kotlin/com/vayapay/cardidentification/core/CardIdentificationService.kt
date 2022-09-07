@@ -35,8 +35,6 @@ class CardIdentificationService constructor( val cardDataStorage: CardDataServic
             throw CardIdentificationException("wrong pan number")
         }
 
-
-
         val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
         val cardDataList = ArrayList<CardData>()
             cardDataList.add(otherCardData)
