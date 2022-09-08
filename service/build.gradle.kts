@@ -2,12 +2,10 @@ val commonUtilsVersion: String by project
 val hsmProxyVersion: String by project
 val jUnit: String by project
 val logbackEncoder: String by project
-val berTlvVersion: String by project
 val springMockkVersion: String by project
 val kotlinVersion: String by project
 val shedLockVersion: String by project
 val loggingUtilsVersion: String by project
-val awSpringVersion: String by project
 val cardDataVersion: String by project
 val jacksonDataType: String by project
 plugins {
@@ -36,7 +34,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
     implementation("com.vayapay.common:common-utils:$commonUtilsVersion")
     testImplementation("junit:junit:4.13.2")
-    implementation("net.javacrumbs.shedlock:shedlock-spring:$shedLockVersion")
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     implementation("io.rsocket:rsocket-micrometer")
@@ -46,7 +43,6 @@ dependencies {
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:$logbackEncoder")
     runtimeOnly("org.codehaus.janino:janino")
     runtimeOnly("com.vayapay.common:logging-utils:$loggingUtilsVersion")
-    runtimeOnly("io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:$awSpringVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 

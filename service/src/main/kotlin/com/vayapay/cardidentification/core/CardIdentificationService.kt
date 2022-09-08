@@ -23,6 +23,7 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
 
     private val logger = KotlinLogging.logger {}
 
+
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid: String;
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
@@ -39,7 +40,7 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
         val cardDataList = ArrayList<CardData>()
         cardDataList.add(otherCardData)
         if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()) {
-            val bankAxeptPan = cardDataRequest.cardData.pan.take(6).plus(cardDataRequest.bankAccountNumber)
+            val bankAxeptPan = BIN_BANK_AXEPT.plus(cardDataRequest.bankAccountNumber)
             val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
@@ -76,12 +77,11 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
 
         val binRanges: List<BinRangeJsonModel> =
             mapper.readValue(FileCopyUtils.copyToString(reader), typeReference) as List<BinRangeJsonModel>
-        val panSixDigit = pan.take(6);
+        val panSixDigit = pan.take(SIX_DIGIT);
 
         return binRanges.asSequence().filter {
-            panSixDigit == it.binRangeFrom.take(6) && panSixDigit == it.binRangeTo.take(6)
-        }
-            .any()
+            panSixDigit == it.binRangeFrom.take(SIX_DIGIT) && panSixDigit == it.binRangeTo.take(SIX_DIGIT)
+        }.any()
 
     }
 }
