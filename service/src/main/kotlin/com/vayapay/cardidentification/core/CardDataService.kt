@@ -1,6 +1,7 @@
 package com.vayapay.cardidentification.core
 
 import com.vayapay.carddata.client.CardDataClient
+import com.vayapay.carddata.domain.CardData
 import com.vayapay.carddata.messages.StoreAndLinkCardDataRequest
 import com.vayapay.carddata.messages.StoreAndLinkCardDataResponse
 import mu.KotlinLogging
@@ -11,11 +12,8 @@ class CardDataService constructor(val cardDataClient: CardDataClient) {
 
     private val logger = KotlinLogging.logger {}
 
-    suspend fun storeCardData(storeAndLinkCardDataRequest: StoreAndLinkCardDataRequest): StoreAndLinkCardDataResponse? {
-        val cardIdData = cardDataClient.storeAndLinkCardData(
-            storeAndLinkCardDataRequest.ptoId,
-            storeAndLinkCardDataRequest.cardData
-        )
+    suspend fun storeCardData(ptoId: String, cardDataList: List<CardData>): StoreAndLinkCardDataResponse? {
+        val cardIdData = cardDataClient.storeAndLinkCardData(ptoId, cardDataList)
         logger.info { "Card data retrieved from Card Data Storage service:  $cardIdData" }
 
         if (cardIdData.isEmpty()) {

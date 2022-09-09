@@ -15,7 +15,7 @@ class BinRangesImportController(
         val binRangeService: BinRangeService) {
 
     @PostMapping("/bin")
-    fun uploadBinRanges(@RequestParam("file") file: MultipartFile): ResponseEntity<String> {
-        return ResponseEntity.ok(binRangeService.uploadBinRangesFile(file))
+    fun uploadBinRanges(@RequestParam("file") file: MultipartFile): String {
+        return binRangeService.uploadBinRangesFile(file)
     }
 }

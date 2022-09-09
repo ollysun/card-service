@@ -30,23 +30,22 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
 
         val pan: String = cardDataRequest.cardData.pan.trim()
 
-        logger.info { println("validating bin range pan " + validationPanBinRange(pan)) }
+        logger.debug { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
         if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
 
         val otherCardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
-        val cardDataList = ArrayList<CardData>()
+        val cardDataList = mutableListOf(otherCardData)
         cardDataList.add(otherCardData)
         if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()) {
             val bankAxeptPan = BIN_BANK_AXEPT.plus(cardDataRequest.bankAccountNumber)
             val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
             cardDataList.add(bankAxeptCardData)
         }
-        val storeAndLinkCardDataRequest = StoreAndLinkCardDataRequest(ptoid, cardDataList)
 
-        return cardDataStorage.storeCardData(storeAndLinkCardDataRequest)!!
+        return cardDataStorage.storeCardData(ptoid, cardDataList)!!
     }
 
     fun luhnCheck(number: String): Boolean {
@@ -80,8 +79,7 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
         val panSixDigit = pan.take(SIX_DIGIT);
 
         return binRanges.asSequence().filter {
-            panSixDigit == it.binRangeFrom.take(SIX_DIGIT) && panSixDigit == it.binRangeTo.take(SIX_DIGIT)
-        }.any()
+            panSixDigit == it.binRangeFrom.take(SIX_DIGIT) && panSixDigit == it.binRangeTo.take(SIX_DIGIT) }.any()
 
     }
 }

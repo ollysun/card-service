@@ -48,22 +48,28 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
 
     private fun processAndValidateBinRange(csvBean: CsvToBean<BinRangeUploadModel>): String {
         val binRangeUploadModelList: List<BinRangeUploadModel> = csvBean.toList()
-        // filter for only non-prepaid accounting funding source
-        val nonPrepaidPredicate: Predicate<BinRangeUploadModel> =
-            Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(Clauses.PREPAID) != d.accountFundingSource } // filter for only non-prepaid accounting funding source
-        // check for countryCode
-        val countryPredicate: Predicate<BinRangeUploadModel> =
-            Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(Clauses.COUNTRY_CODE) == d.countryCode }
-        // check for currencyCode
-        val currencyCodePredicate: Predicate<BinRangeUploadModel> =
-            Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(Clauses.CURRENCY_CODE) == d.currencyCode }
-        // filter for only non-credit
-        val nonCreditPredicate: Predicate<BinRangeUploadModel> =
-            Predicate<BinRangeUploadModel> { d -> binRangeConfiguration.getBinValidation(Clauses.CREDIT) != d.creditOrDebit }
 
-        val filterList = binRangeUploadModelList.stream()
-            .filter(nonCreditPredicate.and(nonPrepaidPredicate).and(countryPredicate).and(currencyCodePredicate))
-            .collect(Collectors.toList())
+        // filter for only non-prepaid accounting funding source
+        fun nonPrepaidPredicate(d: BinRangeUploadModel) =
+            run { binRangeConfiguration.getBinValidation(Clauses.PREPAID) != d.accountFundingSource } // filter for only non-prepaid accounting funding source
+
+        // check for countryCode
+        fun countryPredicate(d: BinRangeUploadModel) =
+            run { binRangeConfiguration.getBinValidation(Clauses.COUNTRY_CODE) == d.countryCode }
+
+        // check for currencyCode
+        fun currencyCodePredicate(d: BinRangeUploadModel) =
+            run { binRangeConfiguration.getBinValidation(Clauses.CURRENCY_CODE) == d.currencyCode }
+
+        // filter for only non-credit
+        fun nonCreditPredicate(d: BinRangeUploadModel) =
+            run { binRangeConfiguration.getBinValidation(Clauses.CREDIT) != d.creditOrDebit }
+
+        val filterList = binRangeUploadModelList.asSequence()
+            .filter {
+                nonCreditPredicate(it) && nonPrepaidPredicate(it) && countryPredicate(it)
+                        && currencyCodePredicate(it) }.toList()
+
         val binList = arrayListOf<BinRangeModel>()
         var count = 0
         for (bin in filterList) {
