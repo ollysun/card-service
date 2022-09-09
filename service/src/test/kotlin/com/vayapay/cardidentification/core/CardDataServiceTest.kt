@@ -33,7 +33,7 @@ internal class CardDataServiceTest {
         coEvery { mockCardDataClient.storeAndLinkCardData(any(), any()) } returns cardId
 
         runBlocking {
-            val result = cardDataService.storeCardData(StoreAndLinkCardDataRequest(ptoId, cardData))
+            val result = cardDataService.storeCardData(ptoId, cardData)
             Assertions.assertEquals(storeAndLinkCardDataResponse, result)
         }
     }
@@ -45,7 +45,7 @@ internal class CardDataServiceTest {
         coEvery { mockCardDataClient.storeAndLinkCardData(any(), any()) } returns emptyList()
 
         runBlocking {
-            val result = cardDataService.storeCardData(StoreAndLinkCardDataRequest(ptoId, mockCardData))
+            val result = cardDataService.storeCardData(ptoId, mockCardData)
             Assertions.assertNull(result)
         }
     }
