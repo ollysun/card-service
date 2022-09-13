@@ -57,7 +57,7 @@ class CardIdentificationServiceTest{
         coEvery { mockCardDataClient.storeAndLinkCardData(any(), any()) } returns cardId
 
         runBlocking {
-            val result = cardDataService.storeCardData(StoreAndLinkCardDataRequest(ptoId, cardData))
+            val result = cardDataService.storeCardData(ptoId, cardData)
             assertEquals(storeAndLinkCardDataResponse, result)
         }
     }

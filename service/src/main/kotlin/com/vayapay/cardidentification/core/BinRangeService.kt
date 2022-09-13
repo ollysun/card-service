@@ -16,8 +16,6 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.function.Predicate
-import java.util.stream.Collectors
 
 @Service
 class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
