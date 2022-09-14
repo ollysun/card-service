@@ -40,9 +40,9 @@ sonarcloud-check:
     - key: "$CI_COMMIT_REF_NAME"
       policy: pull
       paths:
-        - build
-        - build-cache
-        - .gradle
+        - "**/build/"
+        - build-cache/
+        - .gradle/
   only:
     - merge_requests
     - main
@@ -51,13 +51,18 @@ sonarcloud-check:
 build:
   stage: build
   script: gradle assemble
+  artifacts:
+    when: on_success
+    paths:
+      - 'service/build/**'
+    expire_in: 1 day
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - build
-      - build-cache
-      - .gradle
+      - "**/build/"
+      - build-cache/
+      - .gradle/
 
 test:
   stage: test
@@ -66,9 +71,9 @@ test:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
     paths:
-      - build
-      - build-cache
-      - .gradle
+      - "**/build/"
+      - build-cache/
+      - .gradle/
 
 prod-deploy:
   stage: prod-deploy
