@@ -54,7 +54,7 @@ build:
   artifacts:
     when: on_success
     paths:
-      - 'service/build/**'
+      - 'service/build/libs/**'
     expire_in: 1 day
   cache:
     key: "$CI_COMMIT_REF_NAME"
