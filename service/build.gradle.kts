@@ -1,6 +1,7 @@
 val springMockkVersion: String by project
 val kotlinVersion: String by project
 val jUnit: String by project
+val awsVersion: String by project
 
 plugins {
     id("org.springframework.boot")
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
 
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    runtimeOnly("io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:$awsVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnit")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

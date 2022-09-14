@@ -7,7 +7,7 @@
 # https://gradle.org/
 # https://github.com/gradle/gradle
 
-image: gradle:7.3.3-jdk11-alpine
+image: gradle:7.4-jdk11-alpine
 
 # Disable the Gradle daemon for Continuous Integration servers as correctness
 # is usually a priority over speed in CI environments. Using a fresh
@@ -26,7 +26,8 @@ stages:
   - build
   - test
   - qacheck
-  - publish
+  - test-deploy
+  - prod-deploy
 
 sonarcloud-check:
   stage: qacheck
@@ -39,9 +40,9 @@ sonarcloud-check:
     - key: "$CI_COMMIT_REF_NAME"
       policy: pull
       paths:
-        - build
-        - build-cache
-        - .gradle
+        - "**/build/"
+        - build-cache/
+        - .gradle/
   only:
     - merge_requests
     - main
@@ -50,13 +51,18 @@ sonarcloud-check:
 build:
   stage: build
   script: gradle assemble
+  artifacts:
+    when: on_success
+    paths:
+      - 'service/build/libs/**'
+    expire_in: 1 day
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - build
-      - build-cache
-      - .gradle
+      - "**/build/"
+      - build-cache/
+      - .gradle/
 
 test:
   stage: test
@@ -65,20 +71,62 @@ test:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
     paths:
-      - build
-      - build-cache
-      - .gradle
+      - "**/build/"
+      - build-cache/
+      - .gradle/
 
-publish:
-  stage: publish
-  script: gradle publish
-  only:
-    - main
-    - develop
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - build
-      - build-cache
-      - .gradle
+prod-deploy:
+  stage: prod-deploy
+  environment: production
+  extends: .code-deploy
+  variables:
+    SCRIPTS_FOLDER: scripts
+    SERVICE_FOLDER: service
+    S3_DEPLOY_BUCKET: vayapay-prod-s3-source
+    DEPLOYMENT: vayapay-prod-card_identification
+    TARGET: service/build
+    AWS_DEFAULT_REGION: $PROD_AWS_DEFAULT_REGION
+    AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
+    S3_LOCATION: s3://$S3_DEPLOY_BUCKET
+    JAR_NAME: service/build/libs/*-fatjar.jar
+    TARGET_JAR_NAME: cardIdentification.jar
+    BRANCH: develop
+  when: manual
+
+test-deploy:
+  stage: test-deploy
+  environment: test
+  extends: .code-deploy
+  variables:
+    SCRIPTS_FOLDER: scripts
+    SERVICE_FOLDER: service
+    S3_DEPLOY_BUCKET: vayapay-test-s3-source
+    DEPLOYMENT: vayapay-test-card_identification
+    TARGET: service/build
+    AWS_DEFAULT_REGION: $TEST_AWS_DEFAULT_REGION
+    AWS_ACCESS_KEY_ID: $TEST_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $TEST_AWS_SECRET_ACCESS_KEY
+    S3_LOCATION: s3://$S3_DEPLOY_BUCKET
+    JAR_NAME: service/build/libs/*-fatjar.jar
+    TARGET_JAR_NAME: cardIdentification.jar
+    BRANCH: develop
+  when: manual
+
+.code-deploy:
+  cache: { }
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  needs: [ "build" ]
+  before_script:
+    - mkdir -p $TARGET/code-deploy/scripts
+    - mkdir -p $TARGET/code-deploy/service
+    - cp .deploy/$SCRIPTS_FOLDER/* $TARGET/code-deploy/scripts/
+    - cp .deploy/$SERVICE_FOLDER/*.service $TARGET/code-deploy/service/
+    - cp .deploy/appspec.yml $TARGET/code-deploy/
+    - cp $JAR_NAME $TARGET/code-deploy/$TARGET_JAR_NAME
+  script:
+    - cd $TARGET/code-deploy
+    - aws deploy push --application-name $DEPLOYMENT --s3-location $S3_LOCATION/$DEPLOYMENT-$CI_COMMIT_SHORT_SHA.zip --ignore-hidden-files
+    - deployment_response=`aws deploy create-deployment --application-name $DEPLOYMENT --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT --s3-location bucket=$S3_DEPLOY_BUCKET,bundleType=zip,key=$DEPLOYMENT-$CI_COMMIT_SHORT_SHA.zip`
+    - cd -
+    - ./.deploy/monitor-deployment.sh "$deployment_response"
