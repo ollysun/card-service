@@ -9,7 +9,6 @@ plugins {
     kotlin("plugin.serialization") apply false
     kotlin("jvm") apply false
     java
-    `maven-publish`
     id("org.sonarqube")
     id("org.owasp.dependencycheck")
     id("io.spring.dependency-management")
@@ -28,7 +27,6 @@ tasks.sonarqube {
 subprojects {
     version = "1.0.0-SNAPSHOT"
     group = "com.vayapay.card-registration"
-    apply(plugin = "maven-publish")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "jacoco")
