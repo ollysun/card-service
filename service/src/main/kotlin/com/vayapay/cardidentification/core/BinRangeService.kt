@@ -8,6 +8,7 @@ import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.model.BinRangeUploadModel
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
@@ -17,6 +18,8 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
+import java.nio.file.Path
+import java.nio.file.Paths
 import javax.annotation.PostConstruct
 
 @Service
@@ -100,8 +103,11 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
             val mapper = jacksonObjectMapper()
             mapper.findAndRegisterModules()
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false) // to serialize date
-            val fileLocation: String = File(binRangeLocation).absolutePath
-            FileOutputStream(fileLocation).use {
+//            val fileLocation = File(binRangeLocation).absolutePath
+            val path =  Paths.get(binRangeLocation).toAbsolutePath()
+            logger.info { "path $path" }
+           // logger.info { "file $fileLocation"}
+            FileOutputStream(path.toFile()).use {
                 val strToBytes: ByteArray =
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
                 it.write(strToBytes)

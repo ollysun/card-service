@@ -43,5 +43,5 @@ card:
     CREDIT: C
 
 bin:
-  locationBinRangeFile: service/src/main/resources/BinRange.json
+  locationBinRangeFile: src/main/resources/BinRange.json
   elavon-file: elavon.csv
