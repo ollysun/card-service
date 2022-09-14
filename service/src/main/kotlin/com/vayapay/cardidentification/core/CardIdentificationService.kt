@@ -9,13 +9,15 @@ import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeJsonModel
 import com.vayapay.cardidentification.model.CardRequestDto
 import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import org.springframework.util.FileCopyUtils
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 
 @Service
@@ -25,11 +27,13 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
 
 
     @Value("\${card-storage.ptoId}")
-    lateinit var ptoid: String;
+    lateinit var ptoid: String
+
+    val binRangeLocation = "BinRange.json"
+
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
-
         logger.debug { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
         if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
@@ -70,7 +74,7 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
         val mapper = jacksonObjectMapper()
         mapper.findAndRegisterModules();
         val typeReference: TypeReference<List<BinRangeJsonModel>> = object : TypeReference<List<BinRangeJsonModel>>() {}
-        val cpr = ClassPathResource("BinRange.json")
+        val cpr = ClassPathResource(binRangeLocation)
         val inputStream: InputStream = cpr.inputStream
         val reader = BufferedReader(InputStreamReader(inputStream))
 
@@ -82,4 +86,6 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
             panSixDigit == it.binRangeFrom.take(SIX_DIGIT) && panSixDigit == it.binRangeTo.take(SIX_DIGIT) }.any()
 
     }
+
+
 }

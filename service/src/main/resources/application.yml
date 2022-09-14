@@ -41,3 +41,7 @@ card:
     COUNTRY_CODE: 578
     CURRENCY_CODE: 578
     CREDIT: C
+
+bin:
+  locationBinRangeFile: service/src/main/resources/BinRange.json
+  elavon-file: elavon.csv

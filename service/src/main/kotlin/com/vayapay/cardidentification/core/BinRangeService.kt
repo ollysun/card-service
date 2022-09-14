@@ -9,18 +9,26 @@ import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.model.BinRangeUploadModel
 import mu.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
+import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.nio.file.Path
-import java.nio.file.Paths
+import javax.annotation.PostConstruct
 
 @Service
 class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
 
     private val logger = KotlinLogging.logger {}
+
+    @Value("\${bin.locationBinRangeFile}")
+    lateinit var binRangeLocation: String
+
+    @Value("\${bin.elavon-file}")
+    lateinit var elavonLocation: String
 
     fun uploadBinRangesFile(file: MultipartFile): String {
         if (file.isEmpty)
@@ -29,7 +37,9 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
         try {
             BufferedReader(InputStreamReader(file.inputStream)).use {
                 val csvToBean = createBinRangeToBean(it)
-                return processAndValidateBinRange(csvToBean)
+                processAndValidateBinRange(csvToBean)
+
+                return "json created"
             }
         } catch (ex: Exception) {
             logger.error { ex.localizedMessage }
@@ -44,7 +54,7 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
             .withIgnoreLeadingWhiteSpace(true)
             .build()
 
-    private fun processAndValidateBinRange(csvBean: CsvToBean<BinRangeUploadModel>): String {
+    private fun processAndValidateBinRange(csvBean: CsvToBean<BinRangeUploadModel>) {
         val binRangeUploadModelList: List<BinRangeUploadModel> = csvBean.toList()
 
         // filter for only non-prepaid accounting funding source
@@ -81,28 +91,42 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
             binList.add(binRangeModel)
         }
 
-        return processAndReturnJson(binList)
+         processAndReturnJson(binList)
 
     }
 
-    private fun processAndReturnJson(binRangeModelList: List<BinRangeModel>): String {
+    private fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) {
         try {
             val mapper = jacksonObjectMapper()
             mapper.findAndRegisterModules()
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false) // to serialize date
-            val path: Path = Paths.get("data/BinRange.json").toAbsolutePath()
-            FileOutputStream(path.toString()).use {
+            val fileLocation: String = File(binRangeLocation).absolutePath
+            FileOutputStream(fileLocation).use {
                 val strToBytes: ByteArray =
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
                 it.write(strToBytes)
             }
-            return "json created"
         } catch (ex: Exception) {
             throw CardIdentificationException(ex.message!!)
         }
     }
 
     private fun mergeExtraDigit(text: String) =
-        text.plus(text.takeLast(4))
+        text.plus(text.takeLast(FOUR_DIGIT))
+
+    // generate the json file on start up
+    @PostConstruct
+    private fun processJsonFileOnServerStartUp() {
+        val cpr = ClassPathResource(elavonLocation)
+        try {
+            BufferedReader(InputStreamReader(cpr.inputStream)).use {
+                val csvToBean = createBinRangeToBean(it)
+                return processAndValidateBinRange(csvToBean)
+            }
+        } catch (ex: Exception) {
+            logger.error { ex.localizedMessage }
+            throw CardIdentificationException(ex.stackTraceToString())
+        }
+    }
 
 }
