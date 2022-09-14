@@ -1,3 +1,3 @@
 #!/bin/bash
-cp /opt/vayapay/secure_card_storage/service/cardIdentification.service /etc/systemd/system/
+cp /opt/vayapay/card_identification/service/cardIdentification.service /etc/systemd/system/
 systemctl enable cardIdentification.service
