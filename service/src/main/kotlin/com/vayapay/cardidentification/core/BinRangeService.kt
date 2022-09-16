@@ -8,7 +8,6 @@ import com.vayapay.cardidentification.exception.BadRequestException
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeModel
 import com.vayapay.cardidentification.model.BinRangeUploadModel
-import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
@@ -18,6 +17,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.PostConstruct
@@ -98,21 +98,27 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
 
     }
 
-    private fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) {
+   fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) {
         try {
             val mapper = jacksonObjectMapper()
             mapper.findAndRegisterModules()
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false) // to serialize date
-//            val fileLocation = File(binRangeLocation).absolutePath
-            val path =  Paths.get(binRangeLocation).toAbsolutePath()
-            logger.info { "path $path" }
-           // logger.info { "file $fileLocation"}
-            FileOutputStream(path.toFile()).use {
-                val strToBytes: ByteArray =
-                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
-                it.write(strToBytes)
+
+            val file = File(binRangeLocation)
+                if(file.exists()){
+                    logger.info { "binrange file already exist" }
+                    logger.info { "path ${file.absolutePath}" }
+                }else {
+                    Files.createDirectories(Paths.get(binRangeLocation).parent)
+                    logger.info { "path ${file.absolutePath}" }
+                    FileOutputStream(file.absolutePath).use {
+                        val strToBytes: ByteArray =
+                            mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
+                        it.write(strToBytes)
+                }
             }
         } catch (ex: Exception) {
+            logger.info { ex.localizedMessage }
             throw CardIdentificationException(ex.message!!)
         }
     }

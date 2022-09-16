@@ -45,7 +45,5 @@ dependencies {
     runtimeOnly("com.vayapay.common:logging-utils:$loggingUtilsVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-    testImplementation("com.vayapay.common:common-rsocketMock:$commonUtilsVersion")
-
 
 }

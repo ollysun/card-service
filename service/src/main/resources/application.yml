@@ -6,11 +6,11 @@ logging:
     com.vayapay: INFO
 server:
   shutdown: graceful
-  port: 8181
+  port: 8283
 spring:
   rsocket:
     server:
-      port: ${STORAGE_PORT:4141}
+      port: ${STORAGE_PORT:4343}
   application:
     name: ${SERVICE_NAME:secure_card_identification}
   servlet:
@@ -43,5 +43,5 @@ card:
     CREDIT: C
 
 bin:
-  locationBinRangeFile: src/main/resources/BinRange.json
+  locationBinRangeFile: service/build/data/BinRange.json
   elavon-file: elavon.csv

@@ -16,7 +16,6 @@ class CardIdentificationController(
         val cardService: CardIdentificationService) {
     @PostMapping("/cards")
     suspend fun cardRegistration(@RequestBody @Valid cardRequestDto: CardRequestDto): StoreAndLinkCardDataResponse {
-        println("am here")
         return cardService.saveCardStorage(cardRequestDto)
     }
 }

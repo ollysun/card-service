@@ -3,21 +3,16 @@ package com.vayapay.cardidentification.core
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vayapay.carddata.domain.CardData
-import com.vayapay.carddata.messages.StoreAndLinkCardDataRequest
 import com.vayapay.carddata.messages.StoreAndLinkCardDataResponse
 import com.vayapay.cardidentification.exception.CardIdentificationException
 import com.vayapay.cardidentification.model.BinRangeJsonModel
 import com.vayapay.cardidentification.model.CardRequestDto
 import mu.KotlinLogging
-import mu.KotlinLogging.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import org.springframework.util.FileCopyUtils
 import java.io.*
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 
 
 @Service
@@ -29,12 +24,13 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
     @Value("\${card-storage.ptoId}")
     lateinit var ptoid: String
 
-    val binRangeLocation = "BinRange.json"
+    @Value("\${bin.locationBinRangeFile}")
+    lateinit var binRangeLocation: String
 
     suspend fun saveCardStorage(cardDataRequest: CardRequestDto): StoreAndLinkCardDataResponse {
 
         val pan: String = cardDataRequest.cardData.pan.trim()
-        logger.debug { println("validating bin range pan " + validationPanBinRange(pan)) }
+        logger.info { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
         if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
             throw CardIdentificationException("wrong pan number")
@@ -74,10 +70,9 @@ class CardIdentificationService constructor(val cardDataStorage: CardDataService
         val mapper = jacksonObjectMapper()
         mapper.findAndRegisterModules();
         val typeReference: TypeReference<List<BinRangeJsonModel>> = object : TypeReference<List<BinRangeJsonModel>>() {}
-        val cpr = ClassPathResource(binRangeLocation)
-        val inputStream: InputStream = cpr.inputStream
-        val reader = BufferedReader(InputStreamReader(inputStream))
-
+        val cpr = FileReader(File(binRangeLocation).absolutePath)
+        logger.info { "file location " + File(binRangeLocation).absolutePath  }
+        val reader = BufferedReader(cpr)
         val binRanges: List<BinRangeJsonModel> =
             mapper.readValue(FileCopyUtils.copyToString(reader), typeReference) as List<BinRangeJsonModel>
         val panSixDigit = pan.take(SIX_DIGIT);
