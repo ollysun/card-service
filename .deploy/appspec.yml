@@ -1,0 +1,46 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /opt/vayapay/card_identification/
+
+permissions:
+  - object: /opt/vayapay/card_identification/cardIdentification.jar
+    mode: 644
+    owner: vayapay
+    group: vayapay
+  - object: /opt/vayapay/card_identification/scripts
+    pattern: "*.sh"
+    mode: 755
+    owner: vayapay
+    group: vayapay
+    type:
+      - file
+  - object: /opt/vayapay/card_identification
+    pattern: "*.sh"
+    mode: 755
+    owner: vayapay
+    group: vayapay
+    type:
+      - file
+  - object: /opt/vayapay/card_identification
+    mode: 755
+    owner: vayapay
+    group: vayapay
+    type:
+      - directory
+
+hooks:
+  AfterInstall:
+    - location: scripts/install_service.sh
+      timeout: 10
+      runas: root
+  ApplicationStart:
+    - location: scripts/server_start.sh
+      timeout: 20
+      runas: root
+  ValidateService:
+    - location: scripts/server_status.sh
+      timeout: 120
+      runas: root

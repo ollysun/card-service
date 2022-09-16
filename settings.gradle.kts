@@ -24,7 +24,6 @@ buildCache {
     }
 }
 
-//include("protobuf2rsocket")
 include("common")
 include("service")
 include("module-test")

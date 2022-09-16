@@ -1,0 +1,29 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="card-form">
+    <form class="needs-validation" method="post" novalidate
+          th:action="@{/card-registration}" th:object="${addCardForm}">
+
+        <div th:replace="field :: card-number"></div>
+
+        <div th:replace="field :: expiry-date"></div>
+
+        <div th:replace="field :: account-number"></div>
+
+        <div class="invalid-feedback" th:if="${addCardError} != null" th:text="${addCardError}"></div>
+        <p class=""><span class="text-secondary">*</span> <span th:text="#{input.required}"></span></p>
+
+        <div th:replace="field:: save-button"></div>
+
+        <div class="p-2 mt-4 bg-success text-white" id="successMessage" th:if="${response} != null"
+             th:text="#{add.card.success.message}"></div>
+    </form>
+
+</div>
+
+</body>
+
+</html>

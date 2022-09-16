@@ -11,7 +11,6 @@ plugins {
     kotlin("plugin.serialization") apply false
     kotlin("jvm") apply false
     java
-    `maven-publish`
     id("org.sonarqube")
     id("org.owasp.dependencycheck")
     id("io.spring.dependency-management")
@@ -54,6 +53,8 @@ subprojects {
         }
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinCoroutinesVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinCoroutinesVersion")
+
+
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
     }
     tasks.withType<KotlinCompile>().configureEach {
@@ -110,3 +111,4 @@ subprojects {
         }
     }
 }
+

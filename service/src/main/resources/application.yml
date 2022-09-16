@@ -45,3 +45,39 @@ card:
 bin:
   locationBinRangeFile: service/build/data/BinRange.json
   elavon-file: elavon.csv
+server:
+  port: 8000
+
+cardDataService:
+  host: ${INTERNAL_LB_HOST:localhost}
+  port: ${CARD_DATA_PORT:4040}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus, metrics
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - sslEnabled
+server:
+  ssl:
+    enabled: true
+    key-store: keystore.p12
+    key-password: ${SSL_PASSWORD}
+    key-store-type: pkcs12
+    key-alias: ${SERVICE_NAME:card_identification}
+    key-store-password: ${SSL_PASSWORD}
+  port: 8443
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - aws
+    import:
+      - aws-secretsmanager:/vayapay/${SERVICE_NAME:card_identification}
+      - optional:aws-secretsmanager:/vayapay/common

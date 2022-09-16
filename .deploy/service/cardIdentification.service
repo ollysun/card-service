@@ -1,0 +1,12 @@
+[Unit]
+Description=Vayapay CardIdentification Service
+[Service]
+User=vayapay
+WorkingDirectory=/opt/vayapay/card_identification
+ExecStart=/bin/bash /opt/vayapay/card_identification/scripts/service.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target

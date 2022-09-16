@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="390px"
+	 height="245px" viewBox="0 0 390 245" style="enable-background:new 0 0 390 245;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#0078A9;}
+</style>
+<g id="Layer_2">
+</g>
+<g id="Layer_1">
+	
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="269.6384" y1="318.5112" x2="124.4516" y2="618.5487" gradientTransform="matrix(1 0 0 1 0 -350.28)">
+		<stop  offset="0" style="stop-color:#057BAB"/>
+		<stop  offset="0.2685" style="stop-color:#0B89B8"/>
+		<stop  offset="0.5272" style="stop-color:#0F94C2"/>
+		<stop  offset="0.9432" style="stop-color:#077EAE"/>
+		<stop  offset="1" style="stop-color:#057BAB"/>
+	</linearGradient>
+	<path class="st0" d="M390,228.976c0,8.837-7.163,16-16,16H16c-8.837,0-16-7.163-16-16v-213c0-8.837,7.163-16,16-16h358
+		c8.837,0,16,7.163,16,16V228.976z"/>
+	<polyline class="st1" points="232.068,167.205 183.52,167.205 183.52,159.958 180.054,167.205 150.04,167.205 146.27,159.428 
+		146.27,167.205 90.17,167.205 83.544,151.515 72.302,151.515 65.28,167.205 36.192,167.205 14.824,167.295 57.515,71.598 
+		98.342,71.598 104.077,85.268 104.077,71.699 154.002,71.699 164.985,94.715 175.731,71.598 237.557,71.598 	"/>
+	<polygon class="st1" points="375.176,71.598 318.119,71.598 305.342,85.843 294.046,71.598 210.655,71.451 210.655,167.295 
+		292.916,167.295 305.342,153.118 317.39,167.442 373.731,167.442 334.721,119.193 	"/>
+	<path class="st2" d="M276.767,139.449h-38.412V126.05h36.742v-12.868h-36.742v-12.732l40.512,0.09l16.22,18.467L276.767,139.449z
+		 M340.442,147.327l-23.93-28.321l29.696-33.011l-21.061-0.005l-19.804,21.239l-17.75-21.386h-65.661v67.85h63.528l20.002-22.417
+		l19.528,22.575h20.608L340.442,147.327z"/>
+	<path class="st2" d="M184.073,85.268l-20.442,45.512l-20.374-45.512h-26.12v65.345L88.059,85.268H66.014l-29.687,67.85h17.576
+		l6.502-15.148h33.254l6.592,15.148h33.536v-50.366l22.271,50.366h15.148l22.79-49.531v49.531h16.661v-67.85H184.073z
+		 M66.703,123.33l9.934-23.715l10.351,23.715H66.703z"/>
+</g>
+</svg>
