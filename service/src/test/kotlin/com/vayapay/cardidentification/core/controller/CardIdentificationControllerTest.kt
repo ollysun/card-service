@@ -10,7 +10,9 @@ import com.vayapay.cardidentification.model.CardRequestDto
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyString
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -21,7 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class CardIdentificationControllerTest{
+class CardIdentificationControllerTest(@Value("\${bin.locationBinRangeFile}") private val binRangeLocation: String,
+                                       @Value("\${card-storage.ptoId}") private val ptoid: String){
 
     private final var mockMvc: MockMvc
 
@@ -37,7 +40,7 @@ class CardIdentificationControllerTest{
 
     init {
         cardDataService = CardDataService(mockCardDataClient)
-        cardIdentificationService = CardIdentificationService(cardDataService)
+        cardIdentificationService = CardIdentificationService(cardDataService, binRangeLocation, ptoid)
         runBlocking {
             mockMvc = MockMvcBuilders
                 .standaloneSetup(CardIdentificationController(cardIdentificationService))

@@ -16,20 +16,23 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyString
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Configuration
+import org.springframework.test.context.ContextConfiguration
 import java.util.*
 
-
-class CardIdentificationServiceTest{
+@SpringBootTest
+class CardIdentificationServiceTest(
+    @Value("\${bin.locationBinRangeFile}") private val binRangeLocation: String,
+    @Value("\${card-storage.ptoId}") private val ptoid: String){
     private val mockCardDataClient = mockk<CardDataClient>()
     private val cardDataService = CardDataService(mockCardDataClient)
-    private var cardIdentificationService =  CardIdentificationService(cardDataService)
+    private var cardIdentificationService =  CardIdentificationService(cardDataService, binRangeLocation,ptoid)
     private val cardDataDto = CardDataDto("4079710420210488", "1225")
-    private val cardRequestDto = CardRequestDto(cardDataDto, "23456789")
-
-    @BeforeEach
-    fun init() {
-        cardIdentificationService = CardIdentificationService(cardDataService)
-    }
 
     @Test
     fun luhmCheck() {
@@ -64,7 +67,8 @@ class CardIdentificationServiceTest{
 
     @Test
     fun checkValidationPanBinRange() {
-        assertTrue(cardIdentificationService.validationPanBinRange("4079710420210488"))
+        assertTrue(cardIdentificationService.validationPanBinRange("4067420420210488"))
         assertFalse(cardIdentificationService.validationPanBinRange("4079870420210488"))
     }
+
 }

@@ -8,7 +8,7 @@ import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
-class CardDataService constructor(val cardDataClient: CardDataClient) {
+class CardDataService (val cardDataClient: CardDataClient) {
 
     private val logger = KotlinLogging.logger {}
 
