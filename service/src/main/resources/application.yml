@@ -45,8 +45,8 @@ card:
 bin:
   locationBinRangeFile: service/build/data/BinRange.json
   elavon-file: elavon.csv
-server:
-  port: 8000
+#server:
+#  port: 8000
 
 cardDataService:
   host: ${INTERNAL_LB_HOST:localhost}

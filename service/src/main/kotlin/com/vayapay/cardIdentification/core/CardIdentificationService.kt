@@ -27,16 +27,21 @@ class CardIdentificationService(val cardDataStorage: CardDataService,
         val pan: String = cardDataRequest.cardData.pan.trim()
         logger.info { println("validating bin range pan " + validationPanBinRange(pan)) }
         // validate digitnumber, luhn algorithm check and binranges
-        if (!isDigitNumber(pan) || !luhnCheck(pan) || !validationPanBinRange(pan)) {
+        if (!isDigitNumber(pan) || !luhnCheck(pan)) {
             throw CardIdentificationException("wrong pan number")
         }
-
         val cardData = CardData(cardDataRequest.cardData.pan, cardDataRequest.cardData.expirationDate)
         val cardDataList = mutableListOf(cardData)
-        if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()) {
-            val bankAxeptPan = BIN_BANK_AXEPT.plus(cardDataRequest.bankAccountNumber)
-            val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
-            cardDataList.add(bankAxeptCardData)
+
+        if (validationPanBinRange(pan)){
+            if (!cardDataRequest.bankAccountNumber.isNullOrEmpty()) {
+                val bankAxeptPan = BIN_BANK_AXEPT.plus(cardDataRequest.bankAccountNumber)
+                val bankAxeptCardData = CardData(bankAxeptPan, cardDataRequest.cardData.expirationDate)
+                cardDataList.add(bankAxeptCardData)
+            }else{
+                logger.debug { "Invalid account number" }
+                throw CardIdentificationException("Invalid account number")
+            }
         }
 
         return cardDataStorage.storeCardData(ptoid, cardDataList)!!

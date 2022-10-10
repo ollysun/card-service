@@ -1,13 +1,13 @@
-package com.vayapay.cardIdentification.core
+package com.vayapay.cardidentification.core
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.CsvToBeanBuilder
-import com.vayapay.cardIdentification.exception.BadRequestException
-import com.vayapay.cardIdentification.exception.CardIdentificationException
-import com.vayapay.cardIdentification.model.BinRangeModel
-import com.vayapay.cardIdentification.model.BinRangeUploadModel
+import com.vayapay.cardidentification.exception.BadRequestException
+import com.vayapay.cardidentification.exception.CardIdentificationException
+import com.vayapay.cardidentification.model.BinRangeModel
+import com.vayapay.cardidentification.model.BinRangeUploadModel
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
@@ -22,12 +22,15 @@ import java.nio.file.Paths
 import javax.annotation.PostConstruct
 
 @Service
-class BinRangeService(val binRangeConfiguration: BinRangeConfiguration,
-                      @Value("\${bin.locationBinRangeFile}") private val binRangeLocation: String,
-                      @Value("\${bin.elavon-file}") private val elavonLocation: String) {
+class BinRangeService(val binRangeConfiguration: BinRangeConfiguration) {
 
     private val logger = KotlinLogging.logger {}
 
+    @Value("\${bin.locationBinRangeFile}")
+    lateinit var binRangeLocation: String
+
+    @Value("\${bin.elavon-file}")
+    lateinit var elavonLocation: String
 
     fun uploadBinRangesFile(file: MultipartFile): String {
         if (file.isEmpty)
@@ -75,8 +78,7 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration,
         val filterList = binRangeUploadModelList.asSequence()
             .filter {
                 nonCreditPredicate(it) && nonPrepaidPredicate(it) && countryPredicate(it)
-                        && currencyCodePredicate(it)
-            }.toList()
+                        && currencyCodePredicate(it) }.toList()
 
         val binList = arrayListOf<BinRangeModel>()
         var count = 0
@@ -91,26 +93,27 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration,
             binList.add(binRangeModel)
         }
 
-        processAndReturnJson(binList)
+         processAndReturnJson(binList)
 
     }
 
-    fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) {
+   fun processAndReturnJson(binRangeModelList: List<BinRangeModel>) {
         try {
             val mapper = jacksonObjectMapper()
             mapper.findAndRegisterModules()
             mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false) // to serialize date
 
             val file = File(binRangeLocation)
-            logger.info { "path ${file.absolutePath}" }
-            if (file.exists()) {
-                logger.info { "binRange json file already exist" }
-            } else {
-                Files.createDirectories(Paths.get(binRangeLocation).parent)
-                FileOutputStream(file.absolutePath).use {
-                    val strToBytes: ByteArray =
-                        mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
-                    it.write(strToBytes)
+                if(file.exists()){
+                    logger.info { "binrange file already exist" }
+                    logger.info { "path ${file.absolutePath}" }
+                }else {
+                    Files.createDirectories(Paths.get(binRangeLocation).parent)
+                    logger.info { "path ${file.absolutePath}" }
+                    FileOutputStream(file.absolutePath).use {
+                        val strToBytes: ByteArray =
+                            mapper.writerWithDefaultPrettyPrinter().writeValueAsString(binRangeModelList).toByteArray()
+                        it.write(strToBytes)
                 }
             }
         } catch (ex: Exception) {
@@ -129,11 +132,12 @@ class BinRangeService(val binRangeConfiguration: BinRangeConfiguration,
         try {
             BufferedReader(InputStreamReader(cpr.inputStream)).use {
                 val csvToBean = createBinRangeToBean(it)
-                processAndValidateBinRange(csvToBean)
+                return processAndValidateBinRange(csvToBean)
             }
         } catch (ex: Exception) {
             logger.error { ex.localizedMessage }
             throw CardIdentificationException(ex.stackTraceToString())
         }
     }
+
 }

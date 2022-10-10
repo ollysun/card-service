@@ -1,28 +1,27 @@
-package com.vayapay.cardIdentification.core
+package com.vayapay.cardidentification.core
 
 
-import com.vayapay.cardIdentification.model.BinRangeModel
+import com.vayapay.cardidentification.model.BinRangeModel
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 
-@SpringBootTest
-class BinRangeServiceTest(@Value("\${bin.locationBinRangeFile}") private val binRangeLocation: String,
-                          @Value("\${bin.elavon-file}") private val elavonLocation: String) {
+
+internal class BinRangeServiceTest {
     private val mockBinRangeConfiguration = mockk<BinRangeConfiguration>()
-    private val binRangeService = BinRangeService(mockBinRangeConfiguration, binRangeLocation, elavonLocation)
+    private var binRangeService =  mockk<BinRangeService>()
     private val mockBinRangeJsonModel = mockk<List<BinRangeModel>>()
-    
+    init {
+        binRangeService =  BinRangeService(mockBinRangeConfiguration)
+    }
     @Test
     fun `should upload bin ranges file`() {
         val mockMultipartFile = MockMultipartFile("file", "elavontest.csv",
             "text/plain",
             "some csv".toByteArray())
-
+           binRangeService.binRangeLocation = "service/build/data/BinRange.json"
         runBlocking {
             val result = binRangeService.uploadBinRangesFile(mockMultipartFile)
             binRangeService.processAndReturnJson(mockBinRangeJsonModel)
